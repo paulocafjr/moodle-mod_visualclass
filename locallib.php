@@ -930,6 +930,7 @@ class mod_visualclass_instance
             'finaliza.html' => $path . '/scripts/finaliza.html',
             'finaliza.htm' => $path . '/scripts/finaliza.html',
             'moodle.js' => $path . '/scripts/moodle.js',
+            'json2.js' => $path . '/scripts/json2.js',
             'logo.jpg' => $path . '/scripts/logo.jpg',
             'loading.gif' => $path . '/scripts/loading.gif',
             'status_error.png' => $path . '/scripts/status_error.png',

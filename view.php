@@ -28,6 +28,11 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
+if (! isset($_SESSION)) {
+    session_name('MoodleSession');
+    session_start();
+}
+
 $id = optional_param('id', 0, PARAM_INT); // course_module ID
 
 if ($id) {
@@ -141,3 +146,5 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
 
 // Finish the page
 echo $OUTPUT->footer();
+
+session_write_close();

@@ -22,7 +22,7 @@
 function send_data(script, data) {
     // Solving url
     var max_split = 30;
-    var host = window.location.origin;
+    var host = window.location.hostname;
     var path = window.location.pathname.split("/", max_split);
     var mod_home = "/mod/visualclass/";
 
@@ -31,10 +31,14 @@ function send_data(script, data) {
     path.pop();
     path.pop();
 
-    var url = host + path.join("/") + mod_home + script;
+    var url = "http://" + host + path.join("/") + mod_home + script;
 
-    // Sending data
-    var ajax = new XMLHttpRequest();
+    var ajax;
+    if (window.XMLHttpRequest) {
+        ajax = new XMLHttpRequest();
+    } else {
+        ajax = new ActiveXObject("Microsoft.XMLHTTP");
+    }
 
     ajax.open("POST", url, true);
     ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
