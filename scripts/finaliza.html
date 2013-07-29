@@ -1,15 +1,16 @@
 <!DOCTYPE HTML>
 <html>
-  <body>
-    <div id="header">
-      <img alt="logo" src="logo.jpg" style="display:block; margin-left:auto; margin-right:auto; width: 80px; height: 40px;">
-      <br>
-    </div>
-    <div id="shortreport" style="margin-left:auto; margin-right:auto; width: 9em;">
-      <table border="1" style="white-space:nowrap; text-align: center;">
+<body>
+<div id="header">
+    <img alt="logo" src="logo.jpg"
+         style="display:block; margin-left:auto; margin-right:auto; width: 80px; height: 40px;">
+    <br>
+</div>
+<div id="shortreport" style="margin-left:auto; margin-right:auto; width: 9em;">
+    <table border="1" style="white-space:nowrap; text-align: center;">
         <tr>
-          <td><span id="labelcorrect"></span></td>
-          <td><span id="valuecorrect" style="visibility: hidden;"></span></td>
+            <td><span id="labelcorrect"></span></td>
+            <td><span id="valuecorrect" style="visibility: hidden;"></span></td>
         </tr>
         <tr>
             <td><span id="labelwrong"></span></td>
@@ -19,45 +20,46 @@
             <td><span id="labelscore" style="font-weight: bold;"></span></td>
             <td><span id="valuescore" style="visibility: hidden;"></span></td>
         </tr>
-      </table>
-    </div>
-    <div id="footer" style="margin-left:auto; margin-right:auto; width: 10em;">
-      <br>
-      <img id="status" alt="status" src="loading.gif" style="display:block; margin-left:auto; margin-right:auto; visibility: hidden; width: 20px; height: 20px;">
-      <h4 id="text" style="margin-left:auto; margin-right:auto; white-space:nowrap;"></h4>
-      <input id="button" type="button" onclick="open_moodle()">
-      <input id="urlredirect" type="hidden" value="">
-    </div>
-    <script type="text/javascript" src="source.js"></script>
-    <script type="text/javascript" src="moodle.js"></script>
-    <script type="text/javascript">
-        // Calc final score
-        var finalscore = 0;
-        var avg = erros + acertos;
-        if (avg != 0) {
-            finalscore = Math.round((acertos * 100) / avg);
+    </table>
+</div>
+<div id="footer" style="margin-left:auto; margin-right:auto; width: 10em;">
+    <br>
+    <img id="status" alt="status" src="loading.gif"
+         style="display:block; margin-left:auto; margin-right:auto; visibility: hidden; width: 20px; height: 20px;">
+    <h4 id="text" style="margin-left:auto; margin-right:auto; white-space:nowrap;"></h4>
+    <input id="button" type="button" onclick="open_moodle()">
+    <input id="urlredirect" type="hidden" value="">
+</div>
+<script type="text/javascript" src="source.js"></script>
+<script type="text/javascript" src="moodle.js"></script>
+<script type="text/javascript">
+    // Calc final score
+    var finalscore = 0;
+    var avg = erros + acertos;
+    if (avg != 0) {
+        finalscore = Math.round((acertos * 100) / avg);
+    }
+
+    // Send Data
+    var data = "finalscore=" + finalscore;
+    var script = "session_end.php";
+    send_data(script, data);
+
+    // Setting fields
+    document.getElementById("valuecorrect").innerHTML = acertos;
+    document.getElementById("valuewrong").innerHTML = erros;
+    document.getElementById("valuescore").innerHTML = finalscore;
+
+    // Button function
+    function open_moodle() {
+        var urlredirect = document.getElementById("urlredirect").value;
+        if (urlredirect) {
+            window.open(urlredirect);
+            self.close();
+        } else {
+            document.getElementById("button").style.visibility = "hidden";
         }
-
-        // Send Data
-        var data = "finalscore=" + finalscore;
-        var script = "session_end.php";
-        send_data(script, data);
-
-        // Setting fields
-        document.getElementById("valuecorrect").innerHTML = acertos;
-        document.getElementById("valuewrong").innerHTML = erros;
-        document.getElementById("valuescore").innerHTML = finalscore;
-
-        // Button function
-        function open_moodle() {
-            var urlredirect = document.getElementById("urlredirect").value;
-            if (urlredirect) {
-                window.open(urlredirect);
-                self.close();
-            } else {
-                document.getElementById("button").style.visibility = "hidden";
-            }
-        }
-    </script>
-  </body>
+    }
+</script>
+</body>
 </html>

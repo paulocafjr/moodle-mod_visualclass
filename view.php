@@ -24,16 +24,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/lib.php');
-require_once(dirname(__FILE__).'/locallib.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(__FILE__) . '/lib.php');
+require_once(dirname(__FILE__) . '/locallib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID
 
 if ($id) {
-    $cm           = get_coursemodule_from_id('visualclass', $id, 0, false, MUST_EXIST);
-    $course       = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $visualclass  = $DB->get_record('visualclass', array('id' => $cm->instance), '*', MUST_EXIST);
+    $cm = get_coursemodule_from_id('visualclass', $id, 0, false, MUST_EXIST);
+    $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+    $visualclass = $DB->get_record('visualclass', array('id' => $cm->instance), '*', MUST_EXIST);
 } else {
     print_error(get_string('noiderror', 'visualclass'));
 }
@@ -62,7 +62,7 @@ $coursepage = new moodle_url($CFG->wwwroot . '/course/view.php', array('id' => $
 
 // Flush unfinished sessions
 $sessions = $visualclass_instance->get_sessions();
-if (! empty($sessions)) {
+if (!empty($sessions)) {
     foreach ($sessions as $session) {
         $timestop = $session->get_timestop();
         if ($session->get_userid() == $USER->id && empty($timestop)) {
@@ -88,51 +88,55 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
     // View Project
     echo $OUTPUT->confirm(get_string('text_gotoproject', 'visualclass'), $url_project, $coursepage);
 
-} else if (has_capability('mod/visualclass:view', $context, $USER->id)) {
-    // Show activity
-    $attemptnumber = (int) $visualclass_instance->get_nextattemptnumber($USER->id);
-    $policyattempts = (int) $visualclass_instance->get_policyattempts();
+} else {
+    if (has_capability('mod/visualclass:view', $context, $USER->id)) {
+        // Show activity
+        $attemptnumber = (int)$visualclass_instance->get_nextattemptnumber($USER->id);
+        $policyattempts = (int)$visualclass_instance->get_policyattempts();
 
-    $condition1 = $policyattempts
-                  !== $visualclass_instance::ATTEMPT_UNLIMITED ? true : false;
+        $condition1 = $policyattempts
+        !== $visualclass_instance::ATTEMPT_UNLIMITED ? true : false;
 
-    $condition2 = $attemptnumber > $policyattempts ? true : false;
+        $condition2 = $attemptnumber > $policyattempts ? true : false;
 
-    if ($condition1 && $condition2) {
-        $message = get_string('error_maxattemptsreached', 'visualclass');
-        echo $OUTPUT->error_text($message);
-    } else {
-        // Creating a session for this user in this activity
-        $visualclass_session = new mod_visualclass_session();
-        $visualclass_session->set_userid($USER->id);
-        $visualclass_session->set_modid($visualclass->id);
-        $visualclass_session->set_attemptnumber($attemptnumber);
-        $visualclass_session->set_timestart(time());
-        $visualclass_session->write();
+        if ($condition1 && $condition2) {
+            $message = get_string('error_maxattemptsreached', 'visualclass');
+            echo $OUTPUT->error_text($message);
+        } else {
+            // Creating a session for this user in this activity
+            $visualclass_session = new mod_visualclass_session();
+            $visualclass_session->set_userid($USER->id);
+            $visualclass_session->set_modid($visualclass->id);
+            $visualclass_session->set_attemptnumber($attemptnumber);
+            $visualclass_session->set_timestart(time());
+            $visualclass_session->write();
 
-        $sessionid = $visualclass_session->get_id();
+            $sessionid = $visualclass_session->get_id();
 
-        $_SESSION[$visualclass_instance::SESSION_PREFIX . $USER->id] = $sessionid;
+            $_SESSION[$visualclass_instance::SESSION_PREFIX . $USER->id] = $sessionid;
 
-        // Showing Activity
-        switch ($visualclass_instance->get_policyview()) {
+            // Showing Activity
+            switch ($visualclass_instance->get_policyview()) {
             case $visualclass_instance::VIEW_MOODLE:
-                $iframe = '<iframe src="'. $visualclass_instance->get_projecturl()
+                $iframe = '<iframe src="' . $visualclass_instance->get_projecturl()
                     . '" seamless="seamless" style="width:100%;height:768px;">'
                     . '</iframe>';
                 echo $OUTPUT->box($iframe);
-            break;
+                break;
             case $visualclass_instance::VIEW_NEWTAB:
-                echo $OUTPUT->confirm(get_string('text_gotoproject', 'visualclass'),
-                    $visualclass_instance->get_projecturl(), $coursepage);
-            break;
+                echo $OUTPUT->confirm(
+                    get_string('text_gotoproject', 'visualclass'),
+                    $visualclass_instance->get_projecturl(), $coursepage
+                );
+                break;
             default:
                 echo $OUTPUT->error_text(get_string('error_unknown', 'visualclass'));
+            }
         }
+    } else {
+        $message = get_string('error_nocapability', 'visualclass');
+        echo $OUTPUT->error_text($message);
     }
-} else {
-    $message = get_string('error_nocapability', 'visualclass');
-    echo $OUTPUT->error_text($message);
 }
 
 // Finish the page

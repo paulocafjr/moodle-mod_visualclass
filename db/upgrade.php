@@ -30,8 +30,10 @@ defined('MOODLE_INTERNAL') || die();
  * Execute visualclass upgrade from the given old version
  *
  * @param int $oldversion
+ *
  * @return bool
  */
-function xmldb_visualclass_upgrade($oldversion) {
+function xmldb_visualclass_upgrade($oldversion)
+{
     return true;
 }

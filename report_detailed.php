@@ -25,16 +25,16 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once(dirname(dirname(dirname(__FILE__))).'/user/lib.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/user/lib.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID
 
 if ($id) {
-    $cm           = get_coursemodule_from_id('visualclass', $id, 0, false, MUST_EXIST);
-    $course       = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $visualclass  = $DB->get_record('visualclass', array('id' => $cm->instance), '*', MUST_EXIST);
+    $cm = get_coursemodule_from_id('visualclass', $id, 0, false, MUST_EXIST);
+    $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+    $visualclass = $DB->get_record('visualclass', array('id' => $cm->instance), '*', MUST_EXIST);
 } else {
     print_error(get_string('noiderror', 'visualclass'));
 }
@@ -69,20 +69,22 @@ echo html_writer::tag('h1', get_string('report_headerdetailed', 'visualclass'));
 // Gathering sessions info
 $content = array();
 $sessions = $visualclass_instance->get_sessions();
-if (! empty($sessions)) {
+if (!empty($sessions)) {
     foreach ($sessions as $session) {
         $userid = $session->get_userid();
         $user = user_get_users_by_id(array($userid));
         $user = $user[$userid];
         $username = $user->firstname . ' ' . $user->lastname;
 
-        if (! isset($content[$username])) {
+        if (!isset($content[$username])) {
             $content[$username] = array();
         }
 
         $values = new stdClass();
         $values->attemptnumber = $session->get_attemptnumber();
-        $values->time = round(($session->get_timestop() - $session->get_timestart()) / $visualclass_instance::TIME_BASE);
+        $values->time = round(
+            ($session->get_timestop() - $session->get_timestart()) / $visualclass_instance::TIME_BASE
+        );
         $values->totalscore = $session->get_totalscore();
         $values->items = $session->get_items();
 
@@ -102,19 +104,23 @@ if (! empty($sessions)) {
             $attributes2 = array('style' => 'color: #FFCC33;');
             echo html_writer::start_tag('p', $attributes1);
             echo get_string('report_attempt', 'visualclass') . '[&nbsp;'
-                . html_writer::tag('span', $session->attemptnumber, $attributes2) . '&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                . html_writer::tag('span', $session->attemptnumber, $attributes2)
+                . '&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
             echo get_string('report_totalscore', 'visualclass') . '[&nbsp;'
-                . html_writer::tag('span', (int) $session->totalscore, $attributes2) . '&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                . html_writer::tag('span', (int)$session->totalscore, $attributes2)
+                . '&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
             if ($session->time > 0) {
                 echo get_string('report_time', 'visualclass') . '[&nbsp;'
-                    . html_writer::tag('span', $session->time . ' ' . get_string('felem_time_unit', 'visualclass'), $attributes2) . '&nbsp;]';
+                    . html_writer::tag(
+                        'span', $session->time . ' ' . get_string('felem_time_unit', 'visualclass'), $attributes2
+                    ) . '&nbsp;]';
             } else {
                 echo get_string('report_time', 'visualclass') . '[&nbsp;'
                     . html_writer::tag('span', get_string('report_timezero', 'visualclass'), $attributes2) . '&nbsp;]';
             }
             echo html_writer::end_tag('p');
 
-            if (! empty($session->items)) {
+            if (!empty($session->items)) {
                 // Explode
                 $html_table = new html_table();
                 $html_table->head = array(
@@ -132,58 +138,62 @@ if (! empty($sessions)) {
                         $item_type = 'Teste Vestibular';
 
                         // Character parsing
-                        $item_answercorrect = (int) $item_answercorrect;
+                        $item_answercorrect = (int)$item_answercorrect;
                         switch ($item_answercorrect) {
-                            case 1 :
-                                $item_answercorrect = 'a';
-                                break;
-                            case 2 :
-                                $item_answercorrect = 'b';
-                                break;
-                            case 3 :
-                                $item_answercorrect = 'c';
-                                break;
-                            case 4 :
-                                $item_answercorrect = 'd';
-                                break;
-                            case 5 :
-                                $item_answercorrect = 'e';
-                                break;
-                            default:
-                                $item_answercorrect = get_string('noanswer', 'visualclass');
+                        case 1 :
+                            $item_answercorrect = 'a';
+                            break;
+                        case 2 :
+                            $item_answercorrect = 'b';
+                            break;
+                        case 3 :
+                            $item_answercorrect = 'c';
+                            break;
+                        case 4 :
+                            $item_answercorrect = 'd';
+                            break;
+                        case 5 :
+                            $item_answercorrect = 'e';
+                            break;
+                        default:
+                            $item_answercorrect = get_string('noanswer', 'visualclass');
                         }
 
-                        $item_answeruser = (int) $item_answeruser;
+                        $item_answeruser = (int)$item_answeruser;
                         switch ($item_answeruser) {
-                            case 1 :
-                                $item_answeruser = 'a';
-                                break;
-                            case 2 :
-                                $item_answeruser = 'b';
-                                break;
-                            case 3 :
-                                $item_answeruser = 'c';
-                                break;
-                            case 4 :
-                                $item_answeruser = 'd';
-                                break;
-                            case 5 :
-                                $item_answeruser = 'e';
-                                break;
-                            default:
-                                $item_answeruser = get_string('noanswer', 'visualclass');
+                        case 1 :
+                            $item_answeruser = 'a';
+                            break;
+                        case 2 :
+                            $item_answeruser = 'b';
+                            break;
+                        case 3 :
+                            $item_answeruser = 'c';
+                            break;
+                        case 4 :
+                            $item_answeruser = 'd';
+                            break;
+                        case 5 :
+                            $item_answeruser = 'e';
+                            break;
+                        default:
+                            $item_answeruser = get_string('noanswer', 'visualclass');
                         }
                     } else {
                         $item_type = 'Preenchimento Lacunas';
                         if (is_array($item_answercorrect)) {
-                            $item_answercorrect = implode(get_string('report_separator', 'visualclass'), $item_answercorrect);
+                            $item_answercorrect = implode(
+                                get_string('report_separator', 'visualclass'), $item_answercorrect
+                            );
                         }
                     }
 
                     if ($item->is_correct()) {
-                        $item_status = '<img src="scripts/status_ok.png" alt="correct" style="width: 25px; height: 25px;">';
+                        $item_status
+                            = '<img src="scripts/status_ok.png" alt="correct" style="width: 25px; height: 25px;">';
                     } else {
-                        $item_status = '<img src="scripts/status_error.png" alt="wrong" style="width: 25px; height: 25px;">';
+                        $item_status
+                            = '<img src="scripts/status_error.png" alt="wrong" style="width: 25px; height: 25px;">';
                     }
 
                     $row = array(

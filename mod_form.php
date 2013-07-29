@@ -36,12 +36,14 @@ require_once(dirname(__FILE__) . '/locallib.php');
  * @copyright  2013 Caltech Informática Ltda <class@class.com.br>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_visualclass_mod_form extends moodleform_mod {
+class mod_visualclass_mod_form extends moodleform_mod
+{
 
     /**
      * Defines forms elements
      */
-    public function definition() {
+    public function definition()
+    {
         $mform = $this->_form;
 
         // General Header
@@ -50,17 +52,21 @@ class mod_visualclass_mod_form extends moodleform_mod {
 
         // Name Field
 
-        $mform->addElement('text', 'name',
-                           get_string('felem_name', 'visualclass'),
-                           array('size'=>'128'));
-        if (! empty($CFG->formatstringstriptags)) {
+        $mform->addElement(
+            'text', 'name',
+            get_string('felem_name', 'visualclass'),
+            array('size' => '128')
+        );
+        if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
             $mform->setType('name', PARAM_CLEAN);
         }
         $mform->addRule('name', null, 'required', null, 'client');
-        $mform->addRule('name', get_string('maximumchars', '', 128),
-                        'maxlength', 128, 'client');
+        $mform->addRule(
+            'name', get_string('maximumchars', '', 128),
+            'maxlength', 128, 'client'
+        );
         $mform->addHelpButton('name', 'felem_name', 'visualclass');
 
         // File Field
@@ -69,9 +75,11 @@ class mod_visualclass_mod_form extends moodleform_mod {
                 'maxbytes' => 0,
                 'accepted_types' => '.zip'
             );
-            $mform->addElement('filepicker', 'file',
-                               get_string('felem_file', 'visualclass'), null,
-                               $fileoptions);
+            $mform->addElement(
+                'filepicker', 'file',
+                get_string('felem_file', 'visualclass'), null,
+                $fileoptions
+            );
             $mform->addRule('file', null, 'required', null, 'client');
             $mform->addHelpButton('file', 'felem_file', 'visualclass');
         }
@@ -102,11 +110,13 @@ class mod_visualclass_mod_form extends moodleform_mod {
             mod_visualclass_instance::ATTEMPT_UNLIMITED => $unlimited
         );
         for ($i = 1; $i <= mod_visualclass_instance::ATTEMPT_MAX; $i++) {
-            $attemptsoptions[$i] = (string) $i;
+            $attemptsoptions[$i] = (string)$i;
         }
-        $mform->addElement('select', 'policyattempts',
-                           get_string('felem_attempts', 'visualclass'),
-                           $attemptsoptions, null);
+        $mform->addElement(
+            'select', 'policyattempts',
+            get_string('felem_attempts', 'visualclass'),
+            $attemptsoptions, null
+        );
 
         // Grading Field
 
@@ -118,9 +128,11 @@ class mod_visualclass_mod_form extends moodleform_mod {
             mod_visualclass_instance::GRADE_AVERAGE => $average,
             mod_visualclass_instance::GRADE_WORST => $worst
         );
-        $mform->addElement('select', 'policygrades',
-                           get_string('felem_grades', 'visualclass'),
-                           $gradesoptions, null);
+        $mform->addElement(
+            'select', 'policygrades',
+            get_string('felem_grades', 'visualclass'),
+            $gradesoptions, null
+        );
 
         // Time Field
 
@@ -147,9 +159,11 @@ class mod_visualclass_mod_form extends moodleform_mod {
             mod_visualclass_instance::VIEW_NEWTAB => $newtab,
             mod_visualclass_instance::VIEW_MOODLE => $moodle
         );
-        $mform->addElement('select', 'policyview',
-                           get_string('felem_view', 'visualclass'),
-                           $viewoptions, null);
+        $mform->addElement(
+            'select', 'policyview',
+            get_string('felem_view', 'visualclass'),
+            $viewoptions, null
+        );
 
         // Standard Fields
 
@@ -162,15 +176,17 @@ class mod_visualclass_mod_form extends moodleform_mod {
      *
      * @param array $data
      * @param array $files
+     *
      * @return array|void
      */
-    public function validation($data, $files) {
+    public function validation($data, $files)
+    {
         global $CFG;
 
         $errors = array();
         $file = $CFG->dirroot . '/visualclass/';
 
-        if ((file_exists($file) && ! is_writable($file)) || (! file_exists($file) && ! is_writable($CFG->dirroot))) {
+        if ((file_exists($file) && !is_writable($file)) || (!file_exists($file) && !is_writable($CFG->dirroot))) {
             $errors['file'] = get_string('error_nohome', 'visualclass');
         }
 

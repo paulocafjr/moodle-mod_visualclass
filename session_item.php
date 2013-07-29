@@ -32,15 +32,15 @@ global $USER;
 
 // Setting session id
 if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
-    $session_id = (int) $_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id];
+    $session_id = (int)$_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id];
 
     // Fetching item info
     $item = new stdClass();
-    $item->pagetitle = (string) $_REQUEST['page'];
-    $item->type = (int) $_REQUEST['type'];
-    $item->question = (string) $_REQUEST['question'];
+    $item->pagetitle = (string)$_REQUEST['page'];
+    $item->type = (int)$_REQUEST['type'];
+    $item->question = (string)$_REQUEST['question'];
     $item->answercorrect = explode('|', $_REQUEST['correctanswer']);
-    $item->answeruser = (string) $_REQUEST['useranswer'];
+    $item->answeruser = (string)$_REQUEST['useranswer'];
 
     // Recovering visualclass session
     $visualclass_session = new mod_visualclass_session();
@@ -50,7 +50,7 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
     // Seeking for question
     $id = null;
     $items = $visualclass_session->get_items();
-    if (! empty($items)) {
+    if (!empty($items)) {
         foreach ($items as $olditem) {
             if (strcmp($olditem->get_question(), $item->question) === 0) {
                 $id = $olditem->get_id();
@@ -75,8 +75,9 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
     $visualclass_instance->read();
 
     $time = time() - $visualclass_session->get_timestart();
-    if ($visualclass_instance->get_policytime() != $visualclass_instance::TIME_UNLIMITED &&
-        $visualclass_instance->get_policytime() < $time) {
+    if ($visualclass_instance->get_policytime() != $visualclass_instance::TIME_UNLIMITED
+        && $visualclass_instance->get_policytime() < $time
+    ) {
         $response = array(
             'timeout' => true,
             'timeout_message' => get_string('status_timeout', 'visualclass')

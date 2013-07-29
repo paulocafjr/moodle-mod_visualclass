@@ -39,13 +39,14 @@ require_once(dirname(__FILE__) . '/lib.php');
  * detailed information about user's performance in
  * gradebook.
  *
- * @see mod_visualclass_session
+ * @see       mod_visualclass_session
  *
  * @package   mod_visualclass
  * @copyright Caltech Informática Ltda <class@class.com.br>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_visualclass_sessionitem {
+class mod_visualclass_sessionitem
+{
 
     // Database Constants
 
@@ -102,18 +103,21 @@ class mod_visualclass_sessionitem {
     /**
      * Constructor
      *
-     * @param int $id
-     * @param int $sessionid
+     * @param int    $id
+     * @param int    $sessionid
      * @param string $pagetitle
-     * @param int $type
+     * @param int    $type
      * @param string $question
-     * @param mixed $answercorrect
+     * @param mixed  $answercorrect
      * @param string $answeruser
      */
-    public function __construct($id = null, $sessionid = null,
-                                $pagetitle = null, $type = null,
-                                $question = null, $answercorrect = null,
-                                $answeruser = null) {
+    public function __construct(
+        $id = null, $sessionid = null,
+        $pagetitle = null, $type = null,
+        $question = null, $answercorrect = null,
+        $answeruser = null
+    )
+    {
         $this->_id = $id;
         $this->_sessionid = $sessionid;
         $this->_pagetitle = $pagetitle;
@@ -128,7 +132,8 @@ class mod_visualclass_sessionitem {
      *
      * @throws dml_exception
      */
-    public function write() {
+    public function write()
+    {
         global $DB;
 
         $data = new stdClass();
@@ -141,10 +146,12 @@ class mod_visualclass_sessionitem {
         $answercorrect = $this->get_answercorrect();
         if (is_array($answercorrect)) {
             $answercorrect = implode('|', $answercorrect);
-        } else if (is_object($answercorrect)) {
-            $answercorrect = 'object';
         } else {
-            $answercorrect = (string) $answercorrect;
+            if (is_object($answercorrect)) {
+                $answercorrect = 'object';
+            } else {
+                $answercorrect = (string)$answercorrect;
+            }
         }
         $data->answercorrect = $answercorrect;
 
@@ -166,7 +173,8 @@ class mod_visualclass_sessionitem {
      * @return bool
      * @throws dml_exception
      */
-    public function read() {
+    public function read()
+    {
         global $DB;
 
         $data = $DB->get_record(self::DB_TABLE, array('id' => $this->get_id()));
@@ -195,11 +203,14 @@ class mod_visualclass_sessionitem {
      * @return bool
      * @throws dml_exception
      */
-    public function delete() {
+    public function delete()
+    {
         global $DB;
 
-        return $DB->delete_records(self::DB_TABLE,
-                                   array('id' => $this->get_id()));
+        return $DB->delete_records(
+            self::DB_TABLE,
+            array('id' => $this->get_id())
+        );
     }
 
     /**
@@ -207,15 +218,18 @@ class mod_visualclass_sessionitem {
      *
      * @return bool
      */
-    public function is_correct() {
+    public function is_correct()
+    {
         $given = $this->get_answeruser();
         $correct = $this->get_answercorrect();
         if (is_string($correct)) {
             return strcmp(strtolower($correct), strtolower($given)) == 0 ? true : false;
-        } else if (is_array($correct)) {
-            return array_search(strtolower($given), $correct) !== false ? true : false;
         } else {
-            return $correct == $given ? true : false;
+            if (is_array($correct)) {
+                return array_search(strtolower($given), $correct) !== false ? true : false;
+            } else {
+                return $correct == $given ? true : false;
+            }
         }
     }
 
@@ -226,7 +240,8 @@ class mod_visualclass_sessionitem {
      *
      * @return int
      */
-    public function get_id() {
+    public function get_id()
+    {
         return $this->_id;
     }
 
@@ -235,7 +250,8 @@ class mod_visualclass_sessionitem {
      *
      * @param int $id
      */
-    public function set_id($id) {
+    public function set_id($id)
+    {
         $this->_id = $id;
     }
 
@@ -244,7 +260,8 @@ class mod_visualclass_sessionitem {
      *
      * @return int
      */
-    public function get_sessionid() {
+    public function get_sessionid()
+    {
         return $this->_sessionid;
     }
 
@@ -253,7 +270,8 @@ class mod_visualclass_sessionitem {
      *
      * @param int $sessionid
      */
-    public function set_sessionid($sessionid) {
+    public function set_sessionid($sessionid)
+    {
         $this->_sessionid = $sessionid;
     }
 
@@ -262,7 +280,8 @@ class mod_visualclass_sessionitem {
      *
      * @return string
      */
-    public function get_pagetitle() {
+    public function get_pagetitle()
+    {
         return $this->_pagetitle;
     }
 
@@ -271,7 +290,8 @@ class mod_visualclass_sessionitem {
      *
      * @param string $pagetitle
      */
-    public function set_pagetitle($pagetitle) {
+    public function set_pagetitle($pagetitle)
+    {
         $this->_pagetitle = $pagetitle;
     }
 
@@ -280,7 +300,8 @@ class mod_visualclass_sessionitem {
      *
      * @return int
      */
-    public function get_type() {
+    public function get_type()
+    {
         return $this->_type;
     }
 
@@ -289,7 +310,8 @@ class mod_visualclass_sessionitem {
      *
      * @param int $type
      */
-    public function set_type($type) {
+    public function set_type($type)
+    {
         $this->_type = $type;
     }
 
@@ -298,7 +320,8 @@ class mod_visualclass_sessionitem {
      *
      * @return string
      */
-    public function get_question() {
+    public function get_question()
+    {
         return $this->_question;
     }
 
@@ -307,7 +330,8 @@ class mod_visualclass_sessionitem {
      *
      * @param string $question
      */
-    public function set_question($question) {
+    public function set_question($question)
+    {
         $this->_question = $question;
     }
 
@@ -316,7 +340,8 @@ class mod_visualclass_sessionitem {
      *
      * @return mixed
      */
-    public function get_answercorrect() {
+    public function get_answercorrect()
+    {
         return $this->_answercorrect;
     }
 
@@ -325,7 +350,8 @@ class mod_visualclass_sessionitem {
      *
      * @param mixed $answercorrect
      */
-    public function set_answercorrect($answercorrect) {
+    public function set_answercorrect($answercorrect)
+    {
         $this->_answercorrect = $answercorrect;
     }
 
@@ -334,7 +360,8 @@ class mod_visualclass_sessionitem {
      *
      * @return string
      */
-    public function get_answeruser() {
+    public function get_answeruser()
+    {
         return $this->_answeruser;
     }
 
@@ -343,7 +370,8 @@ class mod_visualclass_sessionitem {
      *
      * @param string $answeruser
      */
-    public function set_answeruser($answeruser) {
+    public function set_answeruser($answeruser)
+    {
         $this->_answeruser = $answeruser;
     }
 }
@@ -360,7 +388,8 @@ class mod_visualclass_sessionitem {
  * @copyright Caltech Informática Ltda <class@class.com.br>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_visualclass_session {
+class mod_visualclass_session
+{
 
     // Database Constants
 
@@ -418,19 +447,22 @@ class mod_visualclass_session {
     /**
      * Constructor
      *
-     * @param int $id
-     * @param int $userid
-     * @param int $modid
-     * @param int $attemptnumber
-     * @param int $timestart
-     * @param int $timestop
+     * @param int    $id
+     * @param int    $userid
+     * @param int    $modid
+     * @param int    $attemptnumber
+     * @param int    $timestart
+     * @param int    $timestop
      * @param number $totalscore
-     * @param array $items
+     * @param array  $items
      */
-    public function __construct($id = null, $userid = null, $modid = null,
-                                $attemptnumber = null, $timestart = null,
-                                $timestop = null, $totalscore = null,
-                                $items = null) {
+    public function __construct(
+        $id = null, $userid = null, $modid = null,
+        $attemptnumber = null, $timestart = null,
+        $timestop = null, $totalscore = null,
+        $items = null
+    )
+    {
         $this->_id = $id;
         $this->_userid = $id;
         $this->_modid = $modid;
@@ -446,7 +478,8 @@ class mod_visualclass_session {
      *
      * @throws dml_exception
      */
-    public function write() {
+    public function write()
+    {
         global $DB;
 
         $data = new stdClass();
@@ -473,7 +506,8 @@ class mod_visualclass_session {
      * @return bool
      * @throws dml_exception
      */
-    public function read() {
+    public function read()
+    {
         global $DB;
 
         $data = $DB->get_record(self::DB_TABLE, array('id' => $this->get_id()));
@@ -484,12 +518,14 @@ class mod_visualclass_session {
             $this->set_timestart($data->timestart);
             $this->set_timestop($data->timestop);
             $this->set_totalscore($data->totalscore);
-            $items = $DB->get_records(mod_visualclass_sessionitem::DB_TABLE,
-                                      array('sessionid' => $this->get_id()),
-                                      'id DESC', 'id');
-            if (! empty($items)) {
+            $items = $DB->get_records(
+                mod_visualclass_sessionitem::DB_TABLE,
+                array('sessionid' => $this->get_id()),
+                'id DESC', 'id'
+            );
+            if (!empty($items)) {
                 $itemsdata = array();
-                foreach($items as $item) {
+                foreach ($items as $item) {
                     $sessionitem = new mod_visualclass_sessionitem($item->id);
                     $sessionitem->read();
                     $itemsdata[] = $sessionitem;
@@ -507,11 +543,12 @@ class mod_visualclass_session {
      * @return bool
      * @throws dml_exception
      */
-    public function delete() {
+    public function delete()
+    {
         global $DB;
 
         $sessionitems = $this->get_items();
-        if (! empty($sessionitems)) {
+        if (!empty($sessionitems)) {
             foreach ($sessionitems as $sessionitem) {
                 if ($sessionitem instanceof mod_visualclass_sessionitem) {
                     $sessionitem->delete();
@@ -519,8 +556,10 @@ class mod_visualclass_session {
             }
         }
 
-        return $DB->delete_records(self::DB_TABLE,
-                                   array('id' => $this->get_id()));
+        return $DB->delete_records(
+            self::DB_TABLE,
+            array('id' => $this->get_id())
+        );
     }
 
     /**
@@ -530,7 +569,8 @@ class mod_visualclass_session {
      *
      * @return bool
      */
-    public function write_totalscore($policy) {
+    public function write_totalscore($policy)
+    {
         global $DB;
 
         $conditions = array(
@@ -540,33 +580,36 @@ class mod_visualclass_session {
         $sessions = $DB->get_records(self::DB_TABLE, $conditions);
         $score = $this->get_totalscore();
         switch ($policy) {
-            case mod_visualclass_instance::GRADE_AVERAGE:
-                $sessionsnumber = 0;
-                foreach ($sessions as $session) {
-                    $sessionsnumber++;
-                    $score += $session->totalscore;
-                }
-                $score = $score / ($sessionsnumber > 0 ? $sessionsnumber : 1);
+        case mod_visualclass_instance::GRADE_AVERAGE:
+            $sessionsnumber = 0;
+            foreach ($sessions as $session) {
+                $sessionsnumber++;
+                $score += $session->totalscore;
+            }
+            $score = $score / ($sessionsnumber > 0 ? $sessionsnumber : 1);
             break;
-            case mod_visualclass_instance::GRADE_BEST:
-                foreach ($sessions as $session) {
-                    if ($session->totalscore > $score) {
-                        $score = $session->totalscore;
-                    }
+        case mod_visualclass_instance::GRADE_BEST:
+            foreach ($sessions as $session) {
+                if ($session->totalscore > $score) {
+                    $score = $session->totalscore;
                 }
+            }
             break;
-            case mod_visualclass_instance::GRADE_WORST:
-                foreach ($sessions as $session) {
-                    if ($session->totalscore < $score) {
-                        $score = $session->totalscore;
-                    }
+        case mod_visualclass_instance::GRADE_WORST:
+            foreach ($sessions as $session) {
+                if ($session->totalscore < $score) {
+                    $score = $session->totalscore;
                 }
+            }
             break;
-            default: return false;
+        default:
+            return false;
         }
 
-        $instance = $DB->get_record(mod_visualclass_instance::DB_TABLE,
-                                    array('id' => $this->get_modid()));
+        $instance = $DB->get_record(
+            mod_visualclass_instance::DB_TABLE,
+            array('id' => $this->get_modid())
+        );
 
         $gradeitem = new stdClass();
         $gradeitem->userid = $this->get_userid();
@@ -583,7 +626,8 @@ class mod_visualclass_session {
      *
      * @return int
      */
-    public function get_id() {
+    public function get_id()
+    {
         return $this->_id;
     }
 
@@ -592,7 +636,8 @@ class mod_visualclass_session {
      *
      * @param int $id
      */
-    public function set_id($id) {
+    public function set_id($id)
+    {
         $this->_id = $id;
     }
 
@@ -601,7 +646,8 @@ class mod_visualclass_session {
      *
      * @return int
      */
-    public function get_userid() {
+    public function get_userid()
+    {
         return $this->_userid;
     }
 
@@ -610,7 +656,8 @@ class mod_visualclass_session {
      *
      * @param int $userid
      */
-    public function set_userid($userid) {
+    public function set_userid($userid)
+    {
         $this->_userid = $userid;
     }
 
@@ -619,7 +666,8 @@ class mod_visualclass_session {
      *
      * @return int
      */
-    public function get_modid() {
+    public function get_modid()
+    {
         return $this->_modid;
     }
 
@@ -628,7 +676,8 @@ class mod_visualclass_session {
      *
      * @param int $modid
      */
-    public function set_modid($modid) {
+    public function set_modid($modid)
+    {
         $this->_modid = $modid;
     }
 
@@ -637,7 +686,8 @@ class mod_visualclass_session {
      *
      * @return int
      */
-    public function get_attemptnumber() {
+    public function get_attemptnumber()
+    {
         return $this->_attemptnumber;
     }
 
@@ -646,7 +696,8 @@ class mod_visualclass_session {
      *
      * @param int $attemptnumber
      */
-    public function set_attemptnumber($attemptnumber) {
+    public function set_attemptnumber($attemptnumber)
+    {
         $this->_attemptnumber = $attemptnumber;
     }
 
@@ -655,7 +706,8 @@ class mod_visualclass_session {
      *
      * @return int
      */
-    public function get_timestart() {
+    public function get_timestart()
+    {
         return $this->_timestart;
     }
 
@@ -664,7 +716,8 @@ class mod_visualclass_session {
      *
      * @param int $timestart
      */
-    public function set_timestart($timestart) {
+    public function set_timestart($timestart)
+    {
         $this->_timestart = $timestart;
     }
 
@@ -673,7 +726,8 @@ class mod_visualclass_session {
      *
      * @return int
      */
-    public function get_timestop() {
+    public function get_timestop()
+    {
         return $this->_timestop;
     }
 
@@ -682,7 +736,8 @@ class mod_visualclass_session {
      *
      * @param int $timestop
      */
-    public function set_timestop($timestop) {
+    public function set_timestop($timestop)
+    {
         $this->_timestop = $timestop;
     }
 
@@ -691,7 +746,8 @@ class mod_visualclass_session {
      *
      * @return number
      */
-    public function get_totalscore() {
+    public function get_totalscore()
+    {
         return $this->_totalscore;
     }
 
@@ -700,7 +756,8 @@ class mod_visualclass_session {
      *
      * @param int $totalscore
      */
-    public function set_totalscore($totalscore) {
+    public function set_totalscore($totalscore)
+    {
         $this->_totalscore = $totalscore;
     }
 
@@ -709,7 +766,8 @@ class mod_visualclass_session {
      *
      * @return array
      */
-    public function get_items() {
+    public function get_items()
+    {
         return $this->_items;
     }
 
@@ -718,7 +776,8 @@ class mod_visualclass_session {
      *
      * @param array
      */
-    public function set_items($items) {
+    public function set_items($items)
+    {
         $this->_items = $items;
     }
 }
@@ -734,7 +793,8 @@ class mod_visualclass_session {
  * @copyright Caltech Informática Ltda <class@class.com.br>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_visualclass_instance {
+class mod_visualclass_instance
+{
 
     // Attempts Constants
 
@@ -845,23 +905,26 @@ class mod_visualclass_instance {
     /**
      * Constructor
      *
-     * @param int $id
-     * @param int $course
+     * @param int    $id
+     * @param int    $course
      * @param string $name
      * @param string $projectdata
      * @param string $projecturl
      * @param string $projectsubject
-     * @param int $policyattempts
-     * @param int $policytime
-     * @param int $policygrades
-     * @param int $policyview
-     * @param array $sessions
+     * @param int    $policyattempts
+     * @param int    $policytime
+     * @param int    $policygrades
+     * @param int    $policyview
+     * @param array  $sessions
      */
-    public function __construct($id = null, $course = null, $name = null,
-                                $projectdata = null, $projecturl = null, $projectsubject = null,
-                                $policyattempts = null, $policytime = null,
-                                $policygrades = null, $policyview = null,
-                                $sessions = null) {
+    public function __construct(
+        $id = null, $course = null, $name = null,
+        $projectdata = null, $projecturl = null, $projectsubject = null,
+        $policyattempts = null, $policytime = null,
+        $policygrades = null, $policyview = null,
+        $sessions = null
+    )
+    {
         $path = dirname(__FILE__);
         self::$_scripts = array(
             'finaliza.html' => $path . '/scripts/finaliza.html',
@@ -891,7 +954,8 @@ class mod_visualclass_instance {
      *
      * @throws dml_exception
      */
-    public function write() {
+    public function write()
+    {
         global $DB;
 
         $data = new stdClass();
@@ -921,7 +985,8 @@ class mod_visualclass_instance {
      * @return bool
      * @throws dml_exception
      */
-    public function read() {
+    public function read()
+    {
         global $DB;
 
         $data = $DB->get_record(self::DB_TABLE, array('id' => $this->get_id()));
@@ -935,12 +1000,14 @@ class mod_visualclass_instance {
             $this->set_policytime($data->policytime);
             $this->set_policygrades($data->policygrades);
             $this->set_policyview($data->policyview);
-            $sessionsitems = $DB->get_records(mod_visualclass_session::DB_TABLE,
-                                         array('modid' => $this->get_id()),
-                                         'id DESC', 'id');
-            if (! empty($sessionsitems)) {
+            $sessionsitems = $DB->get_records(
+                mod_visualclass_session::DB_TABLE,
+                array('modid' => $this->get_id()),
+                'id DESC', 'id'
+            );
+            if (!empty($sessionsitems)) {
                 $sessions = array();
-                foreach($sessionsitems as $sessionitem) {
+                foreach ($sessionsitems as $sessionitem) {
                     $session = new mod_visualclass_session($sessionitem->id);
                     $session->read();
                     $sessions[] = $session;
@@ -958,20 +1025,23 @@ class mod_visualclass_instance {
      * @return bool
      * @throws dml_exception
      */
-    public function delete() {
+    public function delete()
+    {
         global $DB;
 
         $sessions = $this->get_sessions();
-        if (! empty($sessions)) {
-            foreach($sessions as $session) {
+        if (!empty($sessions)) {
+            foreach ($sessions as $session) {
                 if ($session instanceof mod_visualclass_session) {
                     $session->delete();
                 }
             }
         }
 
-        return $DB->delete_records(self::DB_TABLE,
-                                   array('id' => $this->get_id()));
+        return $DB->delete_records(
+            self::DB_TABLE,
+            array('id' => $this->get_id())
+        );
     }
 
     /**
@@ -982,34 +1052,42 @@ class mod_visualclass_instance {
      *
      * @return bool
      */
-    public function write_projectdata($course, $draftitem) {
+    public function write_projectdata($course, $draftitem)
+    {
         global $CFG, $USER;
 
         $projectdata = $this->get_projectdata();
         if (empty($projectdata)) {
             $path = $CFG->dataroot . '/visualclass/' . $course . '/';
-            if(! file_exists($path) && ! mkdir($path, 0777, true)) {
+            if (!file_exists($path) && !mkdir($path, 0777, true)) {
                 return false;
             }
 
             $context = get_context_instance(CONTEXT_USER, $USER->id);
             $fs = get_file_storage();
-            $files = $fs->get_area_files($context->id, 'user', 'draft',
-                                         $draftitem, 'id DESC', false);
+            $files = $fs->get_area_files(
+                $context->id, 'user', 'draft',
+                $draftitem, 'id DESC', false
+            );
             if (empty($files)) {
                 return false;
             }
 
             $file = array_pop($files);
-            if (! $file->copy_content_to($path
-                                         . date('YmdHis') . '_'
-                                         . $file->get_filename())) {
+            if (!$file->copy_content_to(
+                $path
+                . date('YmdHis') . '_'
+                . $file->get_filename()
+            )
+            ) {
                 return false;
             }
 
-            $this->set_projectdata($path
-                                   . date('YmdHis') . '_'
-                                   . $file->get_filename());
+            $this->set_projectdata(
+                $path
+                . date('YmdHis') . '_'
+                . $file->get_filename()
+            );
         } else {
             if (file_exists($projectdata)) {
                 unlink($projectdata);
@@ -1025,12 +1103,15 @@ class mod_visualclass_instance {
      *
      * @return bool
      */
-    public function delete_projectdata() {
+    public function delete_projectdata()
+    {
         $projectdata = $this->get_projectdata();
         if (empty($projectdata)) {
             return false;
-        } else if (file_exists($projectdata)) {
-            unlink($projectdata);
+        } else {
+            if (file_exists($projectdata)) {
+                unlink($projectdata);
+            }
         }
 
         $this->set_projectdata(null);
@@ -1044,7 +1125,8 @@ class mod_visualclass_instance {
      *
      * @return bool
      */
-    public function write_projecturl($course) {
+    public function write_projecturl($course)
+    {
         global $CFG;
 
         $projectdata = $this->get_projectdata();
@@ -1056,16 +1138,16 @@ class mod_visualclass_instance {
         if (empty($projecturl)) {
             $path = str_replace($CFG->dataroot, $CFG->dirroot, $projectdata);
             $path = strstr($path, '.zip', true) . '/';
-            if(! file_exists($path) && ! mkdir($path, 0755, true)) {
+            if (!file_exists($path) && !mkdir($path, 0755, true)) {
                 return false;
             }
 
             $archive = new ZipArchive();
-            if (! $archive->open($projectdata)) {
+            if (!$archive->open($projectdata)) {
                 return false;
             }
 
-            if (! $archive->extractTo($path)) {
+            if (!$archive->extractTo($path)) {
                 return false;
             }
 
@@ -1097,7 +1179,8 @@ class mod_visualclass_instance {
      *
      * @return bool
      */
-    public function delete_projecturl() {
+    public function delete_projecturl()
+    {
         global $CFG;
 
         $projecturl = $this->get_projecturl();
@@ -1121,13 +1204,15 @@ class mod_visualclass_instance {
      *
      * @return int
      */
-    public function get_nextattemptnumber($user) {
+    public function get_nextattemptnumber($user)
+    {
         $sessions = $this->get_sessions();
         $lastattempt = 0;
-        if (! empty($sessions)) {
+        if (!empty($sessions)) {
             foreach ($sessions as $session) {
                 if ($session->get_userid() === $user
-                        && $session->get_attemptnumber() > $lastattempt) {
+                    && $session->get_attemptnumber() > $lastattempt
+                ) {
                     $lastattempt = $session->get_attemptnumber();
                 }
             }
@@ -1139,13 +1224,15 @@ class mod_visualclass_instance {
      * Deletes a dir recursively
      *
      * @param string $dir
+     *
      * @return bool
      */
-    public function rrmdir($dir) {
-        $files = array_diff(scandir($dir), array('.','..'));
+    public function rrmdir($dir)
+    {
+        $files = array_diff(scandir($dir), array('.', '..'));
         foreach ($files as $file) {
             (is_dir("$dir/$file")) ? $this->rrmdir("$dir/$file")
-                                   : unlink("$dir/$file");
+                : unlink("$dir/$file");
         }
         return rmdir($dir);
     }
@@ -1157,7 +1244,8 @@ class mod_visualclass_instance {
      *
      * @return int
      */
-    public function get_id() {
+    public function get_id()
+    {
         return $this->_id;
     }
 
@@ -1166,7 +1254,8 @@ class mod_visualclass_instance {
      *
      * @param int $id
      */
-    public function set_id($id) {
+    public function set_id($id)
+    {
         $this->_id = $id;
     }
 
@@ -1175,7 +1264,8 @@ class mod_visualclass_instance {
      *
      * @return int
      */
-    public function get_course() {
+    public function get_course()
+    {
         return $this->_course;
     }
 
@@ -1184,7 +1274,8 @@ class mod_visualclass_instance {
      *
      * @param int $course
      */
-    public function set_course($course) {
+    public function set_course($course)
+    {
         $this->_course = $course;
     }
 
@@ -1193,7 +1284,8 @@ class mod_visualclass_instance {
      *
      * @return string
      */
-    public function get_name() {
+    public function get_name()
+    {
         return $this->_name;
     }
 
@@ -1202,7 +1294,8 @@ class mod_visualclass_instance {
      *
      * @param string $name
      */
-    public function set_name($name) {
+    public function set_name($name)
+    {
         $this->_name = $name;
     }
 
@@ -1211,7 +1304,8 @@ class mod_visualclass_instance {
      *
      * @return string
      */
-    public function get_projectdata() {
+    public function get_projectdata()
+    {
         return $this->_projectdata;
     }
 
@@ -1220,7 +1314,8 @@ class mod_visualclass_instance {
      *
      * @param string $projectdata
      */
-    public function set_projectdata($projectdata) {
+    public function set_projectdata($projectdata)
+    {
         $this->_projectdata = $projectdata;
     }
 
@@ -1229,7 +1324,8 @@ class mod_visualclass_instance {
      *
      * @return string
      */
-    public function get_projecturl() {
+    public function get_projecturl()
+    {
         return $this->_projecturl;
     }
 
@@ -1238,7 +1334,8 @@ class mod_visualclass_instance {
      *
      * @param string $projecturl
      */
-    public function set_projecturl($projecturl) {
+    public function set_projecturl($projecturl)
+    {
         $this->_projecturl = $projecturl;
     }
 
@@ -1247,7 +1344,8 @@ class mod_visualclass_instance {
      *
      * @return string
      */
-    public function get_projectsubject() {
+    public function get_projectsubject()
+    {
         return $this->_projectsubject;
     }
 
@@ -1256,7 +1354,8 @@ class mod_visualclass_instance {
      *
      * @param string $projectsubject
      */
-    public function set_projectsubject($projectsubject) {
+    public function set_projectsubject($projectsubject)
+    {
         $this->_projectsubject = $projectsubject;
     }
 
@@ -1265,7 +1364,8 @@ class mod_visualclass_instance {
      *
      * @return int
      */
-    public function get_policyattempts() {
+    public function get_policyattempts()
+    {
         return $this->_policyattempts;
     }
 
@@ -1274,7 +1374,8 @@ class mod_visualclass_instance {
      *
      * @param int $policyattempts
      */
-    public function set_policyattempts($policyattempts) {
+    public function set_policyattempts($policyattempts)
+    {
         $this->_policyattempts = $policyattempts;
     }
 
@@ -1283,7 +1384,8 @@ class mod_visualclass_instance {
      *
      * @return int
      */
-    public function get_policytime() {
+    public function get_policytime()
+    {
         return $this->_policytime;
     }
 
@@ -1292,7 +1394,8 @@ class mod_visualclass_instance {
      *
      * @param int $policytime
      */
-    public function set_policytime($policytime) {
+    public function set_policytime($policytime)
+    {
         $this->_policytime = $policytime;
     }
 
@@ -1301,7 +1404,8 @@ class mod_visualclass_instance {
      *
      * @return int
      */
-    public function get_policygrades() {
+    public function get_policygrades()
+    {
         return $this->_policygrades;
     }
 
@@ -1310,7 +1414,8 @@ class mod_visualclass_instance {
      *
      * @param int $policygrades
      */
-    public function set_policygrades($policygrades) {
+    public function set_policygrades($policygrades)
+    {
         $this->_policygrades = $policygrades;
     }
 
@@ -1319,7 +1424,8 @@ class mod_visualclass_instance {
      *
      * @return int
      */
-    public function get_policyview() {
+    public function get_policyview()
+    {
         return $this->_policyview;
     }
 
@@ -1328,7 +1434,8 @@ class mod_visualclass_instance {
      *
      * @param int $policyview
      */
-    public function set_policyview($policyview) {
+    public function set_policyview($policyview)
+    {
         $this->_policyview = $policyview;
     }
 
@@ -1337,7 +1444,8 @@ class mod_visualclass_instance {
      *
      * @return array
      */
-    public function get_sessions() {
+    public function get_sessions()
+    {
         return $this->_sessions;
     }
 
@@ -1346,7 +1454,8 @@ class mod_visualclass_instance {
      *
      * @param array $sessions
      */
-    public function set_sessions($sessions) {
+    public function set_sessions($sessions)
+    {
         $this->_sessions = $sessions;
     }
 }

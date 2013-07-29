@@ -25,16 +25,16 @@
  */
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once(dirname(dirname(dirname(__FILE__))).'/user/lib.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/user/lib.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID
 
 if ($id) {
-    $cm           = get_coursemodule_from_id('visualclass', $id, 0, false, MUST_EXIST);
-    $course       = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-    $visualclass  = $DB->get_record('visualclass', array('id' => $cm->instance), '*', MUST_EXIST);
+    $cm = get_coursemodule_from_id('visualclass', $id, 0, false, MUST_EXIST);
+    $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+    $visualclass = $DB->get_record('visualclass', array('id' => $cm->instance), '*', MUST_EXIST);
 } else {
     print_error(get_string('noiderror', 'visualclass'));
 }
@@ -69,11 +69,11 @@ echo html_writer::tag('h1', get_string('report_headerquestion', 'visualclass'));
 // Gathering sessions info
 $content = array();
 $sessions = $visualclass_instance->get_sessions();
-if (! empty($sessions)) {
+if (!empty($sessions)) {
     $percent = array();
     foreach ($sessions as $session) {
         $items = $session->get_items();
-        if (! empty($items)) {
+        if (!empty($items)) {
             foreach ($items as $item) {
                 if (isset($percent[$item->get_question()])) {
                     $percent[$item->get_question()]['count'] += 1;

@@ -37,11 +37,11 @@ function send_data(script, data) {
     var ajax = new XMLHttpRequest();
 
     ajax.open("POST", url, true);
-    ajax.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     ajax.send(data);
 
     // Fetching Response
-    ajax.onreadystatechange = function() {
+    ajax.onreadystatechange = function () {
         if (ajax.readyState == 4 && ajax.status == 200) { // Everything went ok
             // Retrieving information
             var values = JSON.parse(ajax.responseText);

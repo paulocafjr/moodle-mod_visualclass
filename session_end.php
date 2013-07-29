@@ -30,7 +30,7 @@ require_once(dirname(__FILE__) . '/locallib.php');
 
 global $USER, $CFG;
 
-$finalscore = (int) $_REQUEST['finalscore'];
+$finalscore = (int)$_REQUEST['finalscore'];
 if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
     $session_id = $_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id];
     unset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id]);
@@ -45,7 +45,7 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
     $visualclass_instance->set_id($visualclass_session->get_modid());
     $visualclass_instance->read();
 
-    $policygrades = (int) $visualclass_instance->get_policygrades();
+    $policygrades = (int)$visualclass_instance->get_policygrades();
 
     // Updating session finalgrade and time
     $visualclass_session->set_timestop(time());

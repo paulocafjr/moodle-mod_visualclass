@@ -24,10 +24,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/lib.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once(dirname(__FILE__) . '/lib.php');
 
-$id = required_param('id', PARAM_INT);   // course
+$id = required_param('id', PARAM_INT); // course
 
 $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 
@@ -42,19 +42,21 @@ $PAGE->set_context($coursecontext);
 
 echo $OUTPUT->header();
 
-if (! $visualclasss = get_all_instances_in_course('visualclass', $course)) {
+if (!$visualclasss = get_all_instances_in_course('visualclass', $course)) {
     notice(get_string('novisualclasss', 'visualclass'), new moodle_url('/course/view.php', array('id' => $course->id)));
 }
 
 if ($course->format == 'weeks') {
-    $table->head  = array(get_string('week'), get_string('name'));
+    $table->head = array(get_string('week'), get_string('name'));
     $table->align = array('center', 'left');
-} else if ($course->format == 'topics') {
-    $table->head  = array(get_string('topic'), get_string('name'));
-    $table->align = array('center', 'left', 'left', 'left');
 } else {
-    $table->head  = array(get_string('name'));
-    $table->align = array('left', 'left', 'left');
+    if ($course->format == 'topics') {
+        $table->head = array(get_string('topic'), get_string('name'));
+        $table->align = array('center', 'left', 'left', 'left');
+    } else {
+        $table->head = array(get_string('name'));
+        $table->align = array('left', 'left', 'left');
+    }
 }
 
 foreach ($visualclasss as $visualclass) {
@@ -62,11 +64,13 @@ foreach ($visualclasss as $visualclass) {
         $link = html_writer::link(
             new moodle_url('/mod/visualclass.php', array('id' => $visualclass->coursemodule)),
             format_string($visualclass->name, true),
-            array('class' => 'dimmed'));
+            array('class' => 'dimmed')
+        );
     } else {
         $link = html_writer::link(
             new moodle_url('/mod/visualclass.php', array('id' => $visualclass->coursemodule)),
-            format_string($visualclass->name, true));
+            format_string($visualclass->name, true)
+        );
     }
 
     if ($course->format == 'weeks' or $course->format == 'topics') {
