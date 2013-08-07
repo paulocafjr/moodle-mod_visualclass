@@ -66,6 +66,18 @@ function send_data(script, data) {
             document.getElementById("status").style.visibility = "visible";
 
             document.getElementById("text").innerHTML = values.message;
+
+            if (typeof values.errors != "undefined") {
+                document.getElementById("valuewrong").innerHTML = values.errors;
+            }
+
+            if (typeof values.correct != "undefined") {
+                document.getElementById("valuecorrect").innerHTML = values.correct;
+            }
+
+            if (typeof values.finalscore != "undefined") {
+                document.getElementById("valuescore").innerHTML = values.finalscore;
+            }
         } else if (ajax.readyState == 4 && ajax.status != 200) { // Something went wrong
             document.getElementById("button").style.visibility = "visible";
             document.getElementById("button").value = "!";

@@ -48,6 +48,19 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
     $policygrades = (int)$visualclass_instance->get_policygrades();
 
     // Updating session finalgrade and time
+    $session_items = $visualclass_session->get_items();
+    if (! empty($session_items)) {
+        $errors = 0;
+        $correct = 0;
+        foreach ($session_items as $session_item) {
+            $session_item->is_correct() ? $correct++ : $errors++;
+        }
+        $avg = $errors + $correct;
+        if ($avg > 0) {
+            $finalscore = round(($correct * 100) / $avg);
+        }
+    }
+
     $visualclass_session->set_timestop(time());
     $visualclass_session->set_totalscore($finalscore);
     $visualclass_session->write_totalscore($policygrades);
@@ -59,14 +72,28 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
         $urlredirect = $CFG->wwwroot . '/course/view.php?id=' . $visualclass_instance->get_course();
     }
 
-    $response = array(
-        'message' => get_string('status_sessionok', 'visualclass'),
-        'buttontext' => get_string('status_buttonok', 'visualclass'),
-        'labelcorrect' => get_string('status_labelcorrect', 'visualclass'),
-        'labelwrong' => get_string('status_labelwrong', 'visualclass'),
-        'labelscore' => get_string('status_labelscore', 'visualclass'),
-        'urlredirect' => $urlredirect
-    );
+    if (isset($errors) && isset($correct)) {
+        $response = array(
+            'message' => get_string('status_sessionok', 'visualclass'),
+            'buttontext' => get_string('status_buttonok', 'visualclass'),
+            'labelcorrect' => get_string('status_labelcorrect', 'visualclass'),
+            'labelwrong' => get_string('status_labelwrong', 'visualclass'),
+            'labelscore' => get_string('status_labelscore', 'visualclass'),
+            'urlredirect' => $urlredirect,
+            'errors' => $errors,
+            'correct' => $correct,
+            'finalscore' => $finalscore
+        );
+    } else {
+        $response = array(
+            'message' => get_string('status_sessionok', 'visualclass'),
+            'buttontext' => get_string('status_buttonok', 'visualclass'),
+            'labelcorrect' => get_string('status_labelcorrect', 'visualclass'),
+            'labelwrong' => get_string('status_labelwrong', 'visualclass'),
+            'labelscore' => get_string('status_labelscore', 'visualclass'),
+            'urlredirect' => $urlredirect
+        );
+    }
 } else {
     $response = array(
         'message' => get_string('status_sessionadmin', 'visualclass'),

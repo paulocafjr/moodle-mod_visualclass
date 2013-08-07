@@ -65,13 +65,25 @@ $visualclass_instance->read();
 // Cancel button action
 $coursepage = new moodle_url($CFG->wwwroot . '/course/view.php', array('id' => $course->id));
 
-// Flush unfinished sessions
+// Setting bookmark
+$sessionid = null;
+$pagetitle = null;
 $sessions = $visualclass_instance->get_sessions();
 if (!empty($sessions)) {
     foreach ($sessions as $session) {
         $timestop = $session->get_timestop();
         if ($session->get_userid() == $USER->id && empty($timestop)) {
-            $session->delete();
+            $sessionid = $session->get_id();
+            $higher = 0;
+            $sessionitems = $session->get_items();
+            if (! empty($sessionitems)) {
+                foreach ($sessionitems as $sessionitem) {
+                    if ($sessionitem->get_id() > $higher) {
+                        $higher = $sessionitem->get_id();
+                        $pagetitle = $sessionitem->get_pagetitle();
+                    }
+                }
+            }
         }
     }
 }
@@ -109,21 +121,28 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
             echo $OUTPUT->error_text($message);
         } else {
             // Creating a session for this user in this activity
-            $visualclass_session = new mod_visualclass_session();
-            $visualclass_session->set_userid($USER->id);
-            $visualclass_session->set_modid($visualclass->id);
-            $visualclass_session->set_attemptnumber($attemptnumber);
-            $visualclass_session->set_timestart(time());
-            $visualclass_session->write();
+            $url = $visualclass_instance->get_projecturl();
+            if (! empty($sessionid)) {
+                if (! empty($pagetitle)) {
+                    $url .= $pagetitle;
+                }
+            } else {
+                $visualclass_session = new mod_visualclass_session();
+                $visualclass_session->set_userid($USER->id);
+                $visualclass_session->set_modid($visualclass->id);
+                $visualclass_session->set_attemptnumber($attemptnumber);
+                $visualclass_session->set_timestart(time());
+                $visualclass_session->write();
 
-            $sessionid = $visualclass_session->get_id();
+                $sessionid = $visualclass_session->get_id();
+            }
 
             $_SESSION[$visualclass_instance::SESSION_PREFIX . $USER->id] = $sessionid;
 
             // Showing Activity
             switch ($visualclass_instance->get_policyview()) {
             case $visualclass_instance::VIEW_MOODLE:
-                $iframe = '<iframe src="' . $visualclass_instance->get_projecturl()
+                $iframe = '<iframe src="' . $url
                     . '" seamless="seamless" style="width:100%;height:768px;">'
                     . '</iframe>';
                 echo $OUTPUT->box($iframe);
@@ -131,7 +150,7 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
             case $visualclass_instance::VIEW_NEWTAB:
                 echo $OUTPUT->confirm(
                     get_string('text_gotoproject', 'visualclass'),
-                    $visualclass_instance->get_projecturl(), $coursepage
+                    $url, $coursepage
                 );
                 break;
             default:
