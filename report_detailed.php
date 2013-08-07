@@ -100,11 +100,20 @@ if (!empty($sessions)) {
         echo html_writer::tag('h3', $username);
         foreach ($sessions as $session) {
             // Short
+            sort($session->items);
+            $correct = ($session->totalscore/100)*count($session->items);
+            $wrong = count($session->items) - $correct;
             $attributes1 = array('style' => 'font-weight: bold; background-color: #282828; color: #E8E8E8;');
             $attributes2 = array('style' => 'color: #FFCC33;');
             echo html_writer::start_tag('p', $attributes1);
             echo get_string('report_attempt', 'visualclass') . '[&nbsp;'
                 . html_writer::tag('span', $session->attemptnumber, $attributes2)
+                . '&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            echo get_string('report_percentcorrect', 'visualclass') . '[&nbsp;'
+                . html_writer::tag('span', $correct, $attributes2)
+                . '&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+            echo get_string('report_percentwrong', 'visualclass') . '[&nbsp;'
+                . html_writer::tag('span', $wrong, $attributes2)
                 . '&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
             echo get_string('report_totalscore', 'visualclass') . '[&nbsp;'
                 . html_writer::tag('span', (int)$session->totalscore, $attributes2)
