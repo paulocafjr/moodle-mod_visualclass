@@ -28,7 +28,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
-if (! isset($_SESSION)) {
+if (!isset($_SESSION)) {
     session_name('MoodleSession');
     session_start();
 }
@@ -76,7 +76,7 @@ if (!empty($sessions)) {
             $sessionid = $session->get_id();
             $higher = 0;
             $sessionitems = $session->get_items();
-            if (! empty($sessionitems)) {
+            if (!empty($sessionitems)) {
                 foreach ($sessionitems as $sessionitem) {
                     if ($sessionitem->get_id() > $higher) {
                         $higher = $sessionitem->get_id();
@@ -105,8 +105,14 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
     // View Project
     echo $OUTPUT->confirm(get_string('text_gotoproject', 'visualclass'), $url_project, $coursepage);
 
+} else if (!has_capability('mod/visualclass:view', $context, $USER->id)) {
+    $message = get_string('error_nocapability', 'visualclass');
+    echo $OUTPUT->error_text($message);
 } else {
-    if (has_capability('mod/visualclass:view', $context, $USER->id)) {
+    if (!has_capability('mod/visualclass:submit', $context, $USER->id)) {
+        $url_project = new moodle_url($visualclass_instance->get_projecturl());
+        echo $OUTPUT->confirm(get_string('text_gotoproject', 'visualclass'), $url_project, $coursepage);
+    } else {
         // Show activity
         $attemptnumber = (int)$visualclass_instance->get_nextattemptnumber($USER->id);
         $policyattempts = (int)$visualclass_instance->get_policyattempts();
@@ -122,10 +128,15 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
         } else {
             // Creating a session for this user in this activity
             $url = $visualclass_instance->get_projecturl();
-            if (! empty($sessionid)) {
-                if (! empty($pagetitle)) {
+            if (!empty($sessionid)) {
+                if (!empty($pagetitle)) {
                     $url .= $pagetitle;
                 }
+                $visualclass_session = new mod_visualclass_session();
+                $visualclass_session->set_id($sessionid);
+                $visualclass_session->read();
+                $visualclass_session->set_timestart(time());
+                $visualclass_session->write();
             } else {
                 $visualclass_session = new mod_visualclass_session();
                 $visualclass_session->set_userid($USER->id);
@@ -157,11 +168,9 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
                 echo $OUTPUT->error_text(get_string('error_unknown', 'visualclass'));
             }
         }
-    } else {
-        $message = get_string('error_nocapability', 'visualclass');
-        echo $OUTPUT->error_text($message);
     }
 }
+
 
 // Finish the page
 echo $OUTPUT->footer();

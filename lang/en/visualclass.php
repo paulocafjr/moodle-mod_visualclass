@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die();
 
 // E
 $string['error_maxattemptsreached'] = 'Max attempts number reached';
-$string['error_nocapablity'] = 'You do not have the capability to view the module';
+$string['error_nocapability'] = 'You do not have the capability to view the module';
 $string['error_nohome'] = 'Folder "visualclass" does not exists in Moodle '
     . 'root. Please create it and give write privileges to web server on it';
 $string['error_noitems'] = 'No items for this session';
@@ -107,7 +107,7 @@ $string['status_buttonok'] = 'Exit';
 $string['status_labelcorrect'] = 'Correct Answers';
 $string['status_labelscore'] = 'Final Score';
 $string['status_labelwrong'] = 'Wrong Answers';
-$string['status_sessionadmin'] = 'Admin Session';
+$string['status_sessionadmin'] = 'This session will not be saved';
 $string['status_sessionok'] = 'Session successfully finished';
 $string['status_timeout'] = 'Timeout';
 // T

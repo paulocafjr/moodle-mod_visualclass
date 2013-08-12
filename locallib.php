@@ -45,8 +45,7 @@ require_once(dirname(__FILE__) . '/lib.php');
  * @copyright Caltech Informática Ltda <class@class.com.br>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_visualclass_sessionitem
-{
+class mod_visualclass_sessionitem {
 
     // Database Constants
 
@@ -116,8 +115,7 @@ class mod_visualclass_sessionitem
         $pagetitle = null, $type = null,
         $question = null, $answercorrect = null,
         $answeruser = null
-    )
-    {
+    ) {
         $this->_id = $id;
         $this->_sessionid = $sessionid;
         $this->_pagetitle = $pagetitle;
@@ -132,8 +130,7 @@ class mod_visualclass_sessionitem
      *
      * @throws dml_exception
      */
-    public function write()
-    {
+    public function write() {
         global $DB;
 
         $data = new stdClass();
@@ -173,8 +170,7 @@ class mod_visualclass_sessionitem
      * @return bool
      * @throws dml_exception
      */
-    public function read()
-    {
+    public function read() {
         global $DB;
 
         $data = $DB->get_record(self::DB_TABLE, array('id' => $this->get_id()));
@@ -203,8 +199,7 @@ class mod_visualclass_sessionitem
      * @return bool
      * @throws dml_exception
      */
-    public function delete()
-    {
+    public function delete() {
         global $DB;
 
         return $DB->delete_records(
@@ -218,8 +213,7 @@ class mod_visualclass_sessionitem
      *
      * @return bool
      */
-    public function is_correct()
-    {
+    public function is_correct() {
         $given = $this->get_answeruser();
         $correct = $this->get_answercorrect();
         if (is_string($correct)) {
@@ -240,8 +234,7 @@ class mod_visualclass_sessionitem
      *
      * @return int
      */
-    public function get_id()
-    {
+    public function get_id() {
         return $this->_id;
     }
 
@@ -250,8 +243,7 @@ class mod_visualclass_sessionitem
      *
      * @param int $id
      */
-    public function set_id($id)
-    {
+    public function set_id($id) {
         $this->_id = $id;
     }
 
@@ -260,8 +252,7 @@ class mod_visualclass_sessionitem
      *
      * @return int
      */
-    public function get_sessionid()
-    {
+    public function get_sessionid() {
         return $this->_sessionid;
     }
 
@@ -270,8 +261,7 @@ class mod_visualclass_sessionitem
      *
      * @param int $sessionid
      */
-    public function set_sessionid($sessionid)
-    {
+    public function set_sessionid($sessionid) {
         $this->_sessionid = $sessionid;
     }
 
@@ -280,8 +270,7 @@ class mod_visualclass_sessionitem
      *
      * @return string
      */
-    public function get_pagetitle()
-    {
+    public function get_pagetitle() {
         return $this->_pagetitle;
     }
 
@@ -290,8 +279,7 @@ class mod_visualclass_sessionitem
      *
      * @param string $pagetitle
      */
-    public function set_pagetitle($pagetitle)
-    {
+    public function set_pagetitle($pagetitle) {
         $this->_pagetitle = $pagetitle;
     }
 
@@ -300,8 +288,7 @@ class mod_visualclass_sessionitem
      *
      * @return int
      */
-    public function get_type()
-    {
+    public function get_type() {
         return $this->_type;
     }
 
@@ -310,8 +297,7 @@ class mod_visualclass_sessionitem
      *
      * @param int $type
      */
-    public function set_type($type)
-    {
+    public function set_type($type) {
         $this->_type = $type;
     }
 
@@ -320,8 +306,7 @@ class mod_visualclass_sessionitem
      *
      * @return string
      */
-    public function get_question()
-    {
+    public function get_question() {
         return $this->_question;
     }
 
@@ -330,8 +315,7 @@ class mod_visualclass_sessionitem
      *
      * @param string $question
      */
-    public function set_question($question)
-    {
+    public function set_question($question) {
         $this->_question = $question;
     }
 
@@ -340,8 +324,7 @@ class mod_visualclass_sessionitem
      *
      * @return mixed
      */
-    public function get_answercorrect()
-    {
+    public function get_answercorrect() {
         return $this->_answercorrect;
     }
 
@@ -350,8 +333,7 @@ class mod_visualclass_sessionitem
      *
      * @param mixed $answercorrect
      */
-    public function set_answercorrect($answercorrect)
-    {
+    public function set_answercorrect($answercorrect) {
         $this->_answercorrect = $answercorrect;
     }
 
@@ -360,8 +342,7 @@ class mod_visualclass_sessionitem
      *
      * @return string
      */
-    public function get_answeruser()
-    {
+    public function get_answeruser() {
         return $this->_answeruser;
     }
 
@@ -370,8 +351,7 @@ class mod_visualclass_sessionitem
      *
      * @param string $answeruser
      */
-    public function set_answeruser($answeruser)
-    {
+    public function set_answeruser($answeruser) {
         $this->_answeruser = $answeruser;
     }
 }
@@ -388,8 +368,7 @@ class mod_visualclass_sessionitem
  * @copyright Caltech Informática Ltda <class@class.com.br>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_visualclass_session
-{
+class mod_visualclass_session {
 
     // Database Constants
 
@@ -461,8 +440,7 @@ class mod_visualclass_session
         $attemptnumber = null, $timestart = null,
         $timestop = null, $totalscore = null,
         $items = null
-    )
-    {
+    ) {
         $this->_id = $id;
         $this->_userid = $id;
         $this->_modid = $modid;
@@ -478,8 +456,7 @@ class mod_visualclass_session
      *
      * @throws dml_exception
      */
-    public function write()
-    {
+    public function write() {
         global $DB;
 
         $data = new stdClass();
@@ -506,8 +483,7 @@ class mod_visualclass_session
      * @return bool
      * @throws dml_exception
      */
-    public function read()
-    {
+    public function read() {
         global $DB;
 
         $data = $DB->get_record(self::DB_TABLE, array('id' => $this->get_id()));
@@ -543,8 +519,7 @@ class mod_visualclass_session
      * @return bool
      * @throws dml_exception
      */
-    public function delete()
-    {
+    public function delete() {
         global $DB;
 
         $sessionitems = $this->get_items();
@@ -569,8 +544,7 @@ class mod_visualclass_session
      *
      * @return bool
      */
-    public function write_totalscore($policy)
-    {
+    public function write_totalscore($policy) {
         global $DB;
 
         $conditions = array(
@@ -626,8 +600,7 @@ class mod_visualclass_session
      *
      * @return int
      */
-    public function get_id()
-    {
+    public function get_id() {
         return $this->_id;
     }
 
@@ -636,8 +609,7 @@ class mod_visualclass_session
      *
      * @param int $id
      */
-    public function set_id($id)
-    {
+    public function set_id($id) {
         $this->_id = $id;
     }
 
@@ -646,8 +618,7 @@ class mod_visualclass_session
      *
      * @return int
      */
-    public function get_userid()
-    {
+    public function get_userid() {
         return $this->_userid;
     }
 
@@ -656,8 +627,7 @@ class mod_visualclass_session
      *
      * @param int $userid
      */
-    public function set_userid($userid)
-    {
+    public function set_userid($userid) {
         $this->_userid = $userid;
     }
 
@@ -666,8 +636,7 @@ class mod_visualclass_session
      *
      * @return int
      */
-    public function get_modid()
-    {
+    public function get_modid() {
         return $this->_modid;
     }
 
@@ -676,8 +645,7 @@ class mod_visualclass_session
      *
      * @param int $modid
      */
-    public function set_modid($modid)
-    {
+    public function set_modid($modid) {
         $this->_modid = $modid;
     }
 
@@ -686,8 +654,7 @@ class mod_visualclass_session
      *
      * @return int
      */
-    public function get_attemptnumber()
-    {
+    public function get_attemptnumber() {
         return $this->_attemptnumber;
     }
 
@@ -696,8 +663,7 @@ class mod_visualclass_session
      *
      * @param int $attemptnumber
      */
-    public function set_attemptnumber($attemptnumber)
-    {
+    public function set_attemptnumber($attemptnumber) {
         $this->_attemptnumber = $attemptnumber;
     }
 
@@ -706,8 +672,7 @@ class mod_visualclass_session
      *
      * @return int
      */
-    public function get_timestart()
-    {
+    public function get_timestart() {
         return $this->_timestart;
     }
 
@@ -716,8 +681,7 @@ class mod_visualclass_session
      *
      * @param int $timestart
      */
-    public function set_timestart($timestart)
-    {
+    public function set_timestart($timestart) {
         $this->_timestart = $timestart;
     }
 
@@ -726,8 +690,7 @@ class mod_visualclass_session
      *
      * @return int
      */
-    public function get_timestop()
-    {
+    public function get_timestop() {
         return $this->_timestop;
     }
 
@@ -736,8 +699,7 @@ class mod_visualclass_session
      *
      * @param int $timestop
      */
-    public function set_timestop($timestop)
-    {
+    public function set_timestop($timestop) {
         $this->_timestop = $timestop;
     }
 
@@ -746,8 +708,7 @@ class mod_visualclass_session
      *
      * @return number
      */
-    public function get_totalscore()
-    {
+    public function get_totalscore() {
         return $this->_totalscore;
     }
 
@@ -756,8 +717,7 @@ class mod_visualclass_session
      *
      * @param int $totalscore
      */
-    public function set_totalscore($totalscore)
-    {
+    public function set_totalscore($totalscore) {
         $this->_totalscore = $totalscore;
     }
 
@@ -766,8 +726,7 @@ class mod_visualclass_session
      *
      * @return array
      */
-    public function get_items()
-    {
+    public function get_items() {
         return $this->_items;
     }
 
@@ -776,8 +735,7 @@ class mod_visualclass_session
      *
      * @param array
      */
-    public function set_items($items)
-    {
+    public function set_items($items) {
         $this->_items = $items;
     }
 }
@@ -793,8 +751,7 @@ class mod_visualclass_session
  * @copyright Caltech Informática Ltda <class@class.com.br>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_visualclass_instance
-{
+class mod_visualclass_instance {
 
     // Attempts Constants
 
@@ -923,8 +880,7 @@ class mod_visualclass_instance
         $policyattempts = null, $policytime = null,
         $policygrades = null, $policyview = null,
         $sessions = null
-    )
-    {
+    ) {
         $path = dirname(__FILE__);
         self::$_scripts = array(
             'finaliza.html' => $path . '/scripts/finaliza.html',
@@ -955,8 +911,7 @@ class mod_visualclass_instance
      *
      * @throws dml_exception
      */
-    public function write()
-    {
+    public function write() {
         global $DB;
 
         $data = new stdClass();
@@ -986,8 +941,7 @@ class mod_visualclass_instance
      * @return bool
      * @throws dml_exception
      */
-    public function read()
-    {
+    public function read() {
         global $DB;
 
         $data = $DB->get_record(self::DB_TABLE, array('id' => $this->get_id()));
@@ -1026,8 +980,7 @@ class mod_visualclass_instance
      * @return bool
      * @throws dml_exception
      */
-    public function delete()
-    {
+    public function delete() {
         global $DB;
 
         $sessions = $this->get_sessions();
@@ -1053,8 +1006,7 @@ class mod_visualclass_instance
      *
      * @return bool
      */
-    public function write_projectdata($course, $draftitem)
-    {
+    public function write_projectdata($course, $draftitem) {
         global $CFG, $USER;
 
         $projectdata = $this->get_projectdata();
@@ -1104,8 +1056,7 @@ class mod_visualclass_instance
      *
      * @return bool
      */
-    public function delete_projectdata()
-    {
+    public function delete_projectdata() {
         $projectdata = $this->get_projectdata();
         if (empty($projectdata)) {
             return false;
@@ -1126,8 +1077,7 @@ class mod_visualclass_instance
      *
      * @return bool
      */
-    public function write_projecturl($course)
-    {
+    public function write_projecturl($course) {
         global $CFG;
 
         $projectdata = $this->get_projectdata();
@@ -1180,8 +1130,7 @@ class mod_visualclass_instance
      *
      * @return bool
      */
-    public function delete_projecturl()
-    {
+    public function delete_projecturl() {
         global $CFG;
 
         $projecturl = $this->get_projecturl();
@@ -1205,8 +1154,7 @@ class mod_visualclass_instance
      *
      * @return int
      */
-    public function get_nextattemptnumber($user)
-    {
+    public function get_nextattemptnumber($user) {
         $sessions = $this->get_sessions();
         $lastattempt = 0;
         if (!empty($sessions)) {
@@ -1228,8 +1176,7 @@ class mod_visualclass_instance
      *
      * @return bool
      */
-    public function rrmdir($dir)
-    {
+    public function rrmdir($dir) {
         $files = array_diff(scandir($dir), array('.', '..'));
         foreach ($files as $file) {
             (is_dir("$dir/$file")) ? $this->rrmdir("$dir/$file")
@@ -1245,8 +1192,7 @@ class mod_visualclass_instance
      *
      * @return int
      */
-    public function get_id()
-    {
+    public function get_id() {
         return $this->_id;
     }
 
@@ -1255,8 +1201,7 @@ class mod_visualclass_instance
      *
      * @param int $id
      */
-    public function set_id($id)
-    {
+    public function set_id($id) {
         $this->_id = $id;
     }
 
@@ -1265,8 +1210,7 @@ class mod_visualclass_instance
      *
      * @return int
      */
-    public function get_course()
-    {
+    public function get_course() {
         return $this->_course;
     }
 
@@ -1275,8 +1219,7 @@ class mod_visualclass_instance
      *
      * @param int $course
      */
-    public function set_course($course)
-    {
+    public function set_course($course) {
         $this->_course = $course;
     }
 
@@ -1285,8 +1228,7 @@ class mod_visualclass_instance
      *
      * @return string
      */
-    public function get_name()
-    {
+    public function get_name() {
         return $this->_name;
     }
 
@@ -1295,8 +1237,7 @@ class mod_visualclass_instance
      *
      * @param string $name
      */
-    public function set_name($name)
-    {
+    public function set_name($name) {
         $this->_name = $name;
     }
 
@@ -1305,8 +1246,7 @@ class mod_visualclass_instance
      *
      * @return string
      */
-    public function get_projectdata()
-    {
+    public function get_projectdata() {
         return $this->_projectdata;
     }
 
@@ -1315,8 +1255,7 @@ class mod_visualclass_instance
      *
      * @param string $projectdata
      */
-    public function set_projectdata($projectdata)
-    {
+    public function set_projectdata($projectdata) {
         $this->_projectdata = $projectdata;
     }
 
@@ -1325,8 +1264,7 @@ class mod_visualclass_instance
      *
      * @return string
      */
-    public function get_projecturl()
-    {
+    public function get_projecturl() {
         return $this->_projecturl;
     }
 
@@ -1335,8 +1273,7 @@ class mod_visualclass_instance
      *
      * @param string $projecturl
      */
-    public function set_projecturl($projecturl)
-    {
+    public function set_projecturl($projecturl) {
         $this->_projecturl = $projecturl;
     }
 
@@ -1345,8 +1282,7 @@ class mod_visualclass_instance
      *
      * @return string
      */
-    public function get_projectsubject()
-    {
+    public function get_projectsubject() {
         return $this->_projectsubject;
     }
 
@@ -1355,8 +1291,7 @@ class mod_visualclass_instance
      *
      * @param string $projectsubject
      */
-    public function set_projectsubject($projectsubject)
-    {
+    public function set_projectsubject($projectsubject) {
         $this->_projectsubject = $projectsubject;
     }
 
@@ -1365,8 +1300,7 @@ class mod_visualclass_instance
      *
      * @return int
      */
-    public function get_policyattempts()
-    {
+    public function get_policyattempts() {
         return $this->_policyattempts;
     }
 
@@ -1375,8 +1309,7 @@ class mod_visualclass_instance
      *
      * @param int $policyattempts
      */
-    public function set_policyattempts($policyattempts)
-    {
+    public function set_policyattempts($policyattempts) {
         $this->_policyattempts = $policyattempts;
     }
 
@@ -1385,8 +1318,7 @@ class mod_visualclass_instance
      *
      * @return int
      */
-    public function get_policytime()
-    {
+    public function get_policytime() {
         return $this->_policytime;
     }
 
@@ -1395,8 +1327,7 @@ class mod_visualclass_instance
      *
      * @param int $policytime
      */
-    public function set_policytime($policytime)
-    {
+    public function set_policytime($policytime) {
         $this->_policytime = $policytime;
     }
 
@@ -1405,8 +1336,7 @@ class mod_visualclass_instance
      *
      * @return int
      */
-    public function get_policygrades()
-    {
+    public function get_policygrades() {
         return $this->_policygrades;
     }
 
@@ -1415,8 +1345,7 @@ class mod_visualclass_instance
      *
      * @param int $policygrades
      */
-    public function set_policygrades($policygrades)
-    {
+    public function set_policygrades($policygrades) {
         $this->_policygrades = $policygrades;
     }
 
@@ -1425,8 +1354,7 @@ class mod_visualclass_instance
      *
      * @return int
      */
-    public function get_policyview()
-    {
+    public function get_policyview() {
         return $this->_policyview;
     }
 
@@ -1435,8 +1363,7 @@ class mod_visualclass_instance
      *
      * @param int $policyview
      */
-    public function set_policyview($policyview)
-    {
+    public function set_policyview($policyview) {
         $this->_policyview = $policyview;
     }
 
@@ -1445,8 +1372,7 @@ class mod_visualclass_instance
      *
      * @return array
      */
-    public function get_sessions()
-    {
+    public function get_sessions() {
         return $this->_sessions;
     }
 
@@ -1455,8 +1381,7 @@ class mod_visualclass_instance
      *
      * @param array $sessions
      */
-    public function set_sessions($sessions)
-    {
+    public function set_sessions($sessions) {
         $this->_sessions = $sessions;
     }
 }

@@ -176,17 +176,17 @@ if (typeof JSON !== 'object') {
         Date.prototype.toJSON = function () {
 
             return isFinite(this.valueOf())
-                ? this.getUTCFullYear()     + '-' +
+                ? this.getUTCFullYear() + '-' +
                 f(this.getUTCMonth() + 1) + '-' +
-                f(this.getUTCDate())      + 'T' +
-                f(this.getUTCHours())     + ':' +
-                f(this.getUTCMinutes())   + ':' +
-                f(this.getUTCSeconds())   + 'Z'
+                f(this.getUTCDate()) + 'T' +
+                f(this.getUTCHours()) + ':' +
+                f(this.getUTCMinutes()) + ':' +
+                f(this.getUTCSeconds()) + 'Z'
                 : null;
         };
 
-        String.prototype.toJSON      =
-            Number.prototype.toJSON  =
+        String.prototype.toJSON =
+            Number.prototype.toJSON =
                 Boolean.prototype.toJSON = function () {
                     return this.valueOf();
                 };
@@ -202,7 +202,7 @@ if (typeof JSON !== 'object') {
             '\n': '\\n',
             '\f': '\\f',
             '\r': '\\r',
-            '"' : '\\"',
+            '"': '\\"',
             '\\': '\\\\'
         },
         rep;

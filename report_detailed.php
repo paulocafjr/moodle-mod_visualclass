@@ -69,8 +69,20 @@ echo html_writer::tag('h1', get_string('report_headerdetailed', 'visualclass'));
 // Gathering sessions info
 $content = array();
 $sessions = $visualclass_instance->get_sessions();
+
+// Removing unfinished sessions
+$valid_sessions = array();
 if (!empty($sessions)) {
     foreach ($sessions as $session) {
+        $timestop = $session->get_timestop();
+        if (!empty($timestop)) {
+            $valid_sessions[] = $session;
+        }
+    }
+}
+
+if (!empty($valid_sessions)) {
+    foreach ($valid_sessions as $session) {
         $userid = $session->get_userid();
         $user = user_get_users_by_id(array($userid));
         $user = $user[$userid];
@@ -100,8 +112,7 @@ if (!empty($sessions)) {
         echo html_writer::tag('h3', $username);
         foreach ($sessions as $session) {
             // Short
-            sort($session->items);
-            $correct = ($session->totalscore/100)*count($session->items);
+            $correct = ($session->totalscore / 100) * count($session->items);
             $wrong = count($session->items) - $correct;
             $attributes1 = array('style' => 'font-weight: bold; background-color: #282828; color: #E8E8E8;');
             $attributes2 = array('style' => 'color: #FFCC33;');
@@ -130,6 +141,8 @@ if (!empty($sessions)) {
             echo html_writer::end_tag('p');
 
             if (!empty($session->items)) {
+                sort($session->items);
+
                 // Explode
                 $html_table = new html_table();
                 $html_table->head = array(

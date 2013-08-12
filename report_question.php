@@ -69,9 +69,21 @@ echo html_writer::tag('h1', get_string('report_headerquestion', 'visualclass'));
 // Gathering sessions info
 $content = array();
 $sessions = $visualclass_instance->get_sessions();
+
+// Removing unfinished sessions
+$valid_sessions = array();
 if (!empty($sessions)) {
-    $percent = array();
     foreach ($sessions as $session) {
+        $timestop = $session->get_timestop();
+        if (!empty($timestop)) {
+            $valid_sessions[] = $session;
+        }
+    }
+}
+
+if (!empty($valid_sessions)) {
+    $percent = array();
+    foreach ($valid_sessions as $session) {
         $items = $session->get_items();
         if (!empty($items)) {
             foreach ($items as $item) {

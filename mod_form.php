@@ -36,14 +36,12 @@ require_once(dirname(__FILE__) . '/locallib.php');
  * @copyright  2013 Caltech Informática Ltda <class@class.com.br>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class mod_visualclass_mod_form extends moodleform_mod
-{
+class mod_visualclass_mod_form extends moodleform_mod {
 
     /**
      * Defines forms elements
      */
-    public function definition()
-    {
+    public function definition() {
         $mform = $this->_form;
 
         // General Header
@@ -179,8 +177,7 @@ class mod_visualclass_mod_form extends moodleform_mod
      *
      * @return array|void
      */
-    public function validation($data, $files)
-    {
+    public function validation($data, $files) {
         global $CFG;
 
         $errors = array();

@@ -41,8 +41,7 @@ require(dirname(__FILE__) . '/locallib.php');
  *
  * @return mixed true if the feature is supported, null if unknown
  */
-function visualclass_supports($feature)
-{
+function visualclass_supports($feature) {
     switch ($feature) {
     case FEATURE_MOD_INTRO:
         return false;
@@ -64,8 +63,7 @@ function visualclass_supports($feature)
  *
  * @return int The id of the newly inserted visualclass record
  */
-function visualclass_add_instance(stdClass $visualclass, mod_visualclass_mod_form $mform)
-{
+function visualclass_add_instance(stdClass $visualclass, mod_visualclass_mod_form $mform) {
     global $DB;
 
     $visualclass_instance = new mod_visualclass_instance();
@@ -100,8 +98,7 @@ function visualclass_add_instance(stdClass $visualclass, mod_visualclass_mod_for
  *
  * @return boolean Success/Fail
  */
-function visualclass_update_instance(stdClass $visualclass, mod_visualclass_mod_form $mform = null)
-{
+function visualclass_update_instance(stdClass $visualclass, mod_visualclass_mod_form $mform = null) {
     global $DB;
 
     $visualclass_instance = new mod_visualclass_instance();
@@ -132,8 +129,7 @@ function visualclass_update_instance(stdClass $visualclass, mod_visualclass_mod_
  *
  * @return boolean Success/Failure
  */
-function visualclass_delete_instance($id)
-{
+function visualclass_delete_instance($id) {
     global $DB;
 
     $visualclass_instance = new mod_visualclass_instance();
@@ -155,8 +151,7 @@ function visualclass_delete_instance($id)
  *
  * @return stdClass|null
  */
-function visualclass_user_outline($course, $user, $mod, $visualclass)
-{
+function visualclass_user_outline($course, $user, $mod, $visualclass) {
     return null;
 }
 
@@ -171,8 +166,7 @@ function visualclass_user_outline($course, $user, $mod, $visualclass)
  *
  * @return void, is supposed to echp directly
  */
-function visualclass_user_complete($course, $user, $mod, $visualclass)
-{
+function visualclass_user_complete($course, $user, $mod, $visualclass) {
 }
 
 /**
@@ -182,8 +176,7 @@ function visualclass_user_complete($course, $user, $mod, $visualclass)
  *
  * @return boolean
  */
-function visualclass_print_recent_activity($course, $viewfullnames, $timestart)
-{
+function visualclass_print_recent_activity($course, $viewfullnames, $timestart) {
     return false;
 }
 
@@ -206,8 +199,7 @@ function visualclass_print_recent_activity($course, $viewfullnames, $timestart)
  */
 function visualclass_get_recent_mod_activity(
     &$activities, &$index, $timestart, $courseid, $cmid, $userid = 0, $groupid = 0
-)
-{
+) {
 }
 
 /**
@@ -215,8 +207,7 @@ function visualclass_get_recent_mod_activity(
  *
  * @return void
  */
-function visualclass_print_recent_mod_activity($activity, $courseid, $detail, $modnames, $viewfullnames)
-{
+function visualclass_print_recent_mod_activity($activity, $courseid, $detail, $modnames, $viewfullnames) {
 }
 
 /**
@@ -227,8 +218,7 @@ function visualclass_print_recent_mod_activity($activity, $courseid, $detail, $m
  * @return boolean
  * @todo Finish documenting this function
  **/
-function visualclass_cron()
-{
+function visualclass_cron() {
     return true;
 }
 
@@ -238,8 +228,7 @@ function visualclass_cron()
  * @example return array('moodle/site:accessallgroups');
  * @return array
  */
-function visualclass_get_extra_capabilities()
-{
+function visualclass_get_extra_capabilities() {
     return array();
 }
 
@@ -259,8 +248,7 @@ function visualclass_get_extra_capabilities()
  *
  * @return bool true if the scale is used by the given visualclass instance
  */
-function visualclass_scale_used($visualclassid, $scaleid)
-{
+function visualclass_scale_used($visualclassid, $scaleid) {
     return false;
 }
 
@@ -273,8 +261,7 @@ function visualclass_scale_used($visualclassid, $scaleid)
  *
  * @return boolean true if the scale is used by any visualclass instance
  */
-function visualclass_scale_used_anywhere($scaleid)
-{
+function visualclass_scale_used_anywhere($scaleid) {
     return false;
 }
 
@@ -287,8 +274,7 @@ function visualclass_scale_used_anywhere($scaleid)
  *
  * @return void
  */
-function visualclass_grade_item_update(stdClass $visualclass, $grades = null)
-{
+function visualclass_grade_item_update(stdClass $visualclass, $grades = null) {
     global $CFG;
 
     require_once($CFG->dirroot . '/lib/gradelib.php');
@@ -321,8 +307,7 @@ function visualclass_grade_item_update(stdClass $visualclass, $grades = null)
  *
  * @return void
  */
-function visualclass_update_grades(stdClass $visualclass, $userid = 0)
-{
+function visualclass_update_grades(stdClass $visualclass, $userid = 0) {
     return false;
 }
 
@@ -342,8 +327,7 @@ function visualclass_update_grades(stdClass $visualclass, $userid = 0)
  *
  * @return array of [(string)filearea] => (string)description
  */
-function visualclass_get_file_areas($course, $cm, $context)
-{
+function visualclass_get_file_areas($course, $cm, $context) {
     return array();
 }
 
@@ -365,8 +349,7 @@ function visualclass_get_file_areas($course, $cm, $context)
  *
  * @return file_info instance or null if not found
  */
-function visualclass_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename)
-{
+function visualclass_get_file_info($browser, $areas, $course, $cm, $context, $filearea, $itemid, $filepath, $filename) {
     return null;
 }
 
@@ -386,8 +369,7 @@ function visualclass_get_file_info($browser, $areas, $course, $cm, $context, $fi
  */
 function visualclass_pluginfile(
     $course, $cm, $context, $filearea, array $args, $forcedownload, array $options = array()
-)
-{
+) {
     global $DB, $CFG;
 
     require_login($course, true, $cm);
@@ -426,8 +408,7 @@ function visualclass_pluginfile(
  * @param stdClass        $module
  * @param cm_info         $cm
  */
-function visualclass_extend_navigation(navigation_node $navref, stdclass $course, stdclass $module, cm_info $cm)
-{
+function visualclass_extend_navigation(navigation_node $navref, stdclass $course, stdclass $module, cm_info $cm) {
 }
 
 /**
@@ -441,6 +422,5 @@ function visualclass_extend_navigation(navigation_node $navref, stdclass $course
  */
 function visualclass_extend_settings_navigation(
     settings_navigation $settingsnav, navigation_node $visualclassnode = null
-)
-{
+) {
 }

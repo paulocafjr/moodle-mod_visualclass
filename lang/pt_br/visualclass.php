@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die();
 
 // E
 $string['error_maxattemptsreached'] = 'Número máximo de tentativas atingido';
-$string['error_nocapablity'] = 'Você não possui a capacidade de visualizar o módulo';
+$string['error_nocapability'] = 'Você não possui a capacidade de visualizar o módulo';
 $string['error_nohome'] = 'O diretório "visualclass" não se encontra na raiz '
     . 'do Moodle. Por favor crie o diretório e de direitos de gravação '
     . 'para seu servidor web';
@@ -106,7 +106,7 @@ $string['status_buttonok'] = 'Sair';
 $string['status_labelcorrect'] = 'Respostas Corretas';
 $string['status_labelscore'] = 'Nota';
 $string['status_labelwrong'] = 'Respostas Erradas';
-$string['status_sessionadmin'] = 'Sessão do Administrador';
+$string['status_sessionadmin'] = 'Esta sessão não será salva';
 $string['status_sessionok'] = 'Sessão concluída com sucesso';
 $string['status_timeout'] = 'Tempo esgotado';
 // T

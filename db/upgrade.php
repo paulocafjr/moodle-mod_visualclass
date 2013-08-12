@@ -33,7 +33,6 @@ defined('MOODLE_INTERNAL') || die();
  *
  * @return bool
  */
-function xmldb_visualclass_upgrade($oldversion)
-{
+function xmldb_visualclass_upgrade($oldversion) {
     return true;
 }

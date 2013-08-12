@@ -49,7 +49,7 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
 
     // Updating session finalgrade and time
     $session_items = $visualclass_session->get_items();
-    if (! empty($session_items)) {
+    if (!empty($session_items)) {
         $errors = 0;
         $correct = 0;
         foreach ($session_items as $session_item) {
