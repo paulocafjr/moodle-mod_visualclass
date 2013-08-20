@@ -112,7 +112,7 @@ if (!empty($valid_sessions)) {
         echo html_writer::tag('h3', $username);
         foreach ($sessions as $session) {
             // Short
-            $correct = ($session->totalscore / 100) * count($session->items);
+            $correct = round(($session->totalscore / 100) * count($session->items));
             $wrong = count($session->items) - $correct;
             $attributes1 = array('style' => 'font-weight: bold; background-color: #282828; color: #E8E8E8;');
             $attributes2 = array('style' => 'color: #FFCC33;');
