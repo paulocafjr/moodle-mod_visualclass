@@ -130,6 +130,9 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
             $url = $visualclass_instance->get_projecturl();
             if (!empty($sessionid)) {
                 if (!empty($pagetitle)) {
+                    if (!strstr($pagetitle, '.htm')) {
+                        $pagetitle .= '.htm';
+                    }
                     $url .= $pagetitle;
                 }
                 $visualclass_session = new mod_visualclass_session();
