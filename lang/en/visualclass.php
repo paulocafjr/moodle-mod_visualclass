@@ -57,6 +57,9 @@ $string['felem_time_unlimited'] = 'no time limit';
 $string['felem_view'] = 'View Policy';
 $string['felem_view_moodle'] = 'inside moodle';
 $string['felem_view_newtab'] = 'new tab';
+$string['felem_view_popup'] = 'popup';
+$string['felem_view_popup_width'] = 'width';
+$string['felem_view_popup_height'] = 'height';
 // M
 $string['modulename'] = 'Visual Class';
 $string['modulenameplural'] = 'Visual Class';
@@ -116,6 +119,9 @@ $string['text_adminprivileges1'] = 'You have enough privileges to check detailed
 $string['text_adminprivileges2'] = 'You have enough privileges to check detailed by question activity '
     . 'reports. Do you want to continue?';
 $string['text_gotoproject'] = 'You will be redirected to project page. Do you want to continue?';
+$string['text_popup'] = 'A popup window will be open. Please check if your browser blocks them. '
+    . 'Do you want to continue?';
+$string['text_popup_view'] = 'Open popup';
 // V
 $string['visualclass'] = 'Visual Class';
 $string['visualclass:addinstance'] = 'Has the capability to add a new module instance';

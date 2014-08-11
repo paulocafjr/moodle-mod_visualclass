@@ -783,6 +783,7 @@ class mod_visualclass_instance {
 
     const VIEW_MOODLE = 4;
     const VIEW_NEWTAB = 5;
+    const VIEW_POPUP = 6;
 
     /**
      * Scripts
@@ -853,6 +854,18 @@ class mod_visualclass_instance {
      */
     private $_policyview;
     /**
+     * Popup width
+     * 
+     * @var int
+     */
+    private $_policyview_width;
+    /**
+     * Popup height
+     * 
+     * @var int
+     */
+    private $_policyview_height;
+    /**
      * Instance sessions
      *
      * @var array
@@ -872,6 +885,8 @@ class mod_visualclass_instance {
      * @param int    $policytime
      * @param int    $policygrades
      * @param int    $policyview
+     * @param int    $policyview_width
+     * @param int    $policyview_height
      * @param array  $sessions
      */
     public function __construct(
@@ -879,6 +894,7 @@ class mod_visualclass_instance {
         $projectdata = null, $projecturl = null, $projectsubject = null,
         $policyattempts = null, $policytime = null,
         $policygrades = null, $policyview = null,
+        $policyview_width = null, $policyview_height = null,
         $sessions = null
     ) {
         $path = dirname(__FILE__);
@@ -886,7 +902,7 @@ class mod_visualclass_instance {
             'finaliza.html' => $path . '/scripts/finaliza.html',
             'finaliza.htm' => $path . '/scripts/finaliza.html',
             'moodle.js' => $path . '/scripts/moodle.js',
-            'json2.js' => $path . '/scripts/json2.js',
+            'GeraHTML_json2.js' => $path . '/scripts/GeraHTML_json2.js',
             'logo.jpg' => $path . '/scripts/logo.jpg',
             'loading.gif' => $path . '/scripts/loading.gif',
             'status_error.png' => $path . '/scripts/status_error.png',
@@ -903,6 +919,8 @@ class mod_visualclass_instance {
         $this->_policytime = $policytime;
         $this->_policygrades = $policygrades;
         $this->_policyview = $policyview;
+        $this->_policyview_width = $policyview_width;
+        $this->_policyview_height = $policyview_height;
         $this->_sessions = $sessions;
     }
 
@@ -924,6 +942,8 @@ class mod_visualclass_instance {
         $data->policytime = $this->get_policytime();
         $data->policygrades = $this->get_policygrades();
         $data->policyview = $this->get_policyview();
+        $data->policyview_width = $this->get_policyview_width();
+        $data->policyview_height = $this->get_policyview_height();
 
         $id = $this->get_id();
         if (empty($id)) {
@@ -955,6 +975,8 @@ class mod_visualclass_instance {
             $this->set_policytime($data->policytime);
             $this->set_policygrades($data->policygrades);
             $this->set_policyview($data->policyview);
+            $this->set_policyview_width($data->policyview_width);
+            $this->set_policyview_height($data->policyview_height);
             $sessionsitems = $DB->get_records(
                 mod_visualclass_session::DB_TABLE,
                 array('modid' => $this->get_id()),
@@ -1016,7 +1038,9 @@ class mod_visualclass_instance {
                 return false;
             }
 
-            $context = get_context_instance(CONTEXT_USER, $USER->id);
+            // Deprecated
+            //$context = get_context_instance(CONTEXT_USER, $USER->id);
+            $context = context_user::instance($USER->id);
             $fs = get_file_storage();
             $files = $fs->get_area_files(
                 $context->id, 'user', 'draft',
@@ -1114,7 +1138,10 @@ class mod_visualclass_instance {
             $append = PHP_EOL . 'function chamaFinaliza() {' . PHP_EOL
                 . '    link_click(\'finaliza.html\', null, null, null, null);' . PHP_EOL
                 . '}' . PHP_EOL;
-            file_put_contents($path . 'source.js', $append, FILE_APPEND);
+            // < 20140520
+            //file_put_contents($path . 'source.js', $append, FILE_APPEND);
+            // >= 20140520
+            file_put_contents($path . 'GeraHTML_source.js', $append, FILE_APPEND);
 
             $url = str_replace($CFG->dirroot, $CFG->wwwroot, $path);
             $this->set_projecturl($url);
@@ -1365,6 +1392,42 @@ class mod_visualclass_instance {
      */
     public function set_policyview($policyview) {
         $this->_policyview = $policyview;
+    }
+    
+    /**
+     * Get policy view width
+     * 
+     * @return int
+     */
+    public function get_policyview_width() {
+        return $this->_policyview_width;
+    }
+    
+    /**
+     * Set policy view width
+     * 
+     * @param int $policyview_width
+     */
+    public function set_policyview_width($policyview_width) {
+        $this->_policyview_width = $policyview_width;
+    }
+    
+    /**
+     * Get policy view height
+     * 
+     * @return int
+     */
+    public function get_policyview_height() {
+        return $this->_policyview_height;
+    }
+    
+    /**
+     * Set policy view height
+     * 
+     * @param int $policyview_height
+     */
+    public function set_policyview_height($policyview_height) {
+        $this->_policyview_height = $policyview_height;
     }
 
     /**

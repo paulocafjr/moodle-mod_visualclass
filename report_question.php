@@ -40,7 +40,9 @@ if ($id) {
 }
 
 require_login($course, true, $cm);
-$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+//Deprecated
+//$context = get_context_instance(CONTEXT_MODULE, $cm->id);
+$context = context_module::instance($cm->id);
 
 /// Print the page header
 $PAGE->set_url('/mod/visualclass/report_detailed.php', array('id' => $cm->id));

@@ -153,15 +153,33 @@ class mod_visualclass_mod_form extends moodleform_mod {
 
         $moodle = get_string('felem_view_moodle', 'visualclass');
         $newtab = get_string('felem_view_newtab', 'visualclass');
+        $popup = get_string('felem_view_popup', 'visualclass');
         $viewoptions = array(
             mod_visualclass_instance::VIEW_NEWTAB => $newtab,
-            mod_visualclass_instance::VIEW_MOODLE => $moodle
+            mod_visualclass_instance::VIEW_MOODLE => $moodle,
+            mod_visualclass_instance::VIEW_POPUP => $popup
         );
         $mform->addElement(
             'select', 'policyview',
             get_string('felem_view', 'visualclass'),
             $viewoptions, null
         );
+        
+        $mform->addElement(
+            'text', 'policyview_width',
+            get_string('felem_view_popup_width', 'visualclass'),
+            array('size' => 3)
+        );
+        $mform->disabledIf('policyview_width', 'policyview', 'neq', mod_visualclass_instance::VIEW_POPUP);
+        $mform->setType('policyview_width', PARAM_INT);
+        
+        $mform->addElement(
+            'text', 'policyview_height',
+            get_string('felem_view_popup_height', 'visualclass'),
+            array('size' => 3)
+        );
+        $mform->disabledIf('policyview_height', 'policyview', 'neq', mod_visualclass_instance::VIEW_POPUP);
+        $mform->setType('policyview_height', PARAM_INT);
 
         // Standard Fields
 

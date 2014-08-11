@@ -30,14 +30,14 @@
     <input id="button" type="button" onclick="open_moodle()">
     <input id="urlredirect" type="hidden" value="">
 </div>
-<script type="text/javascript" src="json2.js"></script>
-<script type="text/javascript" src="source.js"></script>
+<script type="text/javascript" src="GeraHTML_json2.js"></script>
+<script type="text/javascript" src="GeraHTML_source.js"></script>
 <script type="text/javascript" src="moodle.js"></script>
 <script type="text/javascript">
     // Calc final score
     var finalscore = 0;
     var avg = erros + acertos;
-    if (avg != 0) {
+    if (avg !== 0) {
         finalscore = Math.round((acertos * 100) / avg);
     }
 

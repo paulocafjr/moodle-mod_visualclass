@@ -31,7 +31,11 @@
                 <FIELD NAME="policygrades" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
                        PREVIOUS="policytime" NEXT="policyview"/>
                 <FIELD NAME="policyview" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="policygrades"/>
+                       PREVIOUS="policygrades" NEXT="policyview_witdh"/>
+                <FIELD NAME="policyview_width" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false"
+                       PREVIOUS="policyview" NEXT="policyview_height"/>
+                <FIELD NAME="policyview_height" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false"
+                       PREVIOUS="policyview_width"/>
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

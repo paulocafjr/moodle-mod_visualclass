@@ -58,6 +58,9 @@ $string['felem_time_unlimited'] = 'sem limite de tempo';
 $string['felem_view'] = 'Política de Visualização';
 $string['felem_view_moodle'] = 'dentro do moodle';
 $string['felem_view_newtab'] = 'nova aba';
+$string['felem_view_popup'] = 'popup';
+$string['felem_view_popup_width'] = 'largura';
+$string['felem_view_popup_height'] = 'altura';
 // M
 $string['modulename'] = 'Visual Class';
 $string['modulenameplural'] = 'Visual Class';
@@ -115,6 +118,9 @@ $string['text_adminprivileges1'] = 'Você pode visualizar o relatório detalhado
 $string['text_adminprivileges2'] = 'Você pode visualizar o relatório detalhado por questão da atividade. '
     . 'Deseja continuar?';
 $string['text_gotoproject'] = 'Você será redirecionado para a página do projeto. Deseja continuar?';
+$string['text_popup'] = 'Uma janela popup será aberta. Por favor verifique se seu navegador não está '
+    . 'bloqueando este tipo de janela. Deseja continuar?';
+$string['text_popup_view'] = 'Abrir popup';
 // V
 $string['visualclass'] = 'Visual Class';
 $string['visualclass:addinstance'] = 'Tem a capacidade de adicionar novos módulos';

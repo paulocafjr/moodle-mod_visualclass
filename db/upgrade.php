@@ -34,5 +34,27 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool
  */
 function xmldb_visualclass_upgrade($oldversion) {
+    global $CFG, $DB;
+    
+    $dbman = $DB->get_manager();
+    
+    if ($oldversion < 2014080601) {
+        $table = new xmldb_table('visualclass');
+        $field_policyview_width = new xmldb_field('policyview_width');
+        $field_policyview_width->set_attributes(XMLDB_TYPE_INT, '10', XMLDB_UNSIGNED, null, null, 'default null', 'policyview');
+        $field_policyview_height = new xmldb_field('policyview_height');
+        $field_policyview_height->set_attributes(XMLDB_TYPE_INT, '10', XMLDB_UNSIGNED, null, null, 'default null', 'policyview_width');
+        
+        if (! $dbman->field_exists($table, $field_policyview_width)) {
+            $dbman->add_field($table, $field_policyview_width);
+        }
+        
+        if (! $dbman->field_exists($table, $field_policyview_height)) {
+            $dbman->add_field($table, $field_policyview_height);
+        }
+        
+        upgrade_mod_savepoint(true, 2014080601, 'visualclass');
+    }
+    
     return true;
 }

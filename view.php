@@ -167,6 +167,17 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
                     $url, $coursepage
                 );
                 break;
+            case $visualclass_instance::VIEW_POPUP:
+                $width = $visualclass->policyview_width;
+                $height = $visualclass->policyview_height;
+                $popup_params = "width=$width,height=$height,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes";
+                $js = "onclick=\"window.open('$url', '', '$popup_params'); return false;\"";
+                echo '<div class="urlworkaround">';
+                print_string('text_popup', 'visualclass');
+                $button_message = get_string('text_popup_view', 'visualclass');
+                echo "<br><a href=\"$url\" $js>$button_message</a>";
+                echo '</div>';
+                break;
             default:
                 echo $OUTPUT->error_text(get_string('error_unknown', 'visualclass'));
             }

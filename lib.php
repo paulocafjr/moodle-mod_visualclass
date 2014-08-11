@@ -75,6 +75,11 @@ function visualclass_add_instance(stdClass $visualclass, mod_visualclass_mod_for
     $visualclass_instance->set_policytime($visualclass_instance::TIME_UNLIMITED);
     $visualclass_instance->set_policygrades($visualclass->policygrades);
     $visualclass_instance->set_policyview($visualclass->policyview);
+    
+    if ($visualclass_instance->get_policyview() == $visualclass_instance::VIEW_POPUP) {
+        $visualclass_instance->set_policyview_width($visualclass->policyview_width);
+        $visualclass_instance->set_policyview_height($visualclass->policyview_height);
+    }
 
     $visualclass_instance->write_projectdata(
         $visualclass->course,
@@ -110,9 +115,14 @@ function visualclass_update_instance(stdClass $visualclass, mod_visualclass_mod_
     $visualclass_instance->set_name($visualclass->name);
     //$visualclass_instance->set_projectsubject($visualclass->projectsubject);
     $visualclass_instance->set_policyattempts($visualclass->policyattempts);
-    $visualclass_instance->set_policytime($visualclass->policytime);
+    //$visualclass_instance->set_policytime($visualclass->policytime);
     $visualclass_instance->set_policygrades($visualclass->policygrades);
     $visualclass_instance->set_policyview($visualclass->policyview);
+    
+    if ($visualclass_instance->get_policyview() == $visualclass_instance::VIEW_POPUP) {
+        $visualclass_instance->set_policyview_width($visualclass->policyview_width);
+        $visualclass_instance->set_policyview_height($visualclass->policyview_height);
+    }
 
     $visualclass_instance->write();
     return true;
