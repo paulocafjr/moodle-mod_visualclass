@@ -56,7 +56,7 @@ $string['felem_time_unit'] = 'minutes';
 $string['felem_time_unlimited'] = 'no time limit';
 $string['felem_view'] = 'View Policy';
 $string['felem_view_moodle'] = 'inside moodle';
-$string['felem_view_newtab'] = 'new tab';
+$string['felem_view_newtab'] = 'same tab';
 $string['felem_view_popup'] = 'popup';
 $string['felem_view_popup_width'] = 'width';
 $string['felem_view_popup_height'] = 'height';
@@ -114,13 +114,10 @@ $string['status_sessionadmin'] = 'This session will not be saved';
 $string['status_sessionok'] = 'Session successfully finished';
 $string['status_timeout'] = 'Timeout';
 // T
-$string['text_adminprivileges1'] = 'You have enough privileges to check detailed by students activity '
-    . 'reports. Do you want to continue?';
-$string['text_adminprivileges2'] = 'You have enough privileges to check detailed by question activity '
-    . 'reports. Do you want to continue?';
-$string['text_gotoproject'] = 'You will be redirected to project page. Do you want to continue?';
-$string['text_popup'] = 'A popup window will be open. Please check if your browser blocks them. '
-    . 'Do you want to continue?';
+$string['text_adminprivileges1'] = 'Detailed by Students Report - Click in the button bellow to continue';
+$string['text_adminprivileges2'] = 'Detailed by Question Report - Click in the button bellow to continue';
+$string['text_gotoproject'] = 'Project page - Click in the button bellow to continue';
+$string['text_popup'] = 'A popup window will be open. Please check if your browser blocks them.';
 $string['text_popup_view'] = 'Open popup';
 // V
 $string['visualclass'] = 'Visual Class';

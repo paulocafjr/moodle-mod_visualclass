@@ -99,11 +99,14 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
     $url_project = new moodle_url($visualclass_instance->get_projecturl());
 
     // View Report by student
-    echo $OUTPUT->confirm(get_string('text_adminprivileges1', 'visualclass'), $url_report_1, $coursepage);
+    echo $OUTPUT->heading(get_string('text_adminprivileges1', 'visualclass'), 5);
+    echo $OUTPUT->continue_button(new moodle_url($url_report_1, array()));
     // View Report by question
-    echo $OUTPUT->confirm(get_string('text_adminprivileges2', 'visualclass'), $url_report_2, $coursepage);
+    echo $OUTPUT->heading(get_string('text_adminprivileges2', 'visualclass'), 5);
+    echo $OUTPUT->continue_button(new moodle_url($url_report_2, array()));
     // View Project
-    echo $OUTPUT->confirm(get_string('text_gotoproject', 'visualclass'), $url_project, $coursepage);
+    echo $OUTPUT->heading(get_string('text_gotoproject', 'visualclass'), 5);
+    echo $OUTPUT->continue_button(new moodle_url($url_project, array()));
 
 } else if (!has_capability('mod/visualclass:view', $context, $USER->id)) {
     $message = get_string('error_nocapability', 'visualclass');
@@ -111,7 +114,8 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
 } else {
     if (!has_capability('mod/visualclass:submit', $context, $USER->id)) {
         $url_project = new moodle_url($visualclass_instance->get_projecturl());
-        echo $OUTPUT->confirm(get_string('text_gotoproject', 'visualclass'), $url_project, $coursepage);
+        echo $OUTPUT->heading(get_string('text_gotoproject', 'visualclass'), 5);
+        echo $OUTPUT->continue_button(new moodle_url($url_project, array()));
     } else {
         // Show activity
         $attemptnumber = (int)$visualclass_instance->get_nextattemptnumber($USER->id);
@@ -162,10 +166,8 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
                 echo $OUTPUT->box($iframe);
                 break;
             case $visualclass_instance::VIEW_NEWTAB:
-                echo $OUTPUT->confirm(
-                    get_string('text_gotoproject', 'visualclass'),
-                    $url, $coursepage
-                );
+                echo $OUTPUT->heading(get_string('text_gotoproject', 'visualclass'), 5);
+                echo $OUTPUT->continue_button(new moodle_url($url, array()));
                 break;
             case $visualclass_instance::VIEW_POPUP:
                 $width = $visualclass->policyview_width;

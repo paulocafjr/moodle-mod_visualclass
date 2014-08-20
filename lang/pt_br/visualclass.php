@@ -57,7 +57,7 @@ $string['felem_time_unit'] = 'minutos';
 $string['felem_time_unlimited'] = 'sem limite de tempo';
 $string['felem_view'] = 'Política de Visualização';
 $string['felem_view_moodle'] = 'dentro do moodle';
-$string['felem_view_newtab'] = 'nova aba';
+$string['felem_view_newtab'] = 'mesma aba';
 $string['felem_view_popup'] = 'popup';
 $string['felem_view_popup_width'] = 'largura';
 $string['felem_view_popup_height'] = 'altura';
@@ -113,13 +113,11 @@ $string['status_sessionadmin'] = 'Esta sessão não será salva';
 $string['status_sessionok'] = 'Sessão concluída com sucesso';
 $string['status_timeout'] = 'Tempo esgotado';
 // T
-$string['text_adminprivileges1'] = 'Você pode visualizar o relatório detalhado por aluno da atividade. '
-    . 'Deseja continuar?';
-$string['text_adminprivileges2'] = 'Você pode visualizar o relatório detalhado por questão da atividade. '
-    . 'Deseja continuar?';
-$string['text_gotoproject'] = 'Você será redirecionado para a página do projeto. Deseja continuar?';
+$string['text_adminprivileges1'] = 'Relatório Detalhado por Aluno - Clique no botão abaixo para visualizar';
+$string['text_adminprivileges2'] = 'Relatório Detalhado por Questão - Clique no botão abaixo para visualizar';
+$string['text_gotoproject'] = 'Página do Projeto - Clique no botão abaixo para visualizar';
 $string['text_popup'] = 'Uma janela popup será aberta. Por favor verifique se seu navegador não está '
-    . 'bloqueando este tipo de janela. Deseja continuar?';
+    . 'bloqueando este tipo de janela.';
 $string['text_popup_view'] = 'Abrir popup';
 // V
 $string['visualclass'] = 'Visual Class';
