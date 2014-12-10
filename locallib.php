@@ -55,6 +55,14 @@ class mod_visualclass_sessionitem {
 
     const TYPE_TESTEVESTIBULAR = 1;
     const TYPE_PREENCHIMENTO = 2;
+    const TYPE_ROTULOAVALIAVEL = 3;
+    const TYPE_IMAGEMAVALIAVEL = 4;
+    const TYPE_ARRASTARSOLTARIMAGEM = 5;
+    const TYPE_ARRASTARSOLTAR = 6;
+    const TYPE_ARRASTARDIFERENTESOLTAR = 7;
+    const TYPE_GIRAFIGURAS = 8;
+    const TYPE_LIGAPONTOS = 9;
+    const TYPE_TESTE = 10;
 
     /**
      * Session item id

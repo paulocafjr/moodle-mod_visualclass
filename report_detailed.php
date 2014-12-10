@@ -205,6 +205,37 @@ if (!empty($valid_sessions)) {
                         }
                     } else {
                         $item_type = 'Preenchimento Lacunas';
+                        switch ($item->get_type()) {
+                        case $item::TYPE_PREENCHIMENTO :
+                            $item_type = 'Preenchimento Lacunas';
+                            break;
+                        case $item::TYPE_ROTULOAVALIAVEL :
+                            $item_type = 'Rótulo Avaliável';
+                            break;
+                        case $item::TYPE_IMAGEMAVALIAVEL :
+                            $item_type = 'Imagem Avaliável';
+                            break;
+                        case $item::TYPE_ARRASTARSOLTARIMAGEM :
+                            $item_type = 'Arrastar/Soltar Imagem';
+                            break;
+                        case $item::TYPE_ARRASTARSOLTAR :
+                            $item_type = 'Arrastar/Soltar';
+                            break;
+                        case $item::TYPE_ARRASTARDIFERENTESOLTAR :
+                            $item_type = 'Arrastar≠Soltar';
+                            break;
+                        case $item::TYPE_GIRAFIGURAS :
+                            $item_type = 'Gira Figuras';
+                            break;
+                        case $item::TYPE_LIGAPONTOS :
+                            $item_type = 'Liga Pontos';
+                            break;
+                        case $item::TYPE_TESTE :
+                            $item_type = 'Teste';
+                            break;
+                        default:
+                            $item_type = 'Exercício';
+                        }
                         if (is_array($item_answercorrect)) {
                             $item_answercorrect = implode(
                                 get_string('report_separator', 'visualclass'), $item_answercorrect
