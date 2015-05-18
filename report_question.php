@@ -88,6 +88,7 @@ if (!empty($valid_sessions)) {
     foreach ($valid_sessions as $session) {
         $items = $session->get_items();
         if (!empty($items)) {
+            sort($items);
             foreach ($items as $item) {
                 if (isset($percent[$item->get_question()])) {
                     $percent[$item->get_question()]['count'] += 1;
