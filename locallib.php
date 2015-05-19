@@ -362,6 +362,105 @@ class mod_visualclass_sessionitem {
     public function set_answeruser($answeruser) {
         $this->_answeruser = $answeruser;
     }
+    
+    /**
+     * Get question type name
+     * 
+     * @return string
+     */
+    public function get_type_name() {
+        switch ($this->_type) {
+            case self::TYPE_TESTEVESTIBULAR :
+                return 'Teste Vestibular';
+            case self::TYPE_PREENCHIMENTO :
+                return 'Preenchimento Lacunas';
+            case self::TYPE_ROTULOAVALIAVEL :
+                return 'Rótulo Avaliável';              
+            case self::TYPE_IMAGEMAVALIAVEL :
+                return 'Imagem Avaliável';                
+            case self::TYPE_ARRASTARSOLTARIMAGEM :
+                return 'Arrastar/Soltar Imagem';                
+            case self::TYPE_ARRASTARSOLTAR :
+                return 'Arrastar/Soltar';                
+            case self::TYPE_ARRASTARDIFERENTESOLTAR :
+                return 'Arrastar≠Soltar';                
+            case self::TYPE_GIRAFIGURAS :
+                return 'Gira Figuras';                
+            case self::TYPE_LIGAPONTOS :
+                return 'Liga Pontos';                
+            case self::TYPE_TESTE :
+                return 'Teste';                
+            default:
+                return 'Exercício';
+        }
+    }
+    
+    /**
+     * Get question answer name
+     * 
+     * @return string
+     */
+    public function get_answeruser_name() {
+        if ($this->get_type() === self::TYPE_TESTEVESTIBULAR) {
+            switch ($this->get_answeruser()) {
+                case 1 :
+                    return 'a';
+                case 2 :
+                    return 'b';
+                case 3 :
+                    return 'c';
+                case 4 :
+                    return 'd';
+                case 5 :
+                    return 'e';
+                default:
+                    return get_string('noanswer', 'visualclass');
+            }
+        } else {
+            if (is_array($this->_answeruser)) {
+                return implode(get_string('report_separator', 'visualclass'), $this->_answeruser);
+            }
+        }
+        return $this->get_answeruser();
+    }
+    
+    /**
+     * Get question answer name
+     * 
+     * @return string
+     */
+    public function get_answercorrect_name() {
+        if ($this->get_type() === self::TYPE_TESTEVESTIBULAR) {
+            switch ($this->get_answercorrect()) {
+                case 1 :
+                    return 'a';
+                case 2 :
+                    return 'b';
+                case 3 :
+                    return 'c';
+                case 4 :
+                    return 'd';
+                case 5 :
+                    return 'e';
+                default:
+                    return get_string('noanswer', 'visualclass');
+            }
+        } else {
+            if (is_array($this->_answercorrect)) {
+                return implode(get_string('report_separator', 'visualclass'), $this->_answercorrect);
+            }
+        }
+        return $this->get_answercorrect();
+    }
+    
+    /**
+     * Get is correct name
+     * 
+     * @return string
+     */
+    public function is_correct_name() {
+        return $this->is_correct() ? get_string('report_iscorrect', 'visualclass') : get_string('report_iswrong', 'visualclass');
+    }
 }
 
 /**
@@ -746,6 +845,33 @@ class mod_visualclass_session {
     public function set_items($items) {
         $this->_items = $items;
     }
+    
+    /**
+     * Get the number of correct answers
+     * 
+     * @return int
+     */
+    public function get_correct_answers() {
+        return round(($this->get_totalscore() / 100) * count($this->get_items()));
+    }
+    
+    /**
+     * Get the number of wrong answers
+     * 
+     * @return int
+     */
+    public function get_wrong_answers() {
+        return count($this->get_items()) - $this->get_correct_answers();
+    }
+    
+    /**
+     * Get total time
+     * 
+     * @return int
+     */
+    public function get_time() {
+        return $this->get_timestop() - $this->get_timestart();
+    }
 }
 
 /**
@@ -775,6 +901,11 @@ class mod_visualclass_instance {
     const GRADE_AVERAGE = 1;
     const GRADE_BEST = 2;
     const GRADE_WORST = 3;
+    
+    // Report Types
+    
+    const REPORT_QUESTION = 'rquestion';
+    const REPORT_USER = 'ruser';
 
     // Session
 

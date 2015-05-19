@@ -94,8 +94,12 @@ $visualclass_instance->read();
 if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
     // Showing admin options
     $url_report_params = array('id' => $id);
+    $url_report_params_user = array('cmid' => $id, 'type' => mod_visualclass_instance::REPORT_USER);
+    $url_report_params_question = array('cmid' => $id, 'type' => mod_visualclass_instance::REPORT_QUESTION);
     $url_report_1 = new moodle_url('/mod/visualclass/report_detailed.php', $url_report_params);
     $url_report_2 = new moodle_url('/mod/visualclass/report_question.php', $url_report_params);
+    $url_report_3 = new moodle_url('/mod/visualclass/export_xlsx.php', $url_report_params_user);
+    $url_report_4 = new moodle_url('/mod/visualclass/export_xlsx.php', $url_report_params_question);
     $url_project = new moodle_url($visualclass_instance->get_projecturl());
 
     // View Report by student
@@ -104,6 +108,12 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
     // View Report by question
     echo $OUTPUT->heading(get_string('text_adminprivileges2', 'visualclass'), 5);
     echo $OUTPUT->continue_button(new moodle_url($url_report_2, array()));
+    // Export Report by student
+    echo $OUTPUT->heading(get_string('text_adminprivileges3', 'visualclass'), 5);
+    echo $OUTPUT->continue_button(new moodle_url($url_report_3, array()));
+    // Export Report by question
+    echo $OUTPUT->heading(get_string('text_adminprivileges4', 'visualclass'), 5);
+    echo $OUTPUT->continue_button(new moodle_url($url_report_4, array()));
     // View Project
     echo $OUTPUT->heading(get_string('text_gotoproject', 'visualclass'), 5);
     echo $OUTPUT->continue_button(new moodle_url($url_project, array()));
