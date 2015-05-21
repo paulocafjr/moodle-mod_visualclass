@@ -136,8 +136,15 @@ if ($type === mod_visualclass_instance::REPORT_USER) {
                 $worksheet->write($rowindex, $columnindex++, $item->get_answeruser_name());
                 
                 // Either correct or not
-                $worksheet->write($rowindex, $columnindex++, $item->is_correct_name());
+                if ($item->is_correct()) {
+                    $worksheet->write($rowindex, $columnindex++, $item->is_correct_name(), $workbook->add_format(array('bg_color'=>'green')));
+                } else {
+                    $worksheet->write($rowindex, $columnindex++, $item->is_correct_name(), $workbook->add_format(array('bg_color'=>'red')));
+                }
             }
+            
+            // Extra line
+            $worksheet->write(++$rowindex, 0, '');
         }
     }
 } else if ($type === mod_visualclass_instance::REPORT_QUESTION) {
