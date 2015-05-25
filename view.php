@@ -134,7 +134,7 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
         $condition1 = $policyattempts
         !== $visualclass_instance::ATTEMPT_UNLIMITED ? true : false;
 
-        $condition2 = $attemptnumber > $policyattempts ? true : false;
+        $condition2 = $attemptnumber > $policyattempts && empty($sessionid) ? true : false;
 
         if ($condition1 && $condition2) {
             $message = get_string('error_maxattemptsreached', 'visualclass');
@@ -143,12 +143,12 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
             // Creating a session for this user in this activity
             $url = $visualclass_instance->get_projecturl();
             if (!empty($sessionid)) {
-                if (!empty($pagetitle)) {
-                    if (!strstr($pagetitle, '.htm')) {
-                        $pagetitle .= '.htm';
-                    }
-                    $url .= $pagetitle;
-                }
+//                if (!empty($pagetitle)) {
+//                    if (!strstr($pagetitle, '.htm')) {
+//                        $pagetitle .= '.htm';
+//                    }
+//                    $url .= $pagetitle;
+//                }
                 $visualclass_session = new mod_visualclass_session();
                 $visualclass_session->set_id($sessionid);
                 $visualclass_session->read();
