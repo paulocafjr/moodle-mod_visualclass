@@ -30,6 +30,7 @@
     <input id="button" type="button" onclick="open_moodle()">
     <input id="urlredirect" type="hidden" value="">
 </div>
+<script type="text/javascript" src="GeraHTML_cookie.js"></script>
 <script type="text/javascript" src="GeraHTML_json2.js"></script>
 <script type="text/javascript" src="GeraHTML_source.js"></script>
 <script type="text/javascript" src="moodle.js"></script>
@@ -45,6 +46,9 @@
     var data = "finalscore=" + finalscore;
     var script = "session_end.php";
     send_data(script, data);
+    
+    // Reset Cookie
+    zerarCookies(projeto);
 
     // Setting fields
     document.getElementById("valuecorrect").innerHTML = acertos;
