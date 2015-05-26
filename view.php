@@ -141,7 +141,7 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
             echo $OUTPUT->error_text($message);
         } else {
             // Creating a session for this user in this activity
-            $url = $visualclass_instance->get_projecturl();
+            $url = $visualclass_instance->get_projecturl() . '?userid=' . md5($USER->id);
             if (!empty($sessionid)) {
 //                if (!empty($pagetitle)) {
 //                    if (!strstr($pagetitle, '.htm')) {
