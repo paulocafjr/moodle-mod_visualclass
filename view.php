@@ -153,19 +153,19 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
             $url = $visualclass_instance->get_projecturl();
             $params = '?userid=' . md5($USER->id);
             if (!empty($sessionid)) {
-                if (!empty($pagetitle)) {
-                    if (!strstr($pagetitle, '.htm')) {
-                        $pagetitle .= '.htm';
-                    }
-                    $url .= $pagetitle;
-                }
-                
-                if (!empty($lastpage)) {
-                    if (!strstr($lastpage, '.htm')) {
-                        $lastpage .= '.htm';
-                    }
-                    $params .= '&lastpage=' . $lastpage;
-                }
+//                if (!empty($pagetitle)) {
+//                    if (!strstr($pagetitle, '.htm')) {
+//                        $pagetitle .= '.htm';
+//                    }
+//                    $url .= $pagetitle;
+//                }
+//                
+//                if (!empty($lastpage)) {
+//                    if (!strstr($lastpage, '.htm')) {
+//                        $lastpage .= '.htm';
+//                    }
+//                    $params .= '&lastpage=' . $lastpage;
+//                }
                 $visualclass_session = new mod_visualclass_session();
                 $visualclass_session->set_id($sessionid);
                 $visualclass_session->read();
