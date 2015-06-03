@@ -70,6 +70,49 @@ $filename = $currenttime . $extension;
 $workbook = new MoodleExcelWorkbook($filename, 'Excel2007');
 $worksheet = $workbook->add_worksheet('Moodle');
 
+// Rows
+foreach ($validsessions as $session) {
+    // Get user full name
+    $userid = $session->get_userid();
+    $users = user_get_users_by_id(array($userid));
+    $user = $users[$userid];
+    $fullname = $user->firstname . ' ' . $user->lastname;
+
+    if (!isset($content[$fullname])) {
+        $content[$fullname] = array();
+    }
+
+    $values = new stdClass();
+    $values->session = $session;
+    $values->attemptnumber = $session->get_attemptnumber();
+    $values->time = round(
+        ($session->get_timestop() - $session->get_timestart()) / mod_visualclass_instance::TIME_BASE
+    );
+    $values->timestop = $session->get_timestop();
+    $values->totalscore = $session->get_totalscore();
+    $values->items = $session->get_items();
+
+    switch ($instance->get_policygrades()) {
+    case mod_visualclass_instance::GRADE_BEST:
+        if (!isset($content[$fullname][0])) {
+            $content[$fullname][0] = $values;
+        } else {
+            if ($content[$fullname][0]->totalscore < $values->totalscore) {
+                $content[$fullname][0] = $values;
+            }
+        }
+        break;
+    default:
+        if (!isset($content[$fullname][0])) {
+            $content[$fullname][0] = $values;
+        } else {
+            if ($content[$fullname][0]->timestop < $values->timestop) {
+                $content[$fullname][0] = $values;
+            }
+        }
+    }
+}
+
 // Writing report
 $rowindex = 0;
 $columnindex = 0;
@@ -87,15 +130,8 @@ if ($type === mod_visualclass_instance::REPORT_USER) {
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_answercorrect', 'visualclass'));
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_answeruser', 'visualclass'));
     
-    // Rows
-    foreach ($validsessions as $session) {
-        // Get user full name
-        $userid = $session->get_userid();
-        $users = user_get_users_by_id(array($userid));
-        $user = $users[$userid];
-        $fullname = $user->firstname . ' ' . $user->lastname;
-        
-        $sessionitems = $session->get_items();
+    foreach ($content as $fullname => $values) {
+        $sessionitems = $values[0]->items;
         sort($sessionitems);
         if (!empty($sessionitems)) {
             foreach ($sessionitems as $item) {
@@ -106,19 +142,19 @@ if ($type === mod_visualclass_instance::REPORT_USER) {
                 $worksheet->write($rowindex, $columnindex++, $fullname);
 
                 // User attempt number
-                $worksheet->write_number($rowindex, $columnindex++, $session->get_attemptnumber());
+                $worksheet->write_number($rowindex, $columnindex++, $values[0]->session->get_attemptnumber());
                 
                 // User correct answers
-                $worksheet->write_number($rowindex, $columnindex++, $session->get_correct_answers());
+                $worksheet->write_number($rowindex, $columnindex++, $values[0]->session->get_correct_answers());
                 
                 // User wrong answers
-                $worksheet->write_number($rowindex, $columnindex++, $session->get_wrong_answers());
+                $worksheet->write_number($rowindex, $columnindex++, $values[0]->session->get_wrong_answers());
                 
                 // User grade
-                $worksheet->write_number($rowindex, $columnindex++, $session->get_totalscore());
+                $worksheet->write_number($rowindex, $columnindex++, $values[0]->session->get_totalscore());
                 
                 // User time
-                $worksheet->write_number($rowindex, $columnindex++, $session->get_time());
+                $worksheet->write_number($rowindex, $columnindex++, $values[0]->session->get_time());
 
                 // Page title
                 $worksheet->write($rowindex, $columnindex++, $item->get_pagetitle());
@@ -157,8 +193,8 @@ if ($type === mod_visualclass_instance::REPORT_USER) {
     
     // Math
     $percentage = array();
-    foreach ($validsessions as $session) {
-        $sessionitems = $session->get_items();
+    foreach ($content as $fullname => $values) {
+        $sessionitems = $values[0]->items;
         sort($sessionitems);
         if (!empty($sessionitems)) {
             foreach ($sessionitems as $item) {

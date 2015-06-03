@@ -123,8 +123,7 @@ class mod_visualclass_mod_form extends moodleform_mod {
         $last = get_string('felem_grades_last', 'visualclass');
         $gradesoptions = array(
             mod_visualclass_instance::GRADE_LAST => $last,
-            mod_visualclass_instance::GRADE_BEST => $best,
-            mod_visualclass_instance::GRADE_AVERAGE => $average
+            mod_visualclass_instance::GRADE_BEST => $best
         );
         $mform->addElement(
             'select', 'policygrades',

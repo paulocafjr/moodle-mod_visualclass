@@ -113,7 +113,7 @@ if (!empty($valid_sessions)) {
                 }
             }
             break;
-        case mod_visualclass_instance::GRADE_LAST:
+        default:
             if (!isset($content[$username][0])) {
                 $content[$username][0] = $values;
             } else {
@@ -121,9 +121,6 @@ if (!empty($valid_sessions)) {
                     $content[$username][0] = $values;
                 }
             }
-            break;
-        default:
-            $content[$username][$session->get_id()] = $values;
         }
     }
     unset($user);

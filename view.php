@@ -68,19 +68,28 @@ $coursepage = new moodle_url($CFG->wwwroot . '/course/view.php', array('id' => $
 // Setting bookmark
 $sessionid = null;
 $pagetitle = null;
+$lastpage = null;
 $sessions = $visualclass_instance->get_sessions();
 if (!empty($sessions)) {
     foreach ($sessions as $session) {
         $timestop = $session->get_timestop();
         if ($session->get_userid() == $USER->id && empty($timestop)) {
             $sessionid = $session->get_id();
-            $higher = 0;
+            $higher = null;
             $sessionitems = $session->get_items();
             if (!empty($sessionitems)) {
+                sort($sessionitems);
                 foreach ($sessionitems as $sessionitem) {
-                    if ($sessionitem->get_id() > $higher) {
-                        $higher = $sessionitem->get_id();
-                        $pagetitle = $sessionitem->get_pagetitle();
+                    if (!empty($higher)) {
+                        if ($sessionitem->get_id() > $higher->get_id()) {
+                            if ($higher->get_pagetitle() !== $sessionitem->get_pagetitle()) {
+                                $lastpage = $higher->get_pagetitle();
+                            }
+                            $higher = $sessionitem;
+                            $pagetitle = $sessionitem->get_pagetitle();
+                        }
+                    } else {
+                        $higher = $sessionitem;
                     }
                 }
             }
@@ -141,14 +150,22 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
             echo $OUTPUT->error_text($message);
         } else {
             // Creating a session for this user in this activity
-            $url = $visualclass_instance->get_projecturl() . '?userid=' . md5($USER->id);
+            $url = $visualclass_instance->get_projecturl();
+            $params = '?userid=' . md5($USER->id);
             if (!empty($sessionid)) {
-//                if (!empty($pagetitle)) {
-//                    if (!strstr($pagetitle, '.htm')) {
-//                        $pagetitle .= '.htm';
-//                    }
-//                    $url .= $pagetitle;
-//                }
+                if (!empty($pagetitle)) {
+                    if (!strstr($pagetitle, '.htm')) {
+                        $pagetitle .= '.htm';
+                    }
+                    $url .= $pagetitle;
+                }
+                
+                if (!empty($lastpage)) {
+                    if (!strstr($lastpage, '.htm')) {
+                        $lastpage .= '.htm';
+                    }
+                    $params .= '&lastpage=' . $lastpage;
+                }
                 $visualclass_session = new mod_visualclass_session();
                 $visualclass_session->set_id($sessionid);
                 $visualclass_session->read();
@@ -168,6 +185,7 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
             $_SESSION[$visualclass_instance::SESSION_PREFIX . $USER->id] = $sessionid;
 
             // Showing Activity
+            $url .= $params;
             switch ($visualclass_instance->get_policyview()) {
             case $visualclass_instance::VIEW_MOODLE:
                 $iframe = '<iframe src="' . $url

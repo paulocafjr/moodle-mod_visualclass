@@ -61,5 +61,10 @@ function xmldb_visualclass_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2015060300, 'visualclass');
     }
     
+    if ($oldversion < 2015060301) {
+        $DB->set_field_select('visualclass', 'policygrades', 1, 'policygrades = ?', array(3));
+        upgrade_mod_savepoint(true, 2015060301, 'visualclass');
+    }
+    
     return true;
 }
