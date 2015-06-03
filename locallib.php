@@ -683,6 +683,11 @@ class mod_visualclass_session {
                 }
             }
             break;
+        case mod_visualclass_instance::GRADE_LAST:
+            foreach ($sessions as $session) {
+                $score = $session->totalscore;
+            }
+            break;
         default:
             return false;
         }
@@ -901,6 +906,7 @@ class mod_visualclass_instance {
     const GRADE_AVERAGE = 1;
     const GRADE_BEST = 2;
     const GRADE_WORST = 3;
+    const GRADE_LAST = 4;
     
     // Report Types
     

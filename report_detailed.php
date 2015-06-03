@@ -93,16 +93,38 @@ if (!empty($valid_sessions)) {
         if (!isset($content[$username])) {
             $content[$username] = array();
         }
-
+        
         $values = new stdClass();
         $values->attemptnumber = $session->get_attemptnumber();
         $values->time = round(
             ($session->get_timestop() - $session->get_timestart()) / $visualclass_instance::TIME_BASE
         );
+        $values->timestop = $session->get_timestop();
         $values->totalscore = $session->get_totalscore();
         $values->items = $session->get_items();
-
-        $content[$username][$session->get_id()] = $values;
+        
+        switch ($visualclass_instance->get_policygrades()) {
+        case mod_visualclass_instance::GRADE_BEST:
+            if (!isset($content[$username][0])) {
+                $content[$username][0] = $values;
+            } else {
+                if ($content[$username][0]->totalscore < $values->totalscore) {
+                    $content[$username][0] = $values;
+                }
+            }
+            break;
+        case mod_visualclass_instance::GRADE_LAST:
+            if (!isset($content[$username][0])) {
+                $content[$username][0] = $values;
+            } else {
+                if ($content[$username][0]->timestop < $values->timestop) {
+                    $content[$username][0] = $values;
+                }
+            }
+            break;
+        default:
+            $content[$username][$session->get_id()] = $values;
+        }
     }
     unset($user);
     unset($userid);

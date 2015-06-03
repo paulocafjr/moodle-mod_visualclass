@@ -47,6 +47,7 @@ $string['felem_grades'] = 'Grade Policy';
 $string['felem_grades_average'] = 'average';
 $string['felem_grades_best'] = 'best score';
 $string['felem_grades_worst'] = 'worst score';
+$string['felem_grades_last'] = 'last score';
 $string['felem_header_settings'] = 'Settings';
 $string['felem_name'] = 'Name';
 $string['felem_name_help'] = 'Identifies this activity in course';

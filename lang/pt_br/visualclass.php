@@ -48,6 +48,7 @@ $string['felem_grades'] = 'Política de Notas';
 $string['felem_grades_average'] = 'média';
 $string['felem_grades_best'] = 'melhor resultado';
 $string['felem_grades_worst'] = 'pior resultado';
+$string['felem_grades_last'] = 'último resultado';
 $string['felem_header_settings'] = 'Configurações';
 $string['felem_name'] = 'Nome';
 $string['felem_name_help'] = 'Identifica a atividade no curso';

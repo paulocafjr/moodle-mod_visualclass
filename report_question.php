@@ -86,7 +86,43 @@ if (!empty($sessions)) {
 if (!empty($valid_sessions)) {
     $percent = array();
     foreach ($valid_sessions as $session) {
-        $items = $session->get_items();
+        $userid = $session->get_userid();
+        $user = user_get_users_by_id(array($userid));
+        $user = $user[$userid];
+        $username = $user->firstname . ' ' . $user->lastname;
+
+        if (!isset($content[$username])) {
+            $content[$username] = array();
+        }
+        
+        $values = new stdClass();
+        $values->timestop = $session->get_timestop();
+        $values->totalscore = $session->get_totalscore();
+        $values->items = $session->get_items();
+        
+        switch ($visualclass_instance->get_policygrades()) {
+        case mod_visualclass_instance::GRADE_BEST:
+            if (!isset($content[$username][0])) {
+                $content[$username][0] = $values;
+            } else {
+                if ($content[$username][0]->totalscore < $values->totalscore) {
+                    $content[$username][0] = $values;
+                }
+            }
+            break;
+        default:
+            if (!isset($content[$username][0])) {
+                $content[$username][0] = $values;
+            } else {
+                if ($content[$username][0]->timestop < $values->timestop) {
+                    $content[$username][0] = $values;
+                }
+            }
+        }
+    }
+    
+    foreach ($content as $username => $values) {
+        $items = $values[0]->items;
         if (!empty($items)) {
             sort($items);
             foreach ($items as $item) {
