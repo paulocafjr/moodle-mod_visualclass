@@ -684,9 +684,7 @@ class mod_visualclass_session {
             }
             break;
         case mod_visualclass_instance::GRADE_LAST:
-            foreach ($sessions as $session) {
-                $score = $session->totalscore;
-            }
+            //do nothing
             break;
         default:
             return false;
