@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -33,7 +32,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
-$id = optional_param('id', 0, PARAM_INT); // course_module ID
+$id = optional_param('id', 0, PARAM_INT);
 
 if ($id) {
     $cm = get_coursemodule_from_id('visualclass', $id, 0, false, MUST_EXIST);
@@ -46,30 +45,30 @@ if ($id) {
 require_login($course, true, $cm);
 $context = context_course::instance($course->id);
 
-/// Print the page header
+// Print the page header.
 $PAGE->set_url('/mod/visualclass/view.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($visualclass->name));
 $PAGE->set_heading(format_string($course->fullname));
 
-// Output starts here
+// Output starts here.
 echo $OUTPUT->header();
 
-// Checking what type user is
+// Checking what type user is.
 global $USER, $CFG;
 
-// Loading instance
-$visualclass_instance = new mod_visualclass_instance();
-$visualclass_instance->set_id($visualclass->id);
-$visualclass_instance->read();
+// Loading instance.
+$activityobj = new mod_visualclass_instance();
+$activityobj->set_id($visualclass->id);
+$activityobj->read();
 
-// Cancel button action
+// Cancel button action.
 $coursepage = new moodle_url($CFG->wwwroot . '/course/view.php', array('id' => $course->id));
 
-// Setting bookmark
+// Setting bookmark.
 $sessionid = null;
 $pagetitle = null;
 $lastpage = null;
-$sessions = $visualclass_instance->get_sessions();
+$sessions = $activityobj->get_sessions();
 if (!empty($sessions)) {
     foreach ($sessions as $session) {
         $timestop = $session->get_timestop();
@@ -97,51 +96,50 @@ if (!empty($sessions)) {
     }
 }
 
-// Refreshing instance
-$visualclass_instance->read();
+// Refreshing instance.
+$activityobj->read();
 
 if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
-    // Showing admin options
-    $url_report_params = array('id' => $id);
-    $url_report_params_user = array('cmid' => $id, 'type' => mod_visualclass_instance::REPORT_USER);
-    $url_report_params_question = array('cmid' => $id, 'type' => mod_visualclass_instance::REPORT_QUESTION);
-    $url_report_1 = new moodle_url('/mod/visualclass/report_detailed.php', $url_report_params);
-    $url_report_2 = new moodle_url('/mod/visualclass/report_question.php', $url_report_params);
-    $url_report_3 = new moodle_url('/mod/visualclass/export_xlsx.php', $url_report_params_user);
-    $url_report_4 = new moodle_url('/mod/visualclass/export_xlsx.php', $url_report_params_question);
-    $url_project = new moodle_url($visualclass_instance->get_projecturl());
+    // Showing admin options.
+    $urlreportparams = array('id' => $id);
+    $urlreportparamsuser = array('cmid' => $id, 'type' => mod_visualclass_instance::REPORT_USER);
+    $urlreportparamsquestion = array('cmid' => $id, 'type' => mod_visualclass_instance::REPORT_QUESTION);
+    $urlreport1 = new moodle_url('/mod/visualclass/report_detailed.php', $urlreportparams);
+    $urlreport2 = new moodle_url('/mod/visualclass/report_question.php', $urlreportparams);
+    $urlreport3 = new moodle_url('/mod/visualclass/export_xlsx.php', $urlreportparamsuser);
+    $urlreport4 = new moodle_url('/mod/visualclass/export_xlsx.php', $urlreportparamsquestion);
+    $urlproject = new moodle_url($activityobj->get_projecturl());
 
-    // View Report by student
+    // View Report by student.
     echo $OUTPUT->heading(get_string('text_adminprivileges1', 'visualclass'), 5);
-    echo $OUTPUT->continue_button(new moodle_url($url_report_1, array()));
-    // View Report by question
+    echo $OUTPUT->continue_button(new moodle_url($urlreport1, array()));
+    // View Report by question.
     echo $OUTPUT->heading(get_string('text_adminprivileges2', 'visualclass'), 5);
-    echo $OUTPUT->continue_button(new moodle_url($url_report_2, array()));
-    // Export Report by student
+    echo $OUTPUT->continue_button(new moodle_url($urlreport2, array()));
+    // Export Report by student.
     echo $OUTPUT->heading(get_string('text_adminprivileges3', 'visualclass'), 5);
-    echo $OUTPUT->continue_button(new moodle_url($url_report_3, array()));
-    // Export Report by question
+    echo $OUTPUT->continue_button(new moodle_url($urlreport3, array()));
+    // Export Report by question.
     echo $OUTPUT->heading(get_string('text_adminprivileges4', 'visualclass'), 5);
-    echo $OUTPUT->continue_button(new moodle_url($url_report_4, array()));
-    // View Project
+    echo $OUTPUT->continue_button(new moodle_url($urlreport4, array()));
+    // View Project.
     echo $OUTPUT->heading(get_string('text_gotoproject', 'visualclass'), 5);
-    echo $OUTPUT->continue_button(new moodle_url($url_project, array()));
+    echo $OUTPUT->continue_button(new moodle_url($urlproject, array()));
 
 } else if (!has_capability('mod/visualclass:view', $context, $USER->id)) {
     $message = get_string('error_nocapability', 'visualclass');
     echo $OUTPUT->error_text($message);
 } else {
     if (!has_capability('mod/visualclass:submit', $context, $USER->id)) {
-        $url_project = new moodle_url($visualclass_instance->get_projecturl());
+        $urlproject = new moodle_url($activityobj->get_projecturl());
         echo $OUTPUT->heading(get_string('text_gotoproject', 'visualclass'), 5);
-        echo $OUTPUT->continue_button(new moodle_url($url_project, array()));
+        echo $OUTPUT->continue_button(new moodle_url($urlproject, array()));
     } else {
-        // Show activity
-        $attemptnumber = (int)$visualclass_instance->get_nextattemptnumber($USER->id);
-        $policyattempts = (int)$visualclass_instance->get_policyattempts();
+        // Show activity.
+        $attemptnumber = (int)$activityobj->get_nextattemptnumber($USER->id);
+        $policyattempts = (int)$activityobj->get_policyattempts();
 
-        $condition1 = $policyattempts
-        !== $visualclass_instance::ATTEMPT_UNLIMITED ? true : false;
+        $condition1 = $policyattempts !== $activityobj::ATTEMPT_UNLIMITED ? true : false;
 
         $condition2 = $attemptnumber > $policyattempts && empty($sessionid) ? true : false;
 
@@ -149,63 +147,51 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
             $message = get_string('error_maxattemptsreached', 'visualclass');
             echo $OUTPUT->error_text($message);
         } else {
-            // Creating a session for this user in this activity
-            $url = $visualclass_instance->get_projecturl();
+            // Creating a session for this user in this activity.
+            $url = $activityobj->get_projecturl();
             $params = '?userid=' . md5($USER->id);
             if (!empty($sessionid)) {
-//                if (!empty($pagetitle)) {
-//                    if (!strstr($pagetitle, '.htm')) {
-//                        $pagetitle .= '.htm';
-//                    }
-//                    $url .= $pagetitle;
-//                }
-//                
-//                if (!empty($lastpage)) {
-//                    if (!strstr($lastpage, '.htm')) {
-//                        $lastpage .= '.htm';
-//                    }
-//                    $params .= '&lastpage=' . $lastpage;
-//                }
-                $visualclass_session = new mod_visualclass_session();
-                $visualclass_session->set_id($sessionid);
-                $visualclass_session->read();
-                $visualclass_session->set_timestart(time());
-                $visualclass_session->write();
+                $activitysession = new mod_visualclass_session();
+                $activitysession->set_id($sessionid);
+                $activitysession->read();
+                $activitysession->set_timestart(time());
+                $activitysession->write();
             } else {
-                $visualclass_session = new mod_visualclass_session();
-                $visualclass_session->set_userid($USER->id);
-                $visualclass_session->set_modid($visualclass->id);
-                $visualclass_session->set_attemptnumber($attemptnumber);
-                $visualclass_session->set_timestart(time());
-                $visualclass_session->write();
+                $activitysession = new mod_visualclass_session();
+                $activitysession->set_userid($USER->id);
+                $activitysession->set_modid($visualclass->id);
+                $activitysession->set_attemptnumber($attemptnumber);
+                $activitysession->set_timestart(time());
+                $activitysession->write();
 
-                $sessionid = $visualclass_session->get_id();
+                $sessionid = $activitysession->get_id();
             }
 
-            $_SESSION[$visualclass_instance::SESSION_PREFIX . $USER->id] = $sessionid;
+            $_SESSION[$activityobj::SESSION_PREFIX . $USER->id] = $sessionid;
 
-            // Showing Activity
+            // Showing Activity.
             $url .= $params;
-            switch ($visualclass_instance->get_policyview()) {
-            case $visualclass_instance::VIEW_MOODLE:
+            switch ($activityobj->get_policyview()) {
+            case $activityobj::VIEW_MOODLE:
                 $iframe = '<iframe src="' . $url
                     . '" seamless="seamless" style="width:100%;height:768px;">'
                     . '</iframe>';
                 echo $OUTPUT->box($iframe);
                 break;
-            case $visualclass_instance::VIEW_NEWTAB:
+            case $activityobj::VIEW_NEWTAB:
                 echo $OUTPUT->heading(get_string('text_gotoproject', 'visualclass'), 5);
                 echo $OUTPUT->continue_button(new moodle_url($url, array()));
                 break;
-            case $visualclass_instance::VIEW_POPUP:
+            case $activityobj::VIEW_POPUP:
                 $width = $visualclass->policyview_width;
                 $height = $visualclass->policyview_height;
-                $popup_params = "width=$width,height=$height,toolbar=no,location=no,menubar=no,copyhistory=no,status=no,directories=no,scrollbars=yes,resizable=yes";
-                $js = "onclick=\"window.open('$url', '', '$popup_params'); return false;\"";
+                $popupparams = "width=$width,height=$height,toolbar=no,location=no,menubar=no,copyhistory=no,"
+                    ."status=no,directories=no,scrollbars=yes,resizable=yes";
+                $js = "onclick=\"window.open('$url', '', '$popupparams'); return false;\"";
                 echo '<div class="urlworkaround">';
                 print_string('text_popup', 'visualclass');
-                $button_message = get_string('text_popup_view', 'visualclass');
-                echo "<br><a href=\"$url\" $js>$button_message</a>";
+                $buttonmessage = get_string('text_popup_view', 'visualclass');
+                echo "<br><a href=\"$url\" $js>$buttonmessage</a>";
                 echo '</div>';
                 break;
             default:
@@ -216,7 +202,7 @@ if (has_capability('mod/visualclass:reports', $context, $USER->id)) {
 }
 
 
-// Finish the page
+// Finish the page.
 echo $OUTPUT->footer();
 
 session_write_close();

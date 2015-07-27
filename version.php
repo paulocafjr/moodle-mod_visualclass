@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -27,6 +26,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$module->version = 2015071501; // The current module version (Date: YYYYMMDDXX)
-$module->requires = 2011120510; // Requires this Moodle version
-$module->component = 'mod_visualclass'; // To check on upgrade, that module sits in correct place
+$module->version = 2015072701; // The current module version (Date: YYYYMMDDXX).
+$module->requires = 2011120510; // Requires this Moodle version.
+$module->component = 'mod_visualclass'; // To check on upgrade, that module sits in correct place.

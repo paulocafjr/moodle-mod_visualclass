@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -29,7 +28,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/user/lib.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
-$id = optional_param('id', 0, PARAM_INT); // course_module ID
+$id = optional_param('id', 0, PARAM_INT);
 
 if ($id) {
     $cm = get_coursemodule_from_id('visualclass', $id, 0, false, MUST_EXIST);
@@ -40,52 +39,50 @@ if ($id) {
 }
 
 require_login($course, true, $cm);
-//Deprecated
-//$context = get_context_instance(CONTEXT_MODULE, $cm->id);
 $context = context_module::instance($cm->id);
 
-/// Print the page header
+// Print the page header.
 $PAGE->set_url('/mod/visualclass/report_detailed.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($visualclass->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
-// Output starts here
+// Output starts here.
 echo $OUTPUT->header();
 
-// Checking what type user is
+// Checking what type user is.
 global $USER, $CFG;
 
-// Loading instance
-$visualclass_instance = new mod_visualclass_instance();
-$visualclass_instance->set_id($visualclass->id);
-$visualclass_instance->read();
+// Loading instance.
+$activityobj = new mod_visualclass_instance();
+$activityobj->set_id($visualclass->id);
+$activityobj->read();
 
 // Writing report
-// Box start
+// Box start.
 echo $OUTPUT->box_start();
 
-// Header
+// Header.
 echo html_writer::tag('h1', get_string('report_headerquestion', 'visualclass'));
 
-// Gathering sessions info
+// Gathering sessions info.
 $content = array();
-$sessions = $visualclass_instance->get_sessions();
+$sessions = $activityobj->get_sessions();
 
-// Removing unfinished sessions
-$valid_sessions = array();
+// Removing unfinished sessions.
+$validsessions = array();
 if (!empty($sessions)) {
     foreach ($sessions as $session) {
         $timestop = $session->get_timestop();
         if (!empty($timestop)) {
-            $valid_sessions[] = $session;
+            $validsessions[] = $session;
         }
     }
 }
 
-if (!empty($valid_sessions)) {
+if (!empty($validsessions)) {
     $percent = array();
-    foreach ($valid_sessions as $session) {
+    foreach ($validsessions as $session) {
         $userid = $session->get_userid();
         $user = user_get_users_by_id(array($userid));
         $user = $user[$userid];
@@ -94,13 +91,13 @@ if (!empty($valid_sessions)) {
         if (!isset($content[$username])) {
             $content[$username] = array();
         }
-        
+
         $values = new stdClass();
         $values->timestop = $session->get_timestop();
         $values->totalscore = $session->get_totalscore();
         $values->items = $session->get_items();
-        
-        switch ($visualclass_instance->get_policygrades()) {
+
+        switch ($activityobj->get_policygrades()) {
         case mod_visualclass_instance::GRADE_BEST:
             if (!isset($content[$username][0])) {
                 $content[$username][0] = $values;
@@ -120,7 +117,7 @@ if (!empty($valid_sessions)) {
             }
         }
     }
-    
+
     foreach ($content as $username => $values) {
         $items = $values[0]->items;
         if (!empty($items)) {
@@ -143,9 +140,9 @@ if (!empty($valid_sessions)) {
         }
     }
 
-    // Explode
-    $html_table = new html_table();
-    $html_table->head = array(
+    // Explode.
+    $htmltable = new html_table();
+    $htmltable->head = array(
         get_string('report_question', 'visualclass'),
         get_string('report_percentcorrect', 'visualclass'),
         get_string('report_percentwrong', 'visualclass'),
@@ -163,14 +160,14 @@ if (!empty($valid_sessions)) {
         );
         $rows[] = $row;
     }
-    $html_table->data = $rows;
-    echo html_writer::table($html_table);
+    $htmltable->data = $rows;
+    echo html_writer::table($htmltable);
 } else {
     echo $OUTPUT->error_text(get_string('error_nosessions', 'visualclass'));
 }
 
-// Box end
+// Box end.
 echo $OUTPUT->box_end();
 
-// Finish the page
+// Finish the page.
 echo $OUTPUT->footer();

@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -17,8 +16,6 @@
 
 /**
  * Internal logic for mod_visualclass
- *
- * TODO grava nota por testes
  *
  * @package    mod
  * @subpackage visualclass
@@ -39,7 +36,7 @@ require_once(dirname(__FILE__) . '/lib.php');
  * detailed information about user's performance in
  * gradebook.
  *
- * @see       mod_visualclass_session
+ * @see mod_visualclass_session
  *
  * @package   mod_visualclass
  * @copyright Caltech Informática Ltda <class@class.com.br>
@@ -47,11 +44,11 @@ require_once(dirname(__FILE__) . '/lib.php');
  */
 class mod_visualclass_sessionitem {
 
-    // Database Constants
+    // Database Constants.
 
     const DB_TABLE = 'visualclass_item';
 
-    // Item Types
+    // Item Types.
 
     const TYPE_TESTEVESTIBULAR = 1;
     const TYPE_PREENCHIMENTO = 2;
@@ -110,12 +107,12 @@ class mod_visualclass_sessionitem {
     /**
      * Constructor
      *
-     * @param int    $id
-     * @param int    $sessionid
+     * @param int $id
+     * @param int $sessionid
      * @param string $pagetitle
-     * @param int    $type
+     * @param int $type
      * @param string $question
-     * @param mixed  $answercorrect
+     * @param mixed $answercorrect
      * @param string $answeruser
      */
     public function __construct(
@@ -147,7 +144,7 @@ class mod_visualclass_sessionitem {
         $data->type = $this->get_type();
         $data->question = $this->get_question();
 
-        // Handling various answers
+        // Handling various answers.
         $answercorrect = $this->get_answercorrect();
         if (is_array($answercorrect)) {
             $answercorrect = implode('|', $answercorrect);
@@ -188,7 +185,7 @@ class mod_visualclass_sessionitem {
             $this->set_type($data->type);
             $this->set_question($data->question);
 
-            // Handling various answers
+            // Handling various answers.
             $answercorrect = $data->answercorrect;
             if (strstr($answercorrect, '|') !== false) {
                 $answercorrect = explode('|', $answercorrect);
@@ -235,7 +232,7 @@ class mod_visualclass_sessionitem {
         }
     }
 
-    // Getters and Setters
+    // Getters and Setters.
 
     /**
      * Get session item id
@@ -362,10 +359,10 @@ class mod_visualclass_sessionitem {
     public function set_answeruser($answeruser) {
         $this->_answeruser = $answeruser;
     }
-    
+
     /**
      * Get question type name
-     * 
+     *
      * @return string
      */
     public function get_type_name() {
@@ -375,33 +372,33 @@ class mod_visualclass_sessionitem {
             case self::TYPE_PREENCHIMENTO :
                 return 'Preenchimento Lacunas';
             case self::TYPE_ROTULOAVALIAVEL :
-                return 'Rótulo Avaliável';              
+                return 'Rótulo Avaliável';
             case self::TYPE_IMAGEMAVALIAVEL :
-                return 'Imagem Avaliável';                
+                return 'Imagem Avaliável';
             case self::TYPE_ARRASTARSOLTARIMAGEM :
-                return 'Arrastar/Soltar Imagem';                
+                return 'Arrastar/Soltar Imagem';
             case self::TYPE_ARRASTARSOLTAR :
-                return 'Arrastar/Soltar';                
+                return 'Arrastar/Soltar';
             case self::TYPE_ARRASTARDIFERENTESOLTAR :
-                return 'Arrastar≠Soltar';                
+                return 'Arrastar≠Soltar';
             case self::TYPE_GIRAFIGURAS :
-                return 'Gira Figuras';                
+                return 'Gira Figuras';
             case self::TYPE_LIGAPONTOS :
-                return 'Liga Pontos';                
+                return 'Liga Pontos';
             case self::TYPE_TESTE :
-                return 'Teste';                
+                return 'Teste';
             default:
                 return 'Exercício';
         }
     }
-    
+
     /**
      * Get question answer name
-     * 
+     *
      * @return string
      */
     public function get_answeruser_name() {
-        if ($this->get_type() === self::TYPE_TESTEVESTIBULAR) {
+        if ($this->get_type() == self::TYPE_TESTEVESTIBULAR) {
             switch ($this->get_answeruser()) {
                 case 1 :
                     return 'a';
@@ -423,14 +420,14 @@ class mod_visualclass_sessionitem {
         }
         return $this->get_answeruser();
     }
-    
+
     /**
      * Get question answer name
-     * 
+     *
      * @return string
      */
     public function get_answercorrect_name() {
-        if ($this->get_type() === self::TYPE_TESTEVESTIBULAR) {
+        if ($this->get_type() == self::TYPE_TESTEVESTIBULAR) {
             switch ($this->get_answercorrect()) {
                 case 1 :
                     return 'a';
@@ -452,10 +449,10 @@ class mod_visualclass_sessionitem {
         }
         return $this->get_answercorrect();
     }
-    
+
     /**
      * Get is correct name
-     * 
+     *
      * @return string
      */
     public function is_correct_name() {
@@ -477,7 +474,7 @@ class mod_visualclass_sessionitem {
  */
 class mod_visualclass_session {
 
-    // Database Constants
+    // Database Constants.
 
     const DB_TABLE = 'visualclass_session';
 
@@ -533,14 +530,14 @@ class mod_visualclass_session {
     /**
      * Constructor
      *
-     * @param int    $id
-     * @param int    $userid
-     * @param int    $modid
-     * @param int    $attemptnumber
-     * @param int    $timestart
-     * @param int    $timestop
+     * @param int $id
+     * @param int $userid
+     * @param int $modid
+     * @param int $attemptnumber
+     * @param int $timestart
+     * @param int $timestop
      * @param number $totalscore
-     * @param array  $items
+     * @param array $items
      */
     public function __construct(
         $id = null, $userid = null, $modid = null,
@@ -648,8 +645,7 @@ class mod_visualclass_session {
      * Writes/Updates session totalscore into gradebook
      *
      * @param int $policy
-     *
-     * @return bool
+     * @return void
      */
     public function write_totalscore($policy) {
         global $DB;
@@ -684,10 +680,8 @@ class mod_visualclass_session {
             }
             break;
         case mod_visualclass_instance::GRADE_LAST:
-            //do nothing
             break;
         default:
-            return false;
         }
 
         $instance = $DB->get_record(
@@ -700,10 +694,10 @@ class mod_visualclass_session {
         $gradeitem->rawgrade = $score;
         $gradeitem->feedback = '';
 
-        return visualclass_grade_item_update($instance, $gradeitem);
+        visualclass_grade_item_update($instance, $gradeitem);
     }
 
-    // Getters and Setters
+    // Getters and Setters.
 
     /**
      * Get session id
@@ -848,28 +842,28 @@ class mod_visualclass_session {
     public function set_items($items) {
         $this->_items = $items;
     }
-    
+
     /**
      * Get the number of correct answers
-     * 
+     *
      * @return int
      */
     public function get_correct_answers() {
         return round(($this->get_totalscore() / 100) * count($this->get_items()));
     }
-    
+
     /**
      * Get the number of wrong answers
-     * 
+     *
      * @return int
      */
     public function get_wrong_answers() {
         return count($this->get_items()) - $this->get_correct_answers();
     }
-    
+
     /**
      * Get total time
-     * 
+     *
      * @return int
      */
     public function get_time() {
@@ -890,39 +884,39 @@ class mod_visualclass_session {
  */
 class mod_visualclass_instance {
 
-    // Attempts Constants
+    // Attempts Constants.
 
     const ATTEMPT_MAX = 5;
     const ATTEMPT_UNLIMITED = 0;
 
-    // Database Contants
+    // Database Constants.
 
     const DB_TABLE = 'visualclass';
 
-    // Grading Constants
+    // Grading Constants.
 
     const GRADE_AVERAGE = 1;
     const GRADE_BEST = 2;
     const GRADE_WORST = 3;
     const GRADE_LAST = 4;
-    
-    // Report Types
-    
+
+    // Report Types.
+
     const REPORT_QUESTION = 'rquestion';
     const REPORT_USER = 'ruser';
 
-    // Session
+    // Session.
 
     const SESSION_PREFIX = 'moodle_mod_visualclass_session_';
 
-    // Time Constants
+    // Time Constants.
 
     const TIME_BASE = 60;
     const TIME_FACTOR = 300;
     const TIME_MAX = 14400;
     const TIME_UNLIMITED = 6;
 
-    // View Constants
+    // View Constants.
 
     const VIEW_MOODLE = 4;
     const VIEW_NEWTAB = 5;
@@ -934,7 +928,7 @@ class mod_visualclass_instance {
      * @var array
      * @static
      */
-    private static $_scripts;
+    private static $scripts;
 
     /**
      * Instance id
@@ -998,13 +992,13 @@ class mod_visualclass_instance {
     private $_policyview;
     /**
      * Popup width
-     * 
+     *
      * @var int
      */
     private $_policyview_width;
     /**
      * Popup height
-     * 
+     *
      * @var int
      */
     private $_policyview_height;
@@ -1014,34 +1008,40 @@ class mod_visualclass_instance {
      * @var array
      */
     private $_sessions;
+    /**
+     * Hide grade
+     *
+     * @var int
+     */
+    private $_hidegrade;
 
     /**
      * Constructor
      *
-     * @param int    $id
-     * @param int    $course
+     * @param int $id
+     * @param int $course
      * @param string $name
      * @param string $projectdata
      * @param string $projecturl
      * @param string $projectsubject
-     * @param int    $policyattempts
-     * @param int    $policytime
-     * @param int    $policygrades
-     * @param int    $policyview
-     * @param int    $policyview_width
-     * @param int    $policyview_height
-     * @param array  $sessions
+     * @param int $policyattempts
+     * @param int $policytime
+     * @param int $policygrades
+     * @param int $policyview
+     * @param int $popupwidth
+     * @param int $popupheight
+     * @param array $sessions
      */
     public function __construct(
         $id = null, $course = null, $name = null,
         $projectdata = null, $projecturl = null, $projectsubject = null,
         $policyattempts = null, $policytime = null,
         $policygrades = null, $policyview = null,
-        $policyview_width = null, $policyview_height = null,
-        $sessions = null
+        $popupwidth = null, $popupheight = null,
+        $sessions = null, $hidegrade = null
     ) {
         $path = dirname(__FILE__);
-        self::$_scripts = array(
+        self::$scripts = array(
             'finaliza.html' => $path . '/scripts/finaliza.html',
             'finaliza.htm' => $path . '/scripts/finaliza.html',
             'moodle.js' => $path . '/scripts/moodle.js',
@@ -1062,9 +1062,10 @@ class mod_visualclass_instance {
         $this->_policytime = $policytime;
         $this->_policygrades = $policygrades;
         $this->_policyview = $policyview;
-        $this->_policyview_width = $policyview_width;
-        $this->_policyview_height = $policyview_height;
+        $this->_policyview_width = $popupwidth;
+        $this->_policyview_height = $popupheight;
         $this->_sessions = $sessions;
+        $this->_hidegrade = $hidegrade;
     }
 
     /**
@@ -1087,6 +1088,7 @@ class mod_visualclass_instance {
         $data->policyview = $this->get_policyview();
         $data->policyview_width = $this->get_policyview_width();
         $data->policyview_height = $this->get_policyview_height();
+        $data->hidegrade = $this->get_hide_grade();
 
         $id = $this->get_id();
         if (empty($id)) {
@@ -1120,6 +1122,7 @@ class mod_visualclass_instance {
             $this->set_policyview($data->policyview);
             $this->set_policyview_width($data->policyview_width);
             $this->set_policyview_height($data->policyview_height);
+            $this->set_hide_grade($data->hidegrade);
             $sessionsitems = $DB->get_records(
                 mod_visualclass_session::DB_TABLE,
                 array('modid' => $this->get_id()),
@@ -1168,7 +1171,6 @@ class mod_visualclass_instance {
      *
      * @param int $course
      * @param int $draftitem
-     *
      * @return bool
      */
     public function write_projectdata($course, $draftitem) {
@@ -1181,8 +1183,6 @@ class mod_visualclass_instance {
                 return false;
             }
 
-            // Deprecated
-            //$context = get_context_instance(CONTEXT_USER, $USER->id);
             $context = context_user::instance($USER->id);
             $fs = get_file_storage();
             $files = $fs->get_area_files(
@@ -1241,7 +1241,6 @@ class mod_visualclass_instance {
      * Writes/Updates a project url into filesystem
      *
      * @param int $course
-     *
      * @return bool
      */
     public function write_projecturl($course) {
@@ -1269,21 +1268,18 @@ class mod_visualclass_instance {
                 return false;
             }
 
-            foreach (self::$_scripts as $old => $new) {
+            foreach (self::$scripts as $old => $new) {
                 if (file_exists($path . $old)) {
                     unlink($path . $old);
                 }
                 copy($new, $path . $old);
             }
 
-            // Changing source.js
+            // Changing source.js.
 
             $append = PHP_EOL . 'function chamaFinaliza() {' . PHP_EOL
                 . '    link_click(\'finaliza.html\', null, null, null, null);' . PHP_EOL
                 . '}' . PHP_EOL;
-            // < 20140520
-            //file_put_contents($path . 'source.js', $append, FILE_APPEND);
-            // >= 20140520
             file_put_contents($path . 'GeraHTML_source.js', $append, FILE_APPEND);
 
             $url = str_replace($CFG->dirroot, $CFG->wwwroot, $path);
@@ -1321,7 +1317,6 @@ class mod_visualclass_instance {
      * Get the next attempt number for a user
      *
      * @param int $user
-     *
      * @return int
      */
     public function get_nextattemptnumber($user) {
@@ -1343,19 +1338,17 @@ class mod_visualclass_instance {
      * Deletes a dir recursively
      *
      * @param string $dir
-     *
      * @return bool
      */
     public function rrmdir($dir) {
         $files = array_diff(scandir($dir), array('.', '..'));
         foreach ($files as $file) {
-            (is_dir("$dir/$file")) ? $this->rrmdir("$dir/$file")
-                : unlink("$dir/$file");
+            (is_dir("$dir/$file")) ? $this->rrmdir("$dir/$file") : unlink("$dir/$file");
         }
         return rmdir($dir);
     }
 
-    // Getters and Setters
+    // Getters and Setters.
 
     /**
      * Get instance id
@@ -1536,41 +1529,41 @@ class mod_visualclass_instance {
     public function set_policyview($policyview) {
         $this->_policyview = $policyview;
     }
-    
+
     /**
      * Get policy view width
-     * 
+     *
      * @return int
      */
     public function get_policyview_width() {
         return $this->_policyview_width;
     }
-    
+
     /**
      * Set policy view width
-     * 
-     * @param int $policyview_width
+     *
+     * @param int $popupwidth
      */
-    public function set_policyview_width($policyview_width) {
-        $this->_policyview_width = $policyview_width;
+    public function set_policyview_width($popupwidth) {
+        $this->_policyview_width = $popupwidth;
     }
-    
+
     /**
      * Get policy view height
-     * 
+     *
      * @return int
      */
     public function get_policyview_height() {
         return $this->_policyview_height;
     }
-    
+
     /**
      * Set policy view height
-     * 
-     * @param int $policyview_height
+     *
+     * @param int $popupheight
      */
-    public function set_policyview_height($policyview_height) {
-        $this->_policyview_height = $policyview_height;
+    public function set_policyview_height($popupheight) {
+        $this->_policyview_height = $popupheight;
     }
 
     /**
@@ -1589,5 +1582,19 @@ class mod_visualclass_instance {
      */
     public function set_sessions($sessions) {
         $this->_sessions = $sessions;
+    }
+
+    /**
+     * @return int
+     */
+    public function get_hide_grade() {
+        return $this->_hidegrade;
+    }
+
+    /**
+     * @param int $hidegrade
+     */
+    public function set_hide_grade($hidegrade) {
+        $this->_hidegrade = $hidegrade;
     }
 }

@@ -35,26 +35,26 @@ $PAGE->set_context($context);
 require_login();
 require_capability('mod/visualclass:reports', $context);
 
-// Retrieving given parameters
+// Retrieving given parameters.
 $cmid = required_param('cmid', PARAM_INT);
 $type = optional_param('type', '', PARAM_ALPHANUM);
 
-// Static parameters
+// Static parameters.
 $courseid = 0;
 $sectionnum = false;
 $strictness = MUST_EXIST;
 
-// Retrieving module information
+// Retrieving module information.
 $cm = get_coursemodule_from_id('visualclass', $cmid, $courseid, $sectionnum, $strictness);
 $course = $DB->get_record('course', array('id' => $cm->course), '*', $strictness);
 $module = $DB->get_record('visualclass', array('id' => $cm->instance), '*', $strictness);
 
-// New module instance
+// New module instance.
 $instance = new mod_visualclass_instance();
 $instance->set_id($module->id);
 $instance->read();
 
-// Get valid sessions
+// Get valid sessions.
 $allsessions = $instance->get_sessions();
 $validsessions = array();
 foreach ($allsessions as $session) {
@@ -63,16 +63,16 @@ foreach ($allsessions as $session) {
     }
 }
 
-// New Excel workbook and worksheet instance
+// New Excel workbook and worksheet instance.
 $currenttime = time();
 $extension = 'xlsx';
 $filename = $currenttime . $extension;
 $workbook = new MoodleExcelWorkbook($filename, 'Excel2007');
 $worksheet = $workbook->add_worksheet('Moodle');
 
-// Rows
+// Rows.
 foreach ($validsessions as $session) {
-    // Get user full name
+    // Get user full name.
     $userid = $session->get_userid();
     $users = user_get_users_by_id(array($userid));
     $user = $users[$userid];
@@ -113,11 +113,11 @@ foreach ($validsessions as $session) {
     }
 }
 
-// Writing report
+// Writing report.
 $rowindex = 0;
 $columnindex = 0;
 if ($type === mod_visualclass_instance::REPORT_USER) {
-    // Header
+    // Header.
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_name', 'visualclass'));
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_attempt', 'visualclass'));
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_percentcorrect', 'visualclass'));
@@ -129,7 +129,7 @@ if ($type === mod_visualclass_instance::REPORT_USER) {
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_question', 'visualclass'));
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_answercorrect', 'visualclass'));
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_answeruser', 'visualclass'));
-    
+
     foreach ($content as $fullname => $values) {
         $sessionitems = $values[0]->items;
         sort($sessionitems);
@@ -138,60 +138,62 @@ if ($type === mod_visualclass_instance::REPORT_USER) {
                 $rowindex++;
                 $columnindex = 0;
 
-                // User full name
+                // User full name.
                 $worksheet->write($rowindex, $columnindex++, $fullname);
 
-                // User attempt number
+                // User attempt number.
                 $worksheet->write_number($rowindex, $columnindex++, $values[0]->session->get_attemptnumber());
-                
-                // User correct answers
+
+                // User correct answers.
                 $worksheet->write_number($rowindex, $columnindex++, $values[0]->session->get_correct_answers());
-                
-                // User wrong answers
+
+                // User wrong answers.
                 $worksheet->write_number($rowindex, $columnindex++, $values[0]->session->get_wrong_answers());
-                
-                // User grade
+
+                // User grade.
                 $worksheet->write_number($rowindex, $columnindex++, $values[0]->session->get_totalscore());
-                
-                // User time
+
+                // User time.
                 $worksheet->write_number($rowindex, $columnindex++, $values[0]->session->get_time());
 
-                // Page title
+                // Page title.
                 $worksheet->write($rowindex, $columnindex++, $item->get_pagetitle());
 
-                // Question type
+                // Question type.
                 $worksheet->write($rowindex, $columnindex++, $item->get_type_name());
 
-                // Question
+                // Question.
                 $worksheet->write($rowindex, $columnindex++, $item->get_question());
 
-                // Correct Answer
+                // Correct Answer.
                 $worksheet->write($rowindex, $columnindex++, $item->get_answercorrect_name());
 
-                // User Answer
+                // User Answer.
                 $worksheet->write($rowindex, $columnindex++, $item->get_answeruser_name());
-                
-                // Either correct or not
+
+                // Either correct or not.
                 if ($item->is_correct()) {
-                    $worksheet->write($rowindex, $columnindex++, $item->is_correct_name(), $workbook->add_format(array('bg_color'=>'green')));
+                    $worksheet->write($rowindex, $columnindex++, $item->is_correct_name(),
+                        $workbook->add_format(array('bg_color' => 'green')));
                 } else {
-                    $worksheet->write($rowindex, $columnindex++, $item->is_correct_name(), $workbook->add_format(array('bg_color'=>'red')));
+                    $worksheet->write($rowindex, $columnindex++, $item->is_correct_name(),
+                        $workbook->add_format(array('bg_color' => 'red')));
                 }
             }
-            
-            // Extra line
+
+            // Extra line.
             $worksheet->write(++$rowindex, 0, '');
         }
     }
 } else if ($type === mod_visualclass_instance::REPORT_QUESTION) {
-    // Header
+    // Header.
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_question', 'visualclass'));
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_percentcorrect', 'visualclass'));
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_percentwrong', 'visualclass'));
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_percenttotal', 'visualclass'));
     $worksheet->write($rowindex, $columnindex++, get_string('xlsx_percent', 'visualclass'));
-    
-    // Math
+
+    // Math.
     $percentage = array();
     foreach ($content as $fullname => $values) {
         $sessionitems = $values[0]->items;
@@ -212,29 +214,29 @@ if ($type === mod_visualclass_instance::REPORT_USER) {
             }
         }
     }
-    
-    // Rows
+
+    // Rows.
     foreach ($percentage as $question => $data) {
         $rowindex++;
         $columnindex = 0;
 
-        // Question
+        // Question.
         $worksheet->write($rowindex, $columnindex++, $question);
 
-        // Correct Answers
+        // Correct Answers.
         $worksheet->write_number($rowindex, $columnindex++, $data['correct']);
 
-        // Wrong Answers
+        // Wrong Answers.
         $worksheet->write_number($rowindex, $columnindex++, $data['wrong']);
 
-        // Total
+        // Total.
         $worksheet->write_number($rowindex, $columnindex++, $data['count']);
 
-        // Percentage of correct answers
+        // Percentage of correct answers.
         $worksheet->write_number($rowindex, $columnindex++, round($data['correct'] * 100 / $data['count']));
     }
 }
 
-// Finish workbook
+// Finish workbook.
 $workbook->close();
 die;

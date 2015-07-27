@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -27,7 +26,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-
     'mod/visualclass:addinstance' => array(
         'riskbitmask' => RISK_XSS,
         'captype' => 'write',
@@ -38,7 +36,6 @@ $capabilities = array(
         ),
         'clonepermissionsfrom' => 'moodle/course:manageactivities'
     ),
-
     'mod/visualclass:view' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,
@@ -50,7 +47,6 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-
     'mod/visualclass:submit' => array(
         'riskbitmask' => RISK_SPAM,
         'captype' => 'write',
@@ -59,7 +55,6 @@ $capabilities = array(
             'student' => CAP_ALLOW
         )
     ),
-
     'mod/visualclass:reports' => array(
         'riskbitmask' => RISK_XSS,
         'captype' => 'write',

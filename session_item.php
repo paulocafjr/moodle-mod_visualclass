@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -30,11 +29,11 @@ require_once(dirname(__FILE__) . '/locallib.php');
 
 global $USER;
 
-// Setting session id
+// Setting session id.
 if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
-    $session_id = (int)$_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id];
+    $sessionid = (int)$_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id];
 
-    // Fetching item info
+    // Fetching item info.
     $item = new stdClass();
     $item->pagetitle = (string)$_REQUEST['page'];
     $item->type = (int)$_REQUEST['type'];
@@ -42,14 +41,14 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
     $item->answercorrect = explode('|', $_REQUEST['correctanswer']);
     $item->answeruser = (string)$_REQUEST['useranswer'];
 
-    // Recovering visualclass session
-    $visualclass_session = new mod_visualclass_session();
-    $visualclass_session->set_id($session_id);
-    $visualclass_session->read();
+    // Recovering visualclass session.
+    $activitysession = new mod_visualclass_session();
+    $activitysession->set_id($sessionid);
+    $activitysession->read();
 
-    // Seeking for question
+    // Seeking for question.
     $id = null;
-    $items = $visualclass_session->get_items();
+    $items = $activitysession->get_items();
     if (!empty($items)) {
         foreach ($items as $olditem) {
             if (strcmp($olditem->get_question(), $item->question) === 0) {
@@ -58,25 +57,25 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
         }
     }
 
-    // Recording up session item
-    $visualclass_sessionitem = new mod_visualclass_sessionitem();
-    $visualclass_sessionitem->set_id($id);
-    $visualclass_sessionitem->set_sessionid($session_id);
-    $visualclass_sessionitem->set_pagetitle($item->pagetitle);
-    $visualclass_sessionitem->set_type($item->type);
-    $visualclass_sessionitem->set_question($item->question);
-    $visualclass_sessionitem->set_answercorrect($item->answercorrect);
-    $visualclass_sessionitem->set_answeruser($item->answeruser);
-    $visualclass_sessionitem->write();
+    // Recording up session item.
+    $activitysessionitem = new mod_visualclass_sessionitem();
+    $activitysessionitem->set_id($id);
+    $activitysessionitem->set_sessionid($sessionid);
+    $activitysessionitem->set_pagetitle($item->pagetitle);
+    $activitysessionitem->set_type($item->type);
+    $activitysessionitem->set_question($item->question);
+    $activitysessionitem->set_answercorrect($item->answercorrect);
+    $activitysessionitem->set_answeruser($item->answeruser);
+    $activitysessionitem->write();
 
-    // Checking session time
-    $visualclass_instance = new mod_visualclass_instance();
-    $visualclass_instance->set_id($visualclass_session->get_modid());
-    $visualclass_instance->read();
+    // Checking session time.
+    $activityobj = new mod_visualclass_instance();
+    $activityobj->set_id($activitysession->get_modid());
+    $activityobj->read();
 
-    $time = time() - $visualclass_session->get_timestart();
-    if ($visualclass_instance->get_policytime() != $visualclass_instance::TIME_UNLIMITED
-        && $visualclass_instance->get_policytime() < $time
+    $time = time() - $activitysession->get_timestart();
+    if ($activityobj->get_policytime() != $activityobj::TIME_UNLIMITED
+        && $activityobj->get_policytime() < $time
     ) {
         $response = array(
             'timeout' => true,
@@ -89,7 +88,7 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
         );
     }
 
-    // Sending response
+    // Sending response.
     echo json_encode($response);
 } else {
     $response = array(

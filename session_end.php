@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -32,28 +31,30 @@ global $USER, $CFG;
 
 $finalscore = (int)$_REQUEST['finalscore'];
 if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
-    $session_id = $_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id];
+    $sessionid = $_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id];
     unset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id]);
 
-    // Recovering visualclass session
-    $visualclass_session = new mod_visualclass_session();
-    $visualclass_session->set_id($session_id);
-    $visualclass_session->read();
+    // Recovering visualclass session.
+    $activitysession = new mod_visualclass_session();
+    $activitysession->set_id($sessionid);
+    $activitysession->read();
 
-    // Recovering visualclass instance
-    $visualclass_instance = new mod_visualclass_instance();
-    $visualclass_instance->set_id($visualclass_session->get_modid());
-    $visualclass_instance->read();
+    // Recovering visualclass instance.
+    $activityobj = new mod_visualclass_instance();
+    $activityobj->set_id($activitysession->get_modid());
+    $activityobj->read();
 
-    $policygrades = (int)$visualclass_instance->get_policygrades();
+    $policygrades = (int)$activityobj->get_policygrades();
 
-    // Updating session finalgrade and time
-    $session_items = $visualclass_session->get_items();
-    if (!empty($session_items)) {
+    // Updating session finalgrade and time.
+    $useranswers = array();
+    $sessionitems = $activitysession->get_items();
+    if (!empty($sessionitems)) {
         $errors = 0;
         $correct = 0;
-        foreach ($session_items as $session_item) {
-            $session_item->is_correct() ? $correct++ : $errors++;
+        foreach ($sessionitems as $sessionitem) {
+            $sessionitem->is_correct() ? $correct++ : $errors++;
+            $useranswers[$sessionitem->get_question()] = $sessionitem->get_answeruser_name();
         }
         $avg = $errors + $correct;
         if ($avg > 0) {
@@ -61,15 +62,15 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
         }
     }
 
-    $visualclass_session->set_timestop(time());
-    $visualclass_session->set_totalscore($finalscore);
-    $visualclass_session->write_totalscore($policygrades);
-    $visualclass_session->write();
+    $activitysession->set_timestop(time());
+    $activitysession->set_totalscore($finalscore);
+    $activitysession->write_totalscore($policygrades);
+    $activitysession->write();
 
-    // Returning response
+    // Returning response.
     $urlredirect = null;
-    if ($visualclass_instance->get_policyview() == $visualclass_instance::VIEW_NEWTAB) {
-        $urlredirect = $CFG->wwwroot . '/course/view.php?id=' . $visualclass_instance->get_course();
+    if ($activityobj->get_policyview() == $activityobj::VIEW_NEWTAB) {
+        $urlredirect = $CFG->wwwroot . '/course/view.php?id=' . $activityobj->get_course();
     }
 
     if (isset($errors) && isset($correct)) {
@@ -79,10 +80,14 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
             'labelcorrect' => get_string('status_labelcorrect', 'visualclass'),
             'labelwrong' => get_string('status_labelwrong', 'visualclass'),
             'labelscore' => get_string('status_labelscore', 'visualclass'),
+            'labelquestion' => get_string('status_labelquestion', 'visualclass'),
+            'labelanswer' => get_string('status_labelanswer', 'visualclass'),
             'urlredirect' => $urlredirect,
             'errors' => $errors,
             'correct' => $correct,
-            'finalscore' => $finalscore
+            'finalscore' => $finalscore,
+            'hidegrade' => $activityobj->get_hide_grade(),
+            'answers' => $useranswers
         );
     } else {
         $response = array(
@@ -91,6 +96,8 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
             'labelcorrect' => get_string('status_labelcorrect', 'visualclass'),
             'labelwrong' => get_string('status_labelwrong', 'visualclass'),
             'labelscore' => get_string('status_labelscore', 'visualclass'),
+            'labelquestion' => get_string('status_labelquestion', 'visualclass'),
+            'labelanswer' => get_string('status_labelanswer', 'visualclass'),
             'urlredirect' => $urlredirect
         );
     }
@@ -101,6 +108,8 @@ if (isset($_SESSION[mod_visualclass_instance::SESSION_PREFIX . $USER->id])) {
         'labelcorrect' => get_string('status_labelcorrect', 'visualclass'),
         'labelwrong' => get_string('status_labelwrong', 'visualclass'),
         'labelscore' => get_string('status_labelscore', 'visualclass'),
+        'labelquestion' => get_string('status_labelquestion', 'visualclass'),
+        'labelanswer' => get_string('status_labelanswer', 'visualclass'),
         'urlredirect' => $CFG->wwwroot
     );
 }

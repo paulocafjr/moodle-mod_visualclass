@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -30,41 +29,53 @@ defined('MOODLE_INTERNAL') || die();
  * Execute visualclass upgrade from the given old version
  *
  * @param int $oldversion
- *
  * @return bool
  */
 function xmldb_visualclass_upgrade($oldversion) {
-    global $CFG, $DB;
-    
+    global $DB;
+
     $dbman = $DB->get_manager();
-    
+
     if ($oldversion < 2014080601) {
         $table = new xmldb_table('visualclass');
-        $field_policyview_width = new xmldb_field('policyview_width');
-        $field_policyview_width->set_attributes(XMLDB_TYPE_INT, '10', XMLDB_UNSIGNED, null, null, 'default null', 'policyview');
-        $field_policyview_height = new xmldb_field('policyview_height');
-        $field_policyview_height->set_attributes(XMLDB_TYPE_INT, '10', XMLDB_UNSIGNED, null, null, 'default null', 'policyview_width');
-        
-        if (! $dbman->field_exists($table, $field_policyview_width)) {
-            $dbman->add_field($table, $field_policyview_width);
+        $fieldwidth = new xmldb_field('policyview_width');
+        $fieldwidth->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null, 'policyview');
+        $fieldheight = new xmldb_field('policyview_height');
+        $fieldheight->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, null,
+            'policyview_width');
+
+        if (! $dbman->field_exists($table, $fieldwidth)) {
+            $dbman->add_field($table, $fieldwidth);
         }
-        
-        if (! $dbman->field_exists($table, $field_policyview_height)) {
-            $dbman->add_field($table, $field_policyview_height);
+
+        if (! $dbman->field_exists($table, $fieldheight)) {
+            $dbman->add_field($table, $fieldheight);
         }
-        
+
         upgrade_mod_savepoint(true, 2014080601, 'visualclass');
     }
-    
+
     if ($oldversion < 2015060300) {
         $DB->set_field_select('visualclass', 'policygrades', 4, 'policygrades = ?', array(3));
         upgrade_mod_savepoint(true, 2015060300, 'visualclass');
     }
-    
+
     if ($oldversion < 2015060301) {
         $DB->set_field_select('visualclass', 'policygrades', 1, 'policygrades = ?', array(3));
         upgrade_mod_savepoint(true, 2015060301, 'visualclass');
     }
-    
+
+    if ($oldversion < 2015072701) {
+        $table = new xmldb_table('visualclass');
+        $fieldhidegrade = new xmldb_field('hidegrade');
+        $fieldhidegrade->set_attributes(XMLDB_TYPE_INTEGER, '10', XMLDB_UNSIGNED, null, null, 0, 'policyview_height');
+
+        if (!$dbman->field_exists($table, $fieldhidegrade)) {
+            $dbman->add_field($table, $fieldhidegrade);
+        }
+
+        upgrade_mod_savepoint(true, 2015072701, 'visualclass');
+    }
+
     return true;
 }

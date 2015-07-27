@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -29,7 +28,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/user/lib.php');
 require_once(dirname(__FILE__) . '/lib.php');
 require_once(dirname(__FILE__) . '/locallib.php');
 
-$id = optional_param('id', 0, PARAM_INT); // course_module ID
+$id = optional_param('id', 0, PARAM_INT);
 
 if ($id) {
     $cm = get_coursemodule_from_id('visualclass', $id, 0, false, MUST_EXIST);
@@ -40,51 +39,49 @@ if ($id) {
 }
 
 require_login($course, true, $cm);
-// Deprecated
-//$context = get_context_instance(CONTEXT_MODULE, $cm->id);
 $context = context_module::instance($cm->id);
 
-/// Print the page header
+// Print the page header.
 $PAGE->set_url('/mod/visualclass/report_detailed.php', array('id' => $cm->id));
 $PAGE->set_title(format_string($visualclass->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($context);
 
-// Output starts here
+// Output starts here.
 echo $OUTPUT->header();
 
-// Checking what type user is
+// Checking what type user is.
 global $USER, $CFG;
 
-// Loading instance
-$visualclass_instance = new mod_visualclass_instance();
-$visualclass_instance->set_id($visualclass->id);
-$visualclass_instance->read();
+// Loading instance.
+$activityobj = new mod_visualclass_instance();
+$activityobj->set_id($visualclass->id);
+$activityobj->read();
 
-// Writing report
-// Box start
+// Writing report.
+// Box start.
 echo $OUTPUT->box_start();
 
-// Header
+// Header.
 echo html_writer::tag('h1', get_string('report_headerdetailed', 'visualclass'));
 
-// Gathering sessions info
+// Gathering sessions info.
 $content = array();
-$sessions = $visualclass_instance->get_sessions();
+$sessions = $activityobj->get_sessions();
 
-// Removing unfinished sessions
-$valid_sessions = array();
+// Removing unfinished sessions.
+$validsessions = array();
 if (!empty($sessions)) {
     foreach ($sessions as $session) {
         $timestop = $session->get_timestop();
         if (!empty($timestop)) {
-            $valid_sessions[] = $session;
+            $validsessions[] = $session;
         }
     }
 }
 
-if (!empty($valid_sessions)) {
-    foreach ($valid_sessions as $session) {
+if (!empty($validsessions)) {
+    foreach ($validsessions as $session) {
         $userid = $session->get_userid();
         $user = user_get_users_by_id(array($userid));
         $user = $user[$userid];
@@ -93,17 +90,17 @@ if (!empty($valid_sessions)) {
         if (!isset($content[$username])) {
             $content[$username] = array();
         }
-        
+
         $values = new stdClass();
         $values->attemptnumber = $session->get_attemptnumber();
         $values->time = round(
-            ($session->get_timestop() - $session->get_timestart()) / $visualclass_instance::TIME_BASE
+            ($session->get_timestop() - $session->get_timestart()) / $activityobj::TIME_BASE
         );
         $values->timestop = $session->get_timestop();
         $values->totalscore = $session->get_totalscore();
         $values->items = $session->get_items();
-        
-        switch ($visualclass_instance->get_policygrades()) {
+
+        switch ($activityobj->get_policygrades()) {
         case mod_visualclass_instance::GRADE_BEST:
             if (!isset($content[$username][0])) {
                 $content[$username][0] = $values;
@@ -128,11 +125,11 @@ if (!empty($valid_sessions)) {
     unset($username);
     unset($session);
 
-    // Formatting info
+    // Formatting info.
     foreach ($content as $username => $sessions) {
         echo html_writer::tag('h3', $username);
         foreach ($sessions as $session) {
-            // Short
+            // Short.
             $correct = round(($session->totalscore / 100) * count($session->items));
             $wrong = count($session->items) - $correct;
             $attributes1 = array('style' => 'font-weight: bold; background-color: #282828; color: #E8E8E8;');
@@ -164,9 +161,9 @@ if (!empty($valid_sessions)) {
             if (!empty($session->items)) {
                 sort($session->items);
 
-                // Explode
-                $html_table = new html_table();
-                $html_table->head = array(
+                // Explode.
+                $htmltable = new html_table();
+                $htmltable->head = array(
                     get_string('report_question', 'visualclass'),
                     get_string('report_pagetitle', 'visualclass'),
                     get_string('report_type', 'visualclass'),
@@ -175,113 +172,113 @@ if (!empty($valid_sessions)) {
                 );
                 $rows = array();
                 foreach ($session->items as $item) {
-                    $item_answercorrect = $item->get_answercorrect();
-                    $item_answeruser = $item->get_answeruser();
+                    $itemanswercorrect = $item->get_answercorrect();
+                    $itemansweruser = $item->get_answeruser();
                     if ($item->get_type() == $item::TYPE_TESTEVESTIBULAR) {
-                        $item_type = 'Teste Vestibular';
+                        $itemtype = 'Teste Vestibular';
 
-                        // Character parsing
-                        $item_answercorrect = (int)$item_answercorrect;
-                        switch ($item_answercorrect) {
+                        // Character parsing.
+                        $itemanswercorrect = (int)$itemanswercorrect;
+                        switch ($itemanswercorrect) {
                         case 1 :
-                            $item_answercorrect = 'a';
+                            $itemanswercorrect = 'a';
                             break;
                         case 2 :
-                            $item_answercorrect = 'b';
+                            $itemanswercorrect = 'b';
                             break;
                         case 3 :
-                            $item_answercorrect = 'c';
+                            $itemanswercorrect = 'c';
                             break;
                         case 4 :
-                            $item_answercorrect = 'd';
+                            $itemanswercorrect = 'd';
                             break;
                         case 5 :
-                            $item_answercorrect = 'e';
+                            $itemanswercorrect = 'e';
                             break;
                         default:
-                            $item_answercorrect = get_string('noanswer', 'visualclass');
+                            $itemanswercorrect = get_string('noanswer', 'visualclass');
                         }
 
-                        $item_answeruser = (int)$item_answeruser;
-                        switch ($item_answeruser) {
+                        $itemansweruser = (int)$itemansweruser;
+                        switch ($itemansweruser) {
                         case 1 :
-                            $item_answeruser = 'a';
+                            $itemansweruser = 'a';
                             break;
                         case 2 :
-                            $item_answeruser = 'b';
+                            $itemansweruser = 'b';
                             break;
                         case 3 :
-                            $item_answeruser = 'c';
+                            $itemansweruser = 'c';
                             break;
                         case 4 :
-                            $item_answeruser = 'd';
+                            $itemansweruser = 'd';
                             break;
                         case 5 :
-                            $item_answeruser = 'e';
+                            $itemansweruser = 'e';
                             break;
                         default:
-                            $item_answeruser = get_string('noanswer', 'visualclass');
+                            $itemansweruser = get_string('noanswer', 'visualclass');
                         }
                     } else {
-                        $item_type = 'Preenchimento Lacunas';
+                        $itemtype = 'Preenchimento Lacunas';
                         switch ($item->get_type()) {
                         case $item::TYPE_PREENCHIMENTO :
-                            $item_type = 'Preenchimento Lacunas';
+                            $itemtype = 'Preenchimento Lacunas';
                             break;
                         case $item::TYPE_ROTULOAVALIAVEL :
-                            $item_type = 'Rótulo Avaliável';
+                            $itemtype = 'Rótulo Avaliável';
                             break;
                         case $item::TYPE_IMAGEMAVALIAVEL :
-                            $item_type = 'Imagem Avaliável';
+                            $itemtype = 'Imagem Avaliável';
                             break;
                         case $item::TYPE_ARRASTARSOLTARIMAGEM :
-                            $item_type = 'Arrastar/Soltar Imagem';
+                            $itemtype = 'Arrastar/Soltar Imagem';
                             break;
                         case $item::TYPE_ARRASTARSOLTAR :
-                            $item_type = 'Arrastar/Soltar';
+                            $itemtype = 'Arrastar/Soltar';
                             break;
                         case $item::TYPE_ARRASTARDIFERENTESOLTAR :
-                            $item_type = 'Arrastar≠Soltar';
+                            $itemtype = 'Arrastar≠Soltar';
                             break;
                         case $item::TYPE_GIRAFIGURAS :
-                            $item_type = 'Gira Figuras';
+                            $itemtype = 'Gira Figuras';
                             break;
                         case $item::TYPE_LIGAPONTOS :
-                            $item_type = 'Liga Pontos';
+                            $itemtype = 'Liga Pontos';
                             break;
                         case $item::TYPE_TESTE :
-                            $item_type = 'Teste';
+                            $itemtype = 'Teste';
                             break;
                         default:
-                            $item_type = 'Exercício';
+                            $itemtype = 'Exercício';
                         }
-                        if (is_array($item_answercorrect)) {
-                            $item_answercorrect = implode(
-                                get_string('report_separator', 'visualclass'), $item_answercorrect
+                        if (is_array($itemanswercorrect)) {
+                            $itemanswercorrect = implode(
+                                get_string('report_separator', 'visualclass'), $itemanswercorrect
                             );
                         }
                     }
 
                     if ($item->is_correct()) {
-                        $item_status
+                        $itemstatus
                             = '<img src="scripts/status_ok.png" alt="correct" style="width: 25px; height: 25px;">';
                     } else {
-                        $item_status
+                        $itemstatus
                             = '<img src="scripts/status_error.png" alt="wrong" style="width: 25px; height: 25px;">';
                     }
 
                     $row = array(
                         $item->get_question(),
                         $item->get_pagetitle(),
-                        $item_type,
-                        $item_answercorrect,
-                        $item_answeruser,
-                        $item_status
+                        $itemtype,
+                        $itemanswercorrect,
+                        $itemansweruser,
+                        $itemstatus
                     );
                     $rows[] = $row;
                 }
-                $html_table->data = $rows;
-                echo html_writer::table($html_table);
+                $htmltable->data = $rows;
+                echo html_writer::table($htmltable);
             } else {
                 echo $OUTPUT->error_text(get_string('error_noitems', 'visualclass'));
             }
@@ -291,8 +288,8 @@ if (!empty($valid_sessions)) {
     echo $OUTPUT->error_text(get_string('error_nosessions', 'visualclass'));
 }
 
-// Box end
+// Box end.
 echo $OUTPUT->box_end();
 
-// Finish the page
+// Finish the page.
 echo $OUTPUT->footer();

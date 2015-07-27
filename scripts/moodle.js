@@ -58,6 +58,8 @@ function send_data(script, data) {
             document.getElementById("labelcorrect").innerHTML = values.labelcorrect;
             document.getElementById("labelwrong").innerHTML = values.labelwrong;
             document.getElementById("labelscore").innerHTML = values.labelscore;
+            document.getElementById("labelquestion").innerHTML = values.labelquestion;
+            document.getElementById("labelanswer").innerHTML = values.labelanswer;
             document.getElementById("valuecorrect").style.visibility = "visible";
             document.getElementById("valuewrong").style.visibility = "visible";
             document.getElementById("valuescore").style.visibility = "visible";
@@ -78,10 +80,33 @@ function send_data(script, data) {
             if (typeof values.finalscore != "undefined") {
                 document.getElementById("valuescore").innerHTML = values.finalscore;
             }
+
+            if (typeof values.hidegrade != "undefined") {
+                if (values.hidegrade == 1) {
+                    document.getElementById("shortreport").style.display = "none";
+                }
+            }
+
+            var table = document.getElementById("tabledetailedreport");
+            var td, tr;
+            for (var property in values.answers) {
+                if (values.answers.hasOwnProperty(property)) {
+                    tr = document.createElement('tr');
+                    td = document.createElement('td');
+                    td.appendChild(document.createTextNode(property));
+                    tr.appendChild(td);
+                    td = document.createElement('td');
+                    td.appendChild(document.createTextNode(values.answers[property]));
+                    tr.appendChild(td);
+                    table.appendChild(tr);
+                }
+            }
         } else if (ajax.readyState == 4 && ajax.status != 200) { // Something went wrong
             document.getElementById("button").style.visibility = "visible";
             document.getElementById("button").value = "!";
 
+            document.getElementById("shortreport").style.display = "none";
+            document.getElementById("detailedreport").style.display = "none";
             document.getElementById("labelcorrect").style.visibility = "hidden";
             document.getElementById("labelwrong").style.visibility = "hidden";
             document.getElementById("labelscore").style.visibility = "hidden";

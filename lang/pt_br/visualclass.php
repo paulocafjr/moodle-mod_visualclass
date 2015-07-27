@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -27,9 +26,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// A-Z Sort
-
-// E
 $string['error_maxattemptsreached'] = 'Número máximo de tentativas atingido';
 $string['error_nocapability'] = 'Você não possui a capacidade de visualizar o módulo';
 $string['error_nohome'] = 'O diretório "visualclass" não se encontra na raiz '
@@ -38,7 +34,6 @@ $string['error_nohome'] = 'O diretório "visualclass" não se encontra na raiz '
 $string['error_noitems'] = 'A sessão não possui itens';
 $string['error_nosessions'] = 'A atividade não possui nenhuma sessão';
 $string['error_unknown'] = 'Erro desconhecido';
-// F
 $string['felem_attempts'] = 'Política de Tentativas';
 $string['felem_attempts_unlimited'] = 'sem limite de tentativas';
 $string['felem_file'] = 'Arquivos do Projeto';
@@ -50,6 +45,7 @@ $string['felem_grades_best'] = 'melhor resultado';
 $string['felem_grades_worst'] = 'pior resultado';
 $string['felem_grades_last'] = 'último resultado';
 $string['felem_header_settings'] = 'Configurações';
+$string['felem_hide_grade'] = 'Esconder nota final';
 $string['felem_name'] = 'Nome';
 $string['felem_name_help'] = 'Identifica a atividade no curso';
 $string['felem_projectsubject'] = 'Assunto do Projeto';
@@ -62,7 +58,6 @@ $string['felem_view_newtab'] = 'mesma aba';
 $string['felem_view_popup'] = 'popup';
 $string['felem_view_popup_width'] = 'largura';
 $string['felem_view_popup_height'] = 'altura';
-// M
 $string['modulename'] = 'Visual Class';
 $string['modulenameplural'] = 'Visual Class';
 $string['modulename_help'] = '<h4 style="text-align:center;">Visual Class</h4>'
@@ -77,13 +72,10 @@ $string['modulename_help'] = '<h4 style="text-align:center;">Visual Class</h4>'
     . '</a></p>'
     . '<p style="font-size:x-small; text-align:center">Visual Class&reg; e '
     . 'GeraHTML&reg; são marcas registradas pela Caltech Informática Ltda</p>';
-// N
 $string['noanswer'] = 'não respondido';
-// P
 $string['pluginadministration'] = 'Administração Visual Class';
 $string['pluginname'] = 'Módulo de Atividades Visual Class';
 $string['projecthome'] = 'Pasta para projetos';
-// R
 $string['report_answercorrect'] = 'Resposta Correta';
 $string['report_answeruser'] = 'Resposta do Aluno';
 $string['report_attempt'] = 'Número da Tentativa';
@@ -107,15 +99,15 @@ $string['report_type'] = 'Tipo';
 $string['report_typepreenchimento'] = 'Preenchimento';
 $string['report_typetestevestibular'] = 'Teste Vestibular';
 $string['report_username'] = 'Aluno';
-// S
 $string['status_buttonok'] = 'Sair';
 $string['status_labelcorrect'] = 'Respostas Corretas';
 $string['status_labelscore'] = 'Nota';
 $string['status_labelwrong'] = 'Respostas Erradas';
+$string['status_labelquestion'] = 'Enunciado';
+$string['status_labelanswer'] = 'Sua Resposta';
 $string['status_sessionadmin'] = 'Esta sessão não será salva';
 $string['status_sessionok'] = 'Sessão concluída com sucesso';
 $string['status_timeout'] = 'Tempo esgotado';
-// T
 $string['text_adminprivileges1'] = 'Relatório Detalhado por Aluno - Clique no botão abaixo para visualizar';
 $string['text_adminprivileges2'] = 'Relatório Detalhado por Questão - Clique no botão abaixo para visualizar';
 $string['text_adminprivileges3'] = 'Relatório Detalhado por Aluno - Clique no botão abaixo para exportar em xlsx';
@@ -124,13 +116,11 @@ $string['text_gotoproject'] = 'Página do Projeto - Clique no botão abaixo para
 $string['text_popup'] = 'Uma janela popup será aberta. Por favor verifique se seu navegador não está '
     . 'bloqueando este tipo de janela.';
 $string['text_popup_view'] = 'Abrir popup';
-// V
 $string['visualclass'] = 'Visual Class';
 $string['visualclass:addinstance'] = 'Tem a capacidade de adicionar novos módulos';
 $string['visualclass:reports'] = 'Tem a capacidade de visualizar os relatórios customizados do módulo';
 $string['visualclass:submit'] = 'Tem a capacidade de submeter um módulo';
 $string['visualclass:view'] = 'Tem a capacidade de visualizar um módulo';
-// X
 $string['xlsx_name'] = 'nome';
 $string['xlsx_attempt'] = 'tentativa';
 $string['xlsx_pagetitle'] = 'codigo pagina';

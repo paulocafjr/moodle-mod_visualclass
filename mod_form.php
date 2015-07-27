@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -44,11 +43,11 @@ class mod_visualclass_mod_form extends moodleform_mod {
     public function definition() {
         $mform = $this->_form;
 
-        // General Header
+        // General Header.
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
-        // Name Field
+        // Name Field.
 
         $mform->addElement(
             'text', 'name',
@@ -58,7 +57,7 @@ class mod_visualclass_mod_form extends moodleform_mod {
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
         } else {
-            $mform->setType('name', PARAM_CLEAN);
+            $mform->setType('name', PARAM_CLEANHTML);
         }
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule(
@@ -67,7 +66,7 @@ class mod_visualclass_mod_form extends moodleform_mod {
         );
         $mform->addHelpButton('name', 'felem_name', 'visualclass');
 
-        // File Field
+        // File Field.
         if (empty($this->current->instance)) {
             $fileoptions = array(
                 'maxbytes' => 0,
@@ -82,26 +81,11 @@ class mod_visualclass_mod_form extends moodleform_mod {
             $mform->addHelpButton('file', 'felem_file', 'visualclass');
         }
 
-        // Settings Header
+        // Settings Header.
 
         $mform->addElement('header', 'settings', get_string('felem_header_settings', 'visualclass'));
 
-        // Project Subject Field
-        // Automatically fetch page subject instead
-
-        /*$mform->addElement('text', 'projectsubject',
-            get_string('felem_projectsubject', 'visualclass'),
-            array('size'=>'128'));
-        if (! empty($CFG->formatstringstriptags)) {
-            $mform->setType('projectsubject', PARAM_TEXT);
-        } else {
-            $mform->setType('projectsubject', PARAM_CLEAN);
-        }
-        $mform->addRule('projectsubject', null, 'required', null, 'client');
-        $mform->addRule('projectsubject', get_string('maximumchars', '', 128),
-            'maxlength', 128, 'client');*/
-
-        // Attempts Field
+        // Attempts Field.
 
         $unlimited = get_string('felem_attempts_unlimited', 'visualclass');
         $attemptsoptions = array(
@@ -116,9 +100,8 @@ class mod_visualclass_mod_form extends moodleform_mod {
             $attemptsoptions, null
         );
 
-        // Grading Field
+        // Grading Field.
 
-        $average = get_string('felem_grades_average', 'visualclass');
         $best = get_string('felem_grades_best', 'visualclass');
         $last = get_string('felem_grades_last', 'visualclass');
         $gradesoptions = array(
@@ -131,24 +114,7 @@ class mod_visualclass_mod_form extends moodleform_mod {
             $gradesoptions, null
         );
 
-        // Time Field
-
-        /*$unit = get_string('felem_time_unit', 'visualclass');
-        $unlimited = get_string('felem_time_unlimited', 'visualclass');
-        $timeoptions = array(
-            mod_visualclass_instance::TIME_UNLIMITED => $unlimited
-        );
-        $factor = mod_visualclass_instance::TIME_FACTOR;
-        while ($factor <= mod_visualclass_instance::TIME_MAX) {
-            $timeoptions[$factor] = (string) $factor / mod_visualclass_instance::TIME_BASE
-                . ' ' . $unit;
-            $factor += mod_visualclass_instance::TIME_FACTOR;
-        }
-        $mform->addElement('select', 'policytime',
-            get_string('felem_time', 'visualclass'),
-            $timeoptions, null);*/
-
-        // View Field
+        // View Field.
 
         $moodle = get_string('felem_view_moodle', 'visualclass');
         $newtab = get_string('felem_view_newtab', 'visualclass');
@@ -163,7 +129,7 @@ class mod_visualclass_mod_form extends moodleform_mod {
             get_string('felem_view', 'visualclass'),
             $viewoptions, null
         );
-        
+
         $mform->addElement(
             'text', 'policyview_width',
             get_string('felem_view_popup_width', 'visualclass'),
@@ -171,7 +137,7 @@ class mod_visualclass_mod_form extends moodleform_mod {
         );
         $mform->disabledIf('policyview_width', 'policyview', 'neq', mod_visualclass_instance::VIEW_POPUP);
         $mform->setType('policyview_width', PARAM_INT);
-        
+
         $mform->addElement(
             'text', 'policyview_height',
             get_string('felem_view_popup_height', 'visualclass'),
@@ -180,7 +146,11 @@ class mod_visualclass_mod_form extends moodleform_mod {
         $mform->disabledIf('policyview_height', 'policyview', 'neq', mod_visualclass_instance::VIEW_POPUP);
         $mform->setType('policyview_height', PARAM_INT);
 
-        // Standard Fields
+        // Hide grade.
+
+        $mform->addElement('checkbox', 'hidegrade', get_string('felem_hide_grade', 'visualclass'));
+
+        // Standard Fields.
 
         $this->standard_coursemodule_elements();
         $this->add_action_buttons();
@@ -191,7 +161,6 @@ class mod_visualclass_mod_form extends moodleform_mod {
      *
      * @param array $data
      * @param array $files
-     *
      * @return array|void
      */
     public function validation($data, $files) {

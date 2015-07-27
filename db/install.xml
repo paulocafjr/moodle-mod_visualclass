@@ -1,104 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB
-        PATH="mod/visualclass/db"
-        VERSION="20130515"
-        COMMENT="This file defines mod_visualclass database"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
-        >
-    <TABLES>
-        <TABLE
-                NAME="visualclass"
-                COMMENT="Records mod_visualclass instances in courses"
-                NEXT="visualclass_session"
-                >
-            <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="course"/>
-                <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="id" NEXT="name"/>
-                <FIELD NAME="name" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false" PREVIOUS="course"
-                       NEXT="projectdata"/>
-                <FIELD NAME="projectdata" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="name"
-                       NEXT="projecturl"/>
-                <FIELD NAME="projecturl" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="projectdata"
-                       NEXT="projectsubject"/>
-                <FIELD NAME="projectsubject" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="projecturl"
-                       NEXT="policyattempts"/>
-                <FIELD NAME="policyattempts" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="projectsubject" NEXT="policytime"/>
-                <FIELD NAME="policytime" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="policyattempts" NEXT="policygrades"/>
-                <FIELD NAME="policygrades" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="policytime" NEXT="policyview"/>
-                <FIELD NAME="policyview" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="policygrades" NEXT="policyview_width"/>
-                <FIELD NAME="policyview_width" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="policyview" NEXT="policyview_height"/>
-                <FIELD NAME="policyview_height" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="policyview_width"/>
-            </FIELDS>
-            <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-            </KEYS>
-            <INDEXES>
-                <INDEX NAME="course" UNIQUE="false" FIELDS="course" NEXT="name"/>
-                <INDEX NAME="name" UNIQUE="false" FIELDS="name" PREVIOUS="course"/>
-            </INDEXES>
-        </TABLE>
-        <TABLE
-                NAME="visualclass_session"
-                COMMENT="Records mod_visualclass user sessions"
-                PREVIOUS="visualclass"
-                NEXT="visualclass_item"
-                >
-            <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
-                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="id" NEXT="modid"/>
-                <FIELD NAME="modid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="userid" NEXT="attemptnumber"/>
-                <FIELD NAME="attemptnumber" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="modid" NEXT="timestart"/>
-                <FIELD NAME="timestart" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="attemptnumber" NEXT="timestop"/>
-                <FIELD NAME="timestop" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="timestart" NEXT="totalscore"/>
-                <FIELD NAME="totalscore" TYPE="number" LENGTH="10" DECIMALS="5" NOTNULL="false" UNSIGNED="true"
-                       SEQUENCE="false" PREVIOUS="timestop"/>
-            </FIELDS>
-            <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-            </KEYS>
-            <INDEXES>
-                <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" NEXT="modid"/>
-                <INDEX NAME="modid" UNIQUE="false" FIELDS="modid" PREVIOUS="userid"/>
-            </INDEXES>
-        </TABLE>
-        <TABLE
-                NAME="visualclass_item"
-                COMMENT="Records mod_visualclass user session items"
-                PREVIOUS="visualclass_session"
-                >
-            <FIELDS>
-                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true"
-                       NEXT="sessionid"/>
-                <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="id" NEXT="pagetitle"/>
-                <FIELD NAME="pagetitle" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="sessionid" NEXT="type"/>
-                <FIELD NAME="type" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false"
-                       PREVIOUS="pagetitle" NEXT="question"/>
-                <FIELD NAME="question" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="type"
-                       NEXT="answercorrect"/>
-                <FIELD NAME="answercorrect" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="question"
-                       NEXT="answeruser"/>
-                <FIELD NAME="answeruser" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="answercorrect"/>
-            </FIELDS>
-            <KEYS>
-                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-            </KEYS>
-            <INDEXES>
-                <INDEX NAME="sessionid" UNIQUE="false" FIELDS="sessionid"/>
-            </INDEXES>
-        </TABLE>
-    </TABLES>
+<XMLDB PATH="mod/visualclass/db" VERSION="20150727" COMMENT="This file defines mod_visualclass database"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="visualclass" COMMENT="Records mod_visualclass instances in courses" NEXT="visualclass_session">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="name"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false" PREVIOUS="course" NEXT="projectdata"/>
+        <FIELD NAME="projectdata" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="name" NEXT="projecturl"/>
+        <FIELD NAME="projecturl" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="projectdata" NEXT="projectsubject"/>
+        <FIELD NAME="projectsubject" TYPE="text" NOTNULL="false" SEQUENCE="false" PREVIOUS="projecturl" NEXT="policyattempts"/>
+        <FIELD NAME="policyattempts" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="projectsubject" NEXT="policytime"/>
+        <FIELD NAME="policytime" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="policyattempts" NEXT="policygrades"/>
+        <FIELD NAME="policygrades" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="policytime" NEXT="policyview"/>
+        <FIELD NAME="policyview" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="policygrades" NEXT="policyview_width"/>
+        <FIELD NAME="policyview_width" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="policyview" NEXT="policyview_height"/>
+        <FIELD NAME="policyview_height" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="policyview_width" NEXT="hidegrade"/>
+        <FIELD NAME="hidegrade" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" UNSIGNED="true" SEQUENCE="false" PREVIOUS="policyview_height"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course" UNIQUE="false" FIELDS="course" NEXT="name"/>
+        <INDEX NAME="name" UNIQUE="false" FIELDS="name" PREVIOUS="course"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="visualclass_session" COMMENT="Records mod_visualclass user sessions" PREVIOUS="visualclass" NEXT="visualclass_item">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="modid"/>
+        <FIELD NAME="modid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="userid" NEXT="attemptnumber"/>
+        <FIELD NAME="attemptnumber" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="modid" NEXT="timestart"/>
+        <FIELD NAME="timestart" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="attemptnumber" NEXT="timestop"/>
+        <FIELD NAME="timestop" TYPE="int" LENGTH="10" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timestart" NEXT="totalscore"/>
+        <FIELD NAME="totalscore" TYPE="number" LENGTH="10" DECIMALS="5" NOTNULL="false" UNSIGNED="true" SEQUENCE="false" PREVIOUS="timestop"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="userid" UNIQUE="false" FIELDS="userid" NEXT="modid"/>
+        <INDEX NAME="modid" UNIQUE="false" FIELDS="modid" PREVIOUS="userid"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="visualclass_item" COMMENT="Records mod_visualclass user session items" PREVIOUS="visualclass_session">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="sessionid"/>
+        <FIELD NAME="sessionid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="id" NEXT="pagetitle"/>
+        <FIELD NAME="pagetitle" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="sessionid" NEXT="type"/>
+        <FIELD NAME="type" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="pagetitle" NEXT="question"/>
+        <FIELD NAME="question" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="type" NEXT="answercorrect"/>
+        <FIELD NAME="answercorrect" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="question" NEXT="answeruser"/>
+        <FIELD NAME="answeruser" TYPE="text" NOTNULL="true" SEQUENCE="false" PREVIOUS="answercorrect"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="sessionid" UNIQUE="false" FIELDS="sessionid"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
 </XMLDB>

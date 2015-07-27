@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -27,9 +26,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-// A-Z Sort
-
-// E
 $string['error_maxattemptsreached'] = 'Max attempts number reached';
 $string['error_nocapability'] = 'You do not have the capability to view the module';
 $string['error_nohome'] = 'Folder "visualclass" does not exists in Moodle '
@@ -37,7 +33,6 @@ $string['error_nohome'] = 'Folder "visualclass" does not exists in Moodle '
 $string['error_noitems'] = 'No items for this session';
 $string['error_nosessions'] = 'No sessions for this activity';
 $string['error_unknown'] = 'Unknown error';
-// F
 $string['felem_attempts'] = 'Attempts Policy';
 $string['felem_attempts_unlimited'] = 'no attempt limit';
 $string['felem_file'] = 'Project Files';
@@ -49,6 +44,7 @@ $string['felem_grades_best'] = 'best score';
 $string['felem_grades_worst'] = 'worst score';
 $string['felem_grades_last'] = 'last score';
 $string['felem_header_settings'] = 'Settings';
+$string['felem_hide_grade'] = 'Hide final grade';
 $string['felem_name'] = 'Name';
 $string['felem_name_help'] = 'Identifies this activity in course';
 $string['felem_projectsubject'] = 'Project Subject';
@@ -61,7 +57,6 @@ $string['felem_view_newtab'] = 'same tab';
 $string['felem_view_popup'] = 'popup';
 $string['felem_view_popup_width'] = 'width';
 $string['felem_view_popup_height'] = 'height';
-// M
 $string['modulename'] = 'Visual Class';
 $string['modulenameplural'] = 'Visual Class';
 $string['modulename_help'] = '<h4 style="text-align:center;">Visual Class</h4>'
@@ -78,13 +73,10 @@ $string['modulename_help'] = '<h4 style="text-align:center;">Visual Class</h4>'
     . '<p style="font-size:x-small; text-align:center">Visual Class&reg; and '
     . 'GeraHTML&reg; are registered trademarks of Caltech Informática Ltda'
     . '</p>';
-// N
 $string['noanswer'] = 'no answer';
-// P
 $string['pluginadministration'] = 'Visual Class Administration';
 $string['pluginname'] = 'Activity Module Visual Class';
 $string['projecthome'] = 'Projects Home';
-// R
 $string['report_answercorrect'] = 'Correct Answer';
 $string['report_answeruser'] = 'Student Answer';
 $string['report_attempt'] = 'Attempt Number';
@@ -108,15 +100,15 @@ $string['report_type'] = 'Type';
 $string['report_typepreenchimento'] = 'Preenchimento';
 $string['report_typetestevestibular'] = 'Teste Vestibular';
 $string['report_username'] = 'Student';
-// S
 $string['status_buttonok'] = 'Exit';
 $string['status_labelcorrect'] = 'Correct Answers';
 $string['status_labelscore'] = 'Final Score';
 $string['status_labelwrong'] = 'Wrong Answers';
+$string['status_labelquestion'] = 'Question';
+$string['status_labelanswer'] = 'Your Answer';
 $string['status_sessionadmin'] = 'This session will not be saved';
 $string['status_sessionok'] = 'Session successfully finished';
 $string['status_timeout'] = 'Timeout';
-// T
 $string['text_adminprivileges1'] = 'Detailed by Students Report - Click in the button bellow to continue';
 $string['text_adminprivileges2'] = 'Detailed by Question Report - Click in the button bellow to continue';
 $string['text_adminprivileges3'] = 'Detailed by Students Report - Click in the button bellow to export as xlsx';
@@ -124,13 +116,11 @@ $string['text_adminprivileges4'] = 'Detailed by Question Report - Click in the b
 $string['text_gotoproject'] = 'Project page - Click in the button bellow to continue';
 $string['text_popup'] = 'A popup window will be open. Please check if your browser blocks them.';
 $string['text_popup_view'] = 'Open popup';
-// V
 $string['visualclass'] = 'Visual Class';
 $string['visualclass:addinstance'] = 'Has the capability to add a new module instance';
 $string['visualclass:reports'] = 'Has the capability to view custom module instances reports';
 $string['visualclass:submit'] = 'Has the capability to submit a module instance';
 $string['visualclass:view'] = 'Has the capability to view module instances';
-// X
 $string['xlsx_name'] = 'name';
 $string['xlsx_attempt'] = 'attempt';
 $string['xlsx_pagetitle'] = 'page title';
