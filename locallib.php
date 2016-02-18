@@ -1194,20 +1194,14 @@ class mod_visualclass_instance {
             }
 
             $file = array_pop($files);
-            if (!$file->copy_content_to(
-                $path
+            $filecp = $path
                 . date('YmdHis') . '_'
-                . $file->get_filename()
-            )
-            ) {
+                . $file->get_filename();
+            if (!$file->copy_content_to($filecp)) {
                 return false;
             }
 
-            $this->set_projectdata(
-                $path
-                . date('YmdHis') . '_'
-                . $file->get_filename()
-            );
+            $this->set_projectdata($filecp);
         } else {
             if (file_exists($projectdata)) {
                 unlink($projectdata);
@@ -1260,13 +1254,16 @@ class mod_visualclass_instance {
             }
 
             $archive = new ZipArchive();
-            if (!$archive->open($projectdata)) {
+            if ($archive->open($projectdata) !== true) {
                 return false;
             }
-
-            if (!$archive->extractTo($path)) {
+            
+            if ($archive->extractTo($path) !== true) {
+                $archive->close();
                 return false;
             }
+            
+            $archive->close();
 
             foreach (self::$scripts as $old => $new) {
                 if (file_exists($path . $old)) {
