@@ -26,6 +26,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$module->version = 2016021800; // The current module version (Date: YYYYMMDDXX).
+$module->version = 2016071900; // The current module version (Date: YYYYMMDDXX).
 $module->requires = 2011120510; // Requires this Moodle version.
 $module->component = 'mod_visualclass'; // To check on upgrade, that module sits in correct place.

@@ -219,17 +219,32 @@ class mod_visualclass_sessionitem {
      * @return bool
      */
     public function is_correct() {
-        $given = $this->get_answeruser();
-        $correct = $this->get_answercorrect();
-        if (is_string($correct)) {
-            return strcmp(strtolower($correct), strtolower($given)) == 0 ? true : false;
-        } else {
-            if (is_array($correct)) {
-                return array_search(strtolower($given), $correct) !== false ? true : false;
-            } else {
-                return $correct == $given ? true : false;
-            }
+        $user_input = $this->get_answeruser();
+
+        // Blank input from user will always be considered an error, unless
+        // it's a zero
+        if ($user_input !== 0 && empty($user_input)) {
+            return false;
         }
+
+        // Both the correct answer and user input are parsed using 'strtolower'
+        // function, unless exercise's type is fill
+        $answer = $this->get_answercorrect();
+        if ($this->get_type() != self::TYPE_PREENCHIMENTO) {
+            $answer = strtolower($answer);
+            $user_input = strtolower($user_input);
+        }
+
+        // There are 3 possible types for $answer: string, array or object
+        if (is_string($answer) && strcmp($answer, $user_input) == 0) {
+            return true;
+        } else if (is_array($answer) && array_search($user_input, $answer) !== false) {
+            return true;
+        } else if (is_object($answer) && $answer == $user_input) {
+            return true;
+        }
+
+        return false;
     }
 
     // Getters and Setters.
